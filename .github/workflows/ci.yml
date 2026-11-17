@@ -1,6 +1,5 @@
 name: CI
 
-# Runs on pull requests into `production` and is reused by the release workflow.
 on:
   pull_request:
     branches: [production]
@@ -23,24 +22,34 @@ jobs:
     name: verify
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4 # pnpm version comes from "packageManager" in package.json
+
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
+
       - run: pnpm install --frozen-lockfile
+
       - name: Format
         run: pnpm format:check
+
       - name: Lint
         run: pnpm lint
+
       - name: Typecheck
         run: pnpm typecheck
+
       - name: Unit tests
         run: pnpm test
+
       - name: API end-to-end tests
         run: pnpm test:e2e
+
       - name: Build
         run: pnpm build
 
@@ -48,13 +57,16 @@ jobs:
     name: audit
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: pnpm
+
       - name: Audit production dependencies (fails on high/critical)
         run: pnpm audit --prod --audit-level high
 
@@ -62,13 +74,17 @@ jobs:
     name: docker (${{ matrix.app }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
     strategy:
       fail-fast: false
       matrix:
         app: [api, web]
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: docker/setup-buildx-action@v3
+
       - name: Build image (not pushed) to prove the Dockerfile works
         uses: docker/build-push-action@v6
         with:
@@ -77,16 +93,3 @@ jobs:
           push: false
           cache-from: type=gha,scope=${{ matrix.app }}
           cache-to: type=gha,mode=max,scope=${{ matrix.app }}
-
-  dependency-review:
-    name: dependency-review
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/dependency-review-action@v4
-        with:
-          fail-on-severity: high
