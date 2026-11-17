@@ -1,0 +1,41 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: production
+    schedule: { interval: weekly }
+    open-pull-requests-limit: 10
+    groups:
+      nestjs: { patterns: ["@nestjs/*"] }
+      tanstack: { patterns: ["@tanstack/*"] }
+      react:
+        { patterns: ["react", "react-dom", "@types/react", "@types/react-dom"] }
+      tooling:
+        {
+          patterns:
+            [
+              "vite",
+              "vitest",
+              "@vitest/*",
+              "oxlint*",
+              "prettier",
+              "turbo",
+              "typescript",
+            ],
+        }
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: production
+    schedule: { interval: weekly }
+  - package-ecosystem: docker
+    directory: /apps/api
+    target-branch: production
+    schedule: { interval: weekly }
+  - package-ecosystem: docker
+    directory: /apps/web
+    target-branch: production
+    schedule: { interval: weekly }
+  - package-ecosystem: docker-compose
+    directory: /
+    target-branch: production
+    schedule: { interval: weekly }

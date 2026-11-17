@@ -1,0 +1,40 @@
+# Automatically apply labels based on changed files.
+
+changed-files-labels-limit: 5
+
+api:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "apps/api/**"
+
+web:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "apps/web/**"
+
+shared:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "packages/shared/**"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+          - "package.json"
+          - "pnpm-lock.yaml"
+          - "pnpm-workspace.yaml"
+          - "turbo.json"
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/package.json"
+          - "pnpm-lock.yaml"
+          - "**/pnpm-lock.yaml"
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+          - "docs/**"
