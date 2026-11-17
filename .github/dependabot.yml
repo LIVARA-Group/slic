@@ -6,6 +6,8 @@ updates:
     directory: /
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 10
     versioning-strategy: increase
     groups:
@@ -36,15 +38,29 @@ updates:
     directory: /
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7
+
+  # API Docker image
   - package-ecosystem: docker
     directory: /apps/api
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7
+
+  # Web Docker image
   - package-ecosystem: docker
     directory: /apps/web
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7
+
+  # Docker Compose images
   - package-ecosystem: docker-compose
     directory: /
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7

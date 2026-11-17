@@ -2,6 +2,11 @@ packages:
   - apps/*
   - packages/*
 
+# Supply-chain security
+blockExoticSubdeps: true
+minimumReleaseAge: 10080
+trustPolicy: no-downgrade
+
 # Single place for versions shared by several packages: use "catalog:" in package.json.
 catalog:
   typescript: ~6.0.2
