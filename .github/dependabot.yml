@@ -1,41 +1,66 @@
 version: 2
+
 updates:
+  # JavaScript / TypeScript dependencies
   - package-ecosystem: npm
     directory: /
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 10
+    versioning-strategy: increase
     groups:
-      nestjs: { patterns: ["@nestjs/*"] }
-      tanstack: { patterns: ["@tanstack/*"] }
+      nestjs:
+        patterns:
+          - '@nestjs/*'
+      tanstack:
+        patterns:
+          - '@tanstack/*'
       react:
-        { patterns: ["react", "react-dom", "@types/react", "@types/react-dom"] }
+        patterns:
+          - react
+          - react-dom
+          - '@types/react'
+          - '@types/react-dom'
       tooling:
-        {
-          patterns:
-            [
-              "vite",
-              "vitest",
-              "@vitest/*",
-              "oxlint*",
-              "prettier",
-              "turbo",
-              "typescript",
-            ],
-        }
+        patterns:
+          - vite
+          - vitest
+          - '@vitest/*'
+          - oxlint*
+          - prettier
+          - turbo
+          - typescript
+
+  # GitHub Actions
   - package-ecosystem: github-actions
     directory: /
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7
+
+  # API Docker image
   - package-ecosystem: docker
     directory: /apps/api
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7
+
+  # Web Docker image
   - package-ecosystem: docker
     directory: /apps/web
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7
+
+  # Docker Compose images
   - package-ecosystem: docker-compose
     directory: /
     target-branch: production
     schedule: { interval: weekly }
+    cooldown:
+      default-days: 7
