@@ -44,6 +44,11 @@ echo "!! Release ${TAG} failed verification" >&2
 "${COMPOSE[@]}" logs --tail=80 api web caddy >&2 || true
 if [ -n "$PREVIOUS_TAG" ]; then
   echo "==> Rolling back to ${PREVIOUS_TAG}" >&2
-  start_release "$PREVIOUS_TAG" || echo "!! Rollback start failed; manual intervention required" >&2
+  if start_release "$PREVIOUS_TAG" && verify_release; then
+    echo "==> Previous release ${PREVIOUS_TAG} is healthy again" >&2
+  else
+    echo "!! Rollback verification failed; manual intervention required" >&2
+    "${COMPOSE[@]}" logs --tail=80 api web caddy >&2 || true
+  fi
 fi
 exit 1

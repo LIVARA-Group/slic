@@ -27,12 +27,14 @@ services:
     depends_on:
       web: { condition: service_healthy }
       api: { condition: service_healthy }
+    networks: [edge]
 
   web:
     <<: *hardening
     image: ${IMAGE_PREFIX:?}/web:${TAG:?}
     read_only: true
     tmpfs: ['/tmp']
+    networks: [edge]
 
   api:
     <<: *hardening
@@ -48,6 +50,7 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
     depends_on:
       postgres: { condition: service_healthy }
+    networks: [edge, database]
 
   postgres:
     <<: *hardening
@@ -60,12 +63,18 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:?}
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks: [database]
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
       interval: 10s
       timeout: 3s
       retries: 10
     # No published ports: reachable only from the api container on the internal network.
+
+networks:
+  edge:
+  database:
+    internal: true
 
 volumes:
   pgdata:

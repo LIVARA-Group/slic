@@ -1,6 +1,6 @@
-# Monorepo
+# SLIC — Engineering Foundation
 
-TypeScript monorepo managed with **pnpm** and **Turborepo**:
+A TypeScript monorepo managed with **pnpm** and **Turborepo**, providing the current web/API foundation for SLIC:
 
 | Path              | What it is                                          | Stack                                                              |
 | ----------------- | --------------------------------------------------- | ------------------------------------------------------------------ |
@@ -25,16 +25,22 @@ pnpm dev                     # API on :3000, web on :5173 (proxies /api to the A
 
 Open http://localhost:5173 and the **API status** page: it calls `GET /api/v1/status`, validated with the schema from `@repo/shared`.
 
+### Why local Compose starts only PostgreSQL
+
+`docker-compose.yml` is intentionally a local database dependency, not the local app stack. `pnpm dev` runs the NestJS API on the host at `:3000` and Vite on the host at `:5173`; Vite proxies `/api` to the API. PostgreSQL is optional because no current API feature uses it. There is no local nginx container in this workflow.
+
+The production stack is separate: `docker-compose.prod.yml` runs **Caddy** at the public edge (TLS and routing), the **web** image (static files served by unprivileged nginx), the **API** image, and **PostgreSQL**. It pulls built images from GHCR and requires production environment variables, so it is not the normal local development command. See [the web design notes](apps/web/README.md) for the frontend visual system.
+
 ## Commands (run from the repository root)
 
-| Command                             | Does                                                      |
-| ----------------------------------- | --------------------------------------------------------- |
-| `pnpm dev`                          | Watch mode for shared, api and web                        |
-| `pnpm check`                        | Everything CI runs: format, lint, typecheck, tests, build |
-| `pnpm test` / `pnpm test:e2e`       | Unit tests (Vitest) / API end-to-end tests (Supertest)    |
-| `pnpm lint`                         | oxlint with type-aware rules and import-boundary rules    |
-| `pnpm format`                       | Prettier                                                  |
-| `pnpm --filter @repo/api add <pkg>` | Add a dependency to one package                           |
+| Command                             | Does                                                   |
+| ----------------------------------- | ------------------------------------------------------ |
+| `pnpm dev`                          | Watch mode for shared, api and web                     |
+| `pnpm check`                        | Format, lint, typecheck, unit/e2e tests, and build     |
+| `pnpm test` / `pnpm test:e2e`       | Unit tests (Vitest) / API end-to-end tests (Supertest) |
+| `pnpm lint`                         | oxlint with type-aware rules and import-boundary rules |
+| `pnpm format`                       | Prettier                                               |
+| `pnpm --filter @repo/api add <pkg>` | Add a dependency to one package                        |
 
 Versions used by several packages live in the `catalog:` section of `pnpm-workspace.yaml`.
 
@@ -54,7 +60,7 @@ push to production ─▶ ci (verify, audit, docker builds) ─▶ images (GHCR,
                                                          ─▶ deploy over SSH ─▶ health check ─▶ done / automatic rollback
 ```
 
-Runtime: one server running `docker-compose.prod.yml` — **Caddy** (automatic HTTPS, routes `/api/*` to the API and everything else to the web container), **web** (unprivileged nginx), **api**, **postgres** (internal network only).
+Runtime: one server running `docker-compose.prod.yml` — **Caddy** (automatic HTTPS, routes `/api/*` to the API and everything else to the web container), **web** (unprivileged nginx), **api**, and **postgres**. The API and database communicate on a private internal network; only the API also joins the edge network. PostgreSQL has no published host port. The API currently does not use the database, so readiness checks do not claim database health.
 
 ### One-time setup
 
@@ -79,15 +85,13 @@ First push to `production` deploys. If verification fails after deploy, `deploy.
 ### Operations
 
 - Logs: `docker compose -f docker-compose.prod.yml logs -f api` (JSON in production).
-- Backups: `infra/scripts/backup-postgres.sh` (schedule it with cron and **copy the files off the server**).
+- Backups: `infra/scripts/backup-postgres.sh` (schedule it with cron and **copy the files off the server**). It writes owner-only, validated compressed dumps atomically and retains 14 days locally.
 - Rollback by hand: re-run the `Release` workflow on an older commit, or on the server `TAG=<sha> IMAGE_PREFIX=ghcr.io/owner/repo docker compose -f docker-compose.prod.yml up -d`.
 - Secrets live in `/opt/app/.env` on the server (created by the bootstrap script); never commit `.env`.
 
-## Status of this scaffold — what was and was not verified
+## Verification boundaries
 
-Verified on the day it was generated (Node 22, pnpm 12.21): fresh `pnpm install`; `pnpm build`, `typecheck`, `lint`, `test`, `test:e2e` all pass; the API starts, validates its environment, serves health and status endpoints with security headers and JSON logs; the Vite proxy reaches it; `pnpm deploy` produces a standalone API tree.
-
-**Not verified** (no Docker daemon, GitHub or server was available): Docker image builds, `docker compose` runtime, the nginx CSP in a real browser, the GitHub workflows, SSH deployment and the rollback path. Expect to fix small things on the first CI/deploy run. GitHub Action versions (`@v4` etc.) were chosen from memory; Dependabot will propose updates.
+Run `pnpm check` before opening a pull request; CI also runs API end-to-end tests and builds both container images. The release workflow publishes commit-tagged images and deploys only after CI succeeds. Production-only behavior still needs validation against a real Docker host and GitHub environment: TLS issuance, browser CSP behavior, SSH deployment, backup restoration, and the automatic rollback path. Schedule and rehearse database restores, and keep an off-server copy of backups.
 
 ## Not included (add when you need it)
 

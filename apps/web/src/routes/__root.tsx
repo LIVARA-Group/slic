@@ -39,10 +39,10 @@ function RootLayout() {
         Skip to content
       </a>
       <header className="site-header">
-        <Link to="/" className="brand">
-          Monorepo
+        <Link to="/" className="brand" aria-label="SLIC home">
+          SLIC
         </Link>
-        <nav aria-label="Main">
+        <nav className="site-nav" aria-label="Main">
           <Link to="/" activeOptions={{ exact: true }}>
             Start
           </Link>
