@@ -1,0 +1,4 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[fillcolor="#ecfccb",color="#3f6212"]; nodesep=0.2; ranksep=0.2;
+c[label="1 Checkout"]; i[label="2 Install (frozen lockfile)"]; f[label="3 Format"]; l[label="4 Lint + boundary lint"]; t[label="5 Typecheck"]; u[label="6 Unit tests"]; it[label="7 Integration (DB, object store, queue)"]; b[label="8 Build"]; s[label="9 Security scans (SAST, secrets)"]; ds[label="10 Dependency + licence scan"]; m[label="11 Migration check"]; ar[label="12 Artifacts + SBOM + signing"]; dp[label="13 Deploy (staging, then prod)"]; hc[label="14 Health checks"]; rb[label="15 Rollback",fillcolor="#fee2e2"];
+c->i->f->l->t->u->it->b->s->ds->m->ar->dp->hc; hc->rb [style=dashed,label=" on failure"];
+}

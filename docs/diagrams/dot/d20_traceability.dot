@@ -1,0 +1,3 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[fillcolor="#ecfccb",color="#3f6212"];
+r[label="Requirement ID (PRD / FR / SEC / ...)"]; c[label="Architecture component"]; s[label="Design specification (doc section / appendix)"]; w[label="Implementation task (WP-xxx)"]; t[label="Test case (T-xxx)"]; e[label="Acceptance evidence (archived result)"]; r->c->s->w->t->e;
+}

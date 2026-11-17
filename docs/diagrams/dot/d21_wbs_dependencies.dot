@@ -1,0 +1,12 @@
+digraph G { graph [fontname="DejaVu Sans",rankdir=TB,nodesep=0.3,ranksep=0.4,fontsize=12]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",margin="0.12,0.06"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"];
+S0[label="S0 Foundation & Architecture\ndocs 01-04 · 8 work packages",fillcolor="#e5e7eb"];
+S1[label="S1 Technical Risk Validation\ndoc 05 · 12 work packages",fillcolor="#fef9c3"];
+S2[label="S2 Domain & Application Foundation\ndocs 06-07 · 6 work packages",fillcolor="#dbeafe"];
+S3[label="S3 Personal Core Implementation\ndocs 08-10 · 10 work packages",fillcolor="#d1fae5"];
+S4[label="S4 Integrity & Portability\ndocs 11-12 · 5 work packages",fillcolor="#ede9fe"];
+S5[label="S5 Advanced Capabilities (Sync, AI)\ndocs 13-14 · 6 work packages",fillcolor="#fce7f3"];
+S6[label="S6 Investigative Technical Track\ndoc 15 · 7 work packages",fillcolor="#ffedd5"];
+S7[label="S7 Production Validation & Release\ndocs 16-17 · 6 work packages",fillcolor="#fee2e2"];
+S0->S1; S1->S2; S2->S3; S3->S4; S4->S5; S4->S7; S3->S7;
+S0->S6 [style=dashed,label=" parallel track\n after S1 isolation POC"]; S1->S6 [style=dashed]; S2->S6 [style=dashed]; S5->S7 [style=dashed,label=" only when released"]; S6->S7 [style=dashed];
+}

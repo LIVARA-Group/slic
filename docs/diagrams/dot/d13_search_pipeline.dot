@@ -1,0 +1,6 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[fillcolor="#dbeafe",color="#1e40af"];
+Src[label="Canonical records"]; Ev[label="Application Events"]; Tok[label="Normalise + tokenise (worker)"]; Ix[label="Lexical index\n(versioned, rebuildable)"]; Q[label="Query: exact / lexical\n+ filters, as-of"]; Rk[label="Rank + explain"]; Gx[label="Graph expansion\n(bounded, optional)"]; Res[label="Results + why-matched"];
+Vec[label="Vector index\nDEFERRED (ADR-008)",style="rounded,dashed,filled"]; INV[label="Investigative: authorise BEFORE query,\ncounts, facets, autocomplete, snippets",fillcolor="#ffedd5",color="#9a3412"];
+Src->Ev->Tok->Ix; Q->Ix; Ix->Rk; Rk->Gx->Res; Rk->Res [style=invis]; Vec->Rk [style=dashed]; INV->Q [style=dashed];
+{rank=same; Q; INV; Vec}
+}

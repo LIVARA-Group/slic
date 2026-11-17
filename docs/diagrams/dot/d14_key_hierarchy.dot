@@ -1,0 +1,5 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[fillcolor="#dbeafe",color="#1e40af"];
+RK[label="Recovery factor(s)\n(user-held; OQ-08)",fillcolor="#fde68a",color="#92400e"]; VK[label="Vault Key (per key epoch)"]; DK1[label="Device key pair A\n(wrapping + signing)"]; DK2[label="Device key pair B"]; DEK[label="Per-object DEK\n(random per object)"]; OBJ[label="Object ciphertext (AEAD)\nnonce · AAD = object id | vault | schema | epoch"]; AUTH[label="Account authentication\n(passkey / WebAuthn)\nSEPARATE from content keys",fillcolor="#f3f4f6",color="#6b7280",style="rounded,dashed,filled"];
+RK->VK [label=" wraps (recovery)"]; VK->DK1 [label=" wrapped to device"]; VK->DK2; VK->DEK [label=" wraps"]; DEK->OBJ; AUTH->DK1 [style=dotted,label=" may gate unlock\n (if supported)"];
+{rank=same; DK1; DK2; DEK}
+}

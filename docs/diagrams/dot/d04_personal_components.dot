@@ -1,0 +1,14 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[fillcolor="#dbeafe",color="#1e40af"];
+Shell[label="Application Shell (routing, layout, a11y)",fillcolor="#bfdbfe"];
+Cap[label="Capture\nPipeline"]; Ent[label="Entity\nService"]; Rel[label="Relation\nService"]; Prov[label="Provenance\nService"];
+Rev[label="Revision\nService"]; Tl[label="Timeline\nEngine"]; Se[label="Search\nEngine"]; Gr[label="Graph\nEngine"];
+Att[label="Attachment\nManager"]; IE[label="Import /\nExport"]; AIg[label="AI Gateway\n(deferred)",style="rounded,dashed,filled"]; Sy[label="Sync Engine\n(v1.x)",style="rounded,dashed,filled"];
+Dom[label="Domain Core: types, invariants, predicate registry",fillcolor="#93c5fd"];
+LR[label="Local Repository\n(interfaces)"]; SE[label="Storage Engine\n(adapter)"]; BL[label="Blob store"]; Ix[label="Index store\n(derived)"];
+{rank=same; Cap; Ent; Rel; Prov} {rank=same; Rev; Tl; Se; Gr} {rank=same; Att; IE; AIg; Sy} {rank=same; LR; BL; Ix}
+Shell->Cap; Shell->Ent; Shell->Rel; Shell->Prov;
+Cap->Rev [style=invis]; Ent->Tl [style=invis]; Rel->Se [style=invis]; Prov->Gr [style=invis];
+Rev->Att [style=invis]; Tl->IE [style=invis]; Se->AIg [style=invis]; Gr->Sy [style=invis];
+Att->Dom; IE->Dom; AIg->Dom [style=dashed]; Sy->Dom [style=dashed]; Rev->Dom; Tl->Dom; Se->Dom; Gr->Dom; Cap->Dom [constraint=false]; 
+Dom->LR; Att->BL [constraint=false]; Se->Ix [constraint=false]; LR->SE;
+}

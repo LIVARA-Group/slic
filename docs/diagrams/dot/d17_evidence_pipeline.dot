@@ -1,0 +1,4 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[fillcolor="#ffedd5",color="#9a3412"];
+a[label="Authorised acquisition\n(manifest valid, source permitted)"]; b[label="Source registration"]; c[label="Original preservation\n(immutable object version)"]; d[label="Hash calculation (independent verifier can repeat)"]; e[label="Evidence metadata + custody event"]; f[label="Controlled ingestion job"]; g[label="Parse / extract (sandbox)",fillcolor="#fecaca"]; h[label="Observation creation (derivatives)"]; i[label="Analytical review"];
+a->b->c->d->e->f->g->h->i; g->c [label="originals never modified",style=dashed,color="#b91c1c",constraint=false];
+}

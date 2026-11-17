@@ -1,0 +1,8 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB;
+subgraph cluster_p { label="Personal: capture to durable to derived"; style=dashed; color="#1e40af"; node[fillcolor="#dbeafe",color="#1e40af"];
+In[label="User input"]; Val[label="Validate + normalise"]; Tx[label="One local transaction:\nobject + revision +\nprovenance + outbox"]; Ack[label="Ack to UI\n(only after commit)"]; Ev[label="Application Event"]; Idx[label="Index updater\n(worker)"]; Bl[label="Backlink updater"];
+In->Val->Tx->Ack; Tx->Ev; Ev->Idx; Ev->Bl; }
+subgraph cluster_i { label="Investigative: acquisition to evidence to analysis"; style=dashed; color="#9a3412"; node[fillcolor="#ffedd5",color="#9a3412"];
+Aq[label="Authorised acquisition"]; Reg[label="Register + preserve\noriginal"]; Hs[label="Hash + custody event"]; Job[label="Ingestion job"]; Pr[label="Sandboxed parse"]; Ob[label="Observations\n(derivatives)"]; An[label="Analyst review"]; Aud[label="Audit event\n(every step)"];
+Aq->Reg->Hs->Job->Pr->Ob->An; Reg->Aud; Hs->Aud; Ob->Aud; An->Aud; }
+}

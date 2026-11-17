@@ -1,0 +1,11 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=LR;
+subgraph cluster_a { label="Claim.assessment"; style=dashed; node[shape=box,fillcolor="#dbeafe",color="#1e40af"];
+un[label="unassessed"]; su[label="supported"]; di[label="disputed"]; rj[label="rejected"]; sp[label="superseded"];
+un->su; un->di; un->rj; su->di; di->su; su->sp; di->sp; un->sp; di->rj; su->rj; }
+subgraph cluster_r { label="review_status (independent field)"; style=dashed; node[shape=box,fillcolor="#ffedd5",color="#9a3412"];
+none[label="none"]; pend[label="pending"]; acc[label="accepted"]; edi[label="edited"]; rej[label="rejected"];
+none->pend; pend->acc; pend->edi; pend->rej; acc->pend [label="re-review"]; }
+subgraph cluster_p { label="AI proposal"; style=dashed; node[shape=box,fillcolor="#fde68a",color="#92400e"];
+sp1[label="pending"]; ac[label="accepted → canonical object + review event"]; ed[label="edited → canonical + review event"]; rjp[label="rejected (canon untouched)"]; df[label="deferred"];
+sp1->ac; sp1->ed; sp1->rjp; sp1->df; df->sp1; }
+}

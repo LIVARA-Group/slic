@@ -1,0 +1,6 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[shape=record,style=filled,fillcolor="#f4f6f8",fontsize=11]; ranksep=0.5;
+reg[label="{object_registry|id PK\lobject_type\lscope\l}",fillcolor="#bfdbfe"];
+src[label="{source_artifact|id PK/FK\lcontent_hash\lstorage_ref\l}"]; obs[label="{observation|source_id FK\llocator\lactivity_id FK\l}"]; clm[label="{claim|subject_ref FK\lpredicate FK\lassessment / review\l}"]; ce[label="{claim_evidence|claim_id FK\lobservation_id FK\lpolarity\l}"];
+hyp[label="{hypothesis|id PK/FK\lstatus\l}"]; hc[label="{hypothesis_claim|hypothesis_id FK\lclaim_id FK\l}"]; act[label="{activity|activity_type\lagent_id FK\l}"]; ag[label="{agent|kind\lname / version\l}"]; pl[label="{provenance_link|derived_id, rev\llink_kind\ltarget_id FK\l}"];
+obs->src; ce->clm; ce->obs; hc->hyp; hc->clm; act->ag; pl->act; obs->act; src->reg; clm->reg; hyp->reg; act->reg; ag->reg; obs->reg;
+}

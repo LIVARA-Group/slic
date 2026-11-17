@@ -1,0 +1,7 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[fillcolor="#dbeafe",color="#1e40af"];
+Svc[label="Application services"]; UoW[label="Unit of Work\n(multi-object transaction + outbox)"]; Repo[label="Repository interfaces\nEntity · Source · Claim · Relation\nRevision · Attachment · Collection"]; Q[label="Query port\n(search, neighbourhood, as-of)"]; Blob[label="BlobStore port"];
+A1[label="Adapter A: IndexedDB\nobject stores + indexes",fillcolor="#e0f2fe"]; A2[label="Adapter B: SQLite-WASM\n+ OPFS (worker, SQL)",fillcolor="#e0f2fe"]; BL1[label="OPFS files by hash\nor IndexedDB blobs",fillcolor="#e0f2fe"];
+Mig[label="Migration runner"]; Hl[label="Storage health"]; Bk[label="Backup / restore"];
+Svc->UoW->Repo; Svc->Q; Svc->Blob; Repo->A1; Repo->A2; Q->A1; Q->A2; Blob->BL1; Mig->A1 [style=dashed]; Hl->A2 [style=dashed]; Bk->Repo [style=dashed]; Bk->Blob [style=dashed];
+{rank=same; A1; A2; BL1} {rank=same; Mig; Hl; Bk} A1->Mig [style=invis]; A2->Hl [style=invis]; BL1->Bk [style=invis];
+}

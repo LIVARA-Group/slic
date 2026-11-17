@@ -1,0 +1,5 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[fillcolor="#ffedd5",color="#9a3412"];
+Id[label="Identity\n(authN, sessions, step-up)"]; Ten[label="Organisation / Tenant\nManagement"]; Case[label="Case Management\n(manifest, membership)"]; Az[label="Authorization\n(deny-by-default, case scope)",fillcolor="#fed7aa"];
+Ev[label="Evidence Registry\n(custody, hashes)"]; Ing[label="Ingestion Orchestrator"]; Pw[label="Parser Workers\n(sandboxed, no creds)",fillcolor="#fecaca"]; Og[label="Ontology & Graph\n(entities, claims, timeline)"]; Rv[label="Review & Approval"]; Ex[label="Export / Dossier"]; Au[label="Audit Service\n(append-only, checkpoints)"]; AI[label="AI Gateway"];
+Id->Az; Case->Az; Ten->Case; Az->Ev; Az->Og; Az->Ex; Az->AI; Ev->Ing; Ing->Pw; Pw->Og [label="observations (validated)"]; Og->Rv; Rv->Ex; Ev->Au; Az->Au; Ex->Au; Og->Au; AI->Og [label="proposals only",style=dashed];
+}

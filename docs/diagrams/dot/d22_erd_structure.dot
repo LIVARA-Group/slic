@@ -1,0 +1,6 @@
+digraph G { graph [fontname="DejaVu Sans",fontsize=12,pad=0.2,nodesep=0.25,ranksep=0.4,newrank=true]; node [fontname="DejaVu Sans",fontsize=11,shape=box,style="rounded,filled",fillcolor="#f4f6f8",color="#44546a"]; edge [fontname="DejaVu Sans",fontsize=10,color="#44546a"]; rankdir=TB; node[shape=record,style=filled,fillcolor="#f4f6f8",fontsize=11]; ranksep=0.5;
+reg[label="{object_registry|id PK\lobject_type\lscope\l}",fillcolor="#bfdbfe"];
+note[label="{note|id PK/FK\ltitle, body_md\lstatus\l}"]; ent[label="{entity|id PK/FK\lentity_type\lcanonical_label\l}"]; ali[label="{entity_alias|entity_id FK\lnamespace, value_norm\l}"]; rev[label="{revision|object_id FK\lrev (unique)\lpayload, prev_hash\l}"];
+rel[label="{relation|subject_id FK\lpredicate FK\lobject_id FK\l}"]; pd[label="{predicate_def|key PK\lclass\ldomain / range\l}"]; att[label="{attachment|content_hash\lbyte_length\l}"]; col[label="{collection|kind\lparent_id FK\l}"]; cm[label="{collection_member|collection_id FK\lmember_id FK\l}"];
+ali->ent; ent->reg; note->reg; rev->reg; rel->reg; rel->pd; att->reg; col->reg; cm->col; cm->reg;
+}
