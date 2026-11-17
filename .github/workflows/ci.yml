@@ -3,6 +3,8 @@ name: CI
 on:
   pull_request:
     branches: [production]
+  push:
+    branches: [production]
   workflow_call:
   workflow_dispatch:
 
@@ -54,7 +56,7 @@ jobs:
         run: pnpm build
 
   audit:
-    name: audit
+    name: dependency audit
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -67,8 +69,23 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Audit production dependencies (fails on high/critical)
+      - name: Audit production dependencies
         run: pnpm audit --prod --audit-level high
+
+  security:
+    name: static security analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/src" \
+            semgrep/semgrep \
+            semgrep scan --config p/default --error --metrics=off /src
 
   docker:
     name: docker (${{ matrix.app }})
