@@ -1,0 +1,84 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "import", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "typescript/no-floating-promises": "error",
+    "typescript/no-explicit-any": "error",
+    "no-console": "warn",
+    "import/no-cycle": "error",
+    "typescript/no-extraneous-class": [
+      "warn",
+      {
+        "allowWithDecorator": true
+      }
+    ],
+    "import/no-unassigned-import": "off"
+  },
+  "ignorePatterns": ["**/dist/**", "**/coverage/**", "**/routeTree.gen.ts", "**/node_modules/**"],
+  "env": {
+    "es2023": true,
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["apps/web/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@nestjs/*", "express", "@repo/api"],
+                "message": "The web app must not import server code. Share contracts via @repo/shared."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["apps/api/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["react", "react-dom", "react/*", "@tanstack/*", "@repo/web"],
+                "message": "The API must not import UI code. Share contracts via @repo/shared."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["packages/shared/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": [
+                  "react",
+                  "react-dom",
+                  "@nestjs/*",
+                  "@tanstack/*",
+                  "@repo/api",
+                  "@repo/web",
+                  "node:*"
+                ],
+                "message": "@repo/shared must stay pure: no framework, UI, server or Node I/O imports."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

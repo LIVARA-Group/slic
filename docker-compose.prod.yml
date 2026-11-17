@@ -1,0 +1,73 @@
+# Production stack. Deployed by .github/workflows/release.yml through infra/scripts/deploy.sh.
+# Required env (kept in /opt/app/.env on the server): DOMAIN, ACME_EMAIL, POSTGRES_USER,
+# POSTGRES_PASSWORD, POSTGRES_DB, plus TAG and IMAGE_PREFIX (set by deploy.sh).
+name: app
+x-hardening: &hardening
+  restart: unless-stopped
+  security_opt: ['no-new-privileges:true']
+  cap_drop: [ALL]
+  logging:
+    driver: json-file
+    options: { max-size: '10m', max-file: '5' }
+
+services:
+  caddy:
+    <<: *hardening
+    image: caddy:2-alpine
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    ports: ['80:80', '443:443', '443:443/udp']
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in .env}
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      web: { condition: service_healthy }
+      api: { condition: service_healthy }
+
+  web:
+    <<: *hardening
+    image: ${IMAGE_PREFIX:?}/web:${TAG:?}
+    read_only: true
+    tmpfs: ['/tmp']
+
+  api:
+    <<: *hardening
+    image: ${IMAGE_PREFIX:?}/api:${TAG:?}
+    init: true
+    read_only: true
+    tmpfs: ['/tmp']
+    environment:
+      NODE_ENV: production
+      PORT: '3000'
+      APP_VERSION: ${TAG}
+      LOG_LEVEL: ${LOG_LEVEL:-log}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  postgres:
+    <<: *hardening
+    image: postgres:17-alpine
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+      POSTGRES_DB: ${POSTGRES_DB:?}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    # No published ports: reachable only from the api container on the internal network.
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:
