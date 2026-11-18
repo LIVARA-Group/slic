@@ -10,6 +10,7 @@
   <a href="docs/PRODUCT.md">Product</a> ·
   <a href="docs/README.md">Documentation</a> ·
   <a href="docs/DEVELOPMENT.md">Development</a> ·
+  <a href="docs/CI.md">CI</a> ·
   <a href="SECURITY.md">Security</a>
 </p>
 
