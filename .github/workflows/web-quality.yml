@@ -1,0 +1,62 @@
+name: Browser, accessibility, and performance
+
+on:
+  pull_request:
+    branches: [production]
+  push:
+    branches: [production]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-quality-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright and axe
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @repo/shared build
+      - name: Install Chromium and system dependencies
+        run: pnpm --filter @repo/web exec playwright install --with-deps chromium
+      - name: Run browser and accessibility tests
+        run: pnpm --filter @repo/web test:e2e
+        env:
+          CI: true
+
+  lighthouse-and-bundle:
+    name: Lighthouse and bundle budget
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Install Chromium for Lighthouse
+        run: pnpm --filter @repo/web exec playwright install --with-deps chromium
+      - name: Set Lighthouse Chrome path
+        run: |
+          pnpm --filter @repo/web exec node --input-type=module -e "import { chromium } from '@playwright/test'; console.log('CHROME_PATH=' + chromium.executablePath())" >> "$GITHUB_ENV"
+      - name: Enforce 500 KiB compressed JavaScript budget
+        run: |
+          size=$(gzip -c apps/web/dist/assets/*.js | wc -c)
+          echo "Compressed JavaScript: ${size} bytes"
+          test "$size" -le 512000
+      - name: Run Lighthouse CI against production build
+        run: pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.json
