@@ -2,6 +2,9 @@ node_modules
 dist
 coverage
 .turbo
+**/test-results/
+**/playwright-report/
+.lighthouseci/
 pnpm-lock.yaml
 **/routeTree.gen.ts
 
