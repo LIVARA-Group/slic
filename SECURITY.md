@@ -24,7 +24,7 @@ Preferred reporting channel:
 
 - GitHub Private Vulnerability Reporting (when enabled).
 
-If private reporting is unavailable, contact the maintainers through the designated private security contact.
+If private reporting is unavailable, contact the maintainers through the designated private security contact. Maintainers should follow the [incident response plan](docs/security/INCIDENT_RESPONSE.md) when triaging a suspected or confirmed incident.
 
 Please include:
 
@@ -39,7 +39,7 @@ Do not include real user data, personal information, credentials, private keys, 
 
 ## Scope
 
-Security reports are relevant to the following areas:
+Security reports are relevant to the following areas. The [threat model](docs/security/THREAT_MODEL.md) describes the principal assets and abuse cases; the [security testing strategy](docs/security/SECURITY_TESTING.md) lists verification areas.
 
 - Authentication and authorization.
 - Identity, session, and access control.
@@ -92,7 +92,16 @@ SLIC follows these foundational security principles:
 - **Verifiable integrity** — security-sensitive operations must be independently verifiable.
 - **Human oversight** — AI-generated outputs do not automatically become verified facts or authorized actions.
 
-These principles describe the project's engineering direction and do not constitute a guarantee that every mechanism is already implemented.
+These principles describe the project's engineering direction and do not constitute a guarantee that every mechanism is already implemented. The [security architecture](docs/security/SECURITY_ARCHITECTURE.md) explains the intended controls and their implementation-status boundaries.
+
+## Related Security Documentation
+
+These documents provide the detailed security context for this policy. They are working drafts and describe intended controls; they do not certify that those controls are implemented or verified.
+
+- [Threat Model](docs/security/THREAT_MODEL.md) — assets, trust boundaries, threat scenarios, and security requirements.
+- [Security Architecture](docs/security/SECURITY_ARCHITECTURE.md) — intended control design across identity, authorization, data, infrastructure, and product contours.
+- [Security Testing Strategy](docs/security/SECURITY_TESTING.md) — test areas, safe test practices, pull-request checks, and release gates.
+- [Incident Response Plan](docs/security/INCIDENT_RESPONSE.md) — incident roles, triage, containment, recovery, and disclosure.
 
 ## Safe Harbor
 
