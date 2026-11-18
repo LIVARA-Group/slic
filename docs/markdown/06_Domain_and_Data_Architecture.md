@@ -20,7 +20,7 @@ Research Pack 02 (all) @SD@; doc 02 requirements FR-ENT/REL/SRC/HYP, INT-001…0
 
 # 5. Design
 ## 5.1 Canonical domain model
-@@IMG|d09_domain_model|Figure 6.1 Canonical domain model (types and principal relationships; @SD@ taxonomy 02§3, proposals @R@: Note, Collection, ai_proposal staging, review_event)|@SD@/@R@@@
+![Figure 6.1 Canonical domain model (types and principal relationships; @SD@ taxonomy 02§3, proposals @R@: Note, Collection, ai_proposal staging, review_event)](../diagrams/rendered/d09_domain_model.svg)
 
 The pillars (Structure, Life, Information, Complexity) are **lenses**, not databases or services @SD@ (00§0): Structure → Entity/Relation/Collection; Life → Event/Revision/time fields; Information → Source/Observation/Claim/Provenance; Complexity → Hypothesis, causal predicates, scenarios (deferred).
 
@@ -46,7 +46,7 @@ The pillars (Structure, Life, Information, Complexity) are **lenses**, not datab
 *Entity vs Collection:* a Project/Collection is a grouping container, not a referent. A user who wants to relate a project as a subject may create an Entity (type `concept` or `other`) and link it; the system does not auto-create one. This avoids a universal container type and keeps relation semantics explicit (SI-11).
 
 ## 5.2 Epistemic model
-@@IMG|d10_epistemic_lifecycle|Figure 6.2 Epistemic state machines (separate dimensions; AI proposals staged outside canonical tables)|@R@@@
+![Figure 6.2 Epistemic state machines (separate dimensions; AI proposals staged outside canonical tables)](../diagrams/rendered/d10_epistemic_lifecycle.svg)
 
 **Correction of a source ambiguity (SI-02, SI-03).** The Research Pack's epistemic table mixes *object kinds* (source artifact, observation, hypothesis) with *statuses* (supported, disputed, rejected) and lists "Reviewed conclusion" as a state @SD@ (02§4). Here **object type** is fixed by the table in §5.1; **status** lives in separate, independent fields; "Reviewed conclusion" is `review_status ∈ {accepted, edited}` on a Claim or Hypothesis, optionally referenced by a Decision.
 
@@ -105,8 +105,8 @@ Relation matrix required endpoints: Entity↔Entity; Entity↔Source; Source↔O
 Deletion semantics by class (validated by T-REL-003): structural → block or cascade per predicate; analytical/causal → tombstone with history; provenance → never cascade-delete (blocks deletion of used sources unless erasure workflow); identity → merge reversal.
 
 ## 5.6 Database design
-@@IMG|d11_erd|Figure 6.3 ERD — epistemic and provenance core (logical)|@R@@@
-@@IMG|d22_erd_structure|Figure 6.4 ERD — structure, revisions, relations, collections (logical)|@R@@@
+![Figure 6.3 ERD — epistemic and provenance core (logical)](../diagrams/rendered/d11_erd.svg)
+![Figure 6.4 ERD — structure, revisions, relations, collections (logical)](../diagrams/rendered/d22_erd_structure.svg)
 
 **Design decisions @R@.** (1) Typed tables, no universal JSON `items` table. (2) `object_registry` (id, type, scope) gives FK-safe polymorphic references; each typed table's PK is also an FK to it. (3) Current state in typed tables with `rev`, `tx_from`, `tx_to`; history in `revision` (full snapshots, hash-linked; ADR-014). (4) JSON/JSONB only for versioned, validated property bags (entity properties, revision payload), never for core relationships. (5) Entity identity ≠ label. (6) Investigative rows carry `tenant_id` and `case_id` and **composite foreign keys** include them, so a reference cannot cross scope even by mistake.
 

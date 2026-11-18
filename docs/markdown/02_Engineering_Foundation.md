@@ -31,12 +31,12 @@ The twelve source PRD-IDs are preserved as **parents**; the catalogue refines th
 **Priority departures from the source (all @R@, flagged for owner ratification):** FR-NAV-001 (accessible list navigation) is P0 for v1.0 because the v1.0 slice includes graph navigation (SI-06); FR-BAK-001/FR-IO-* are P0 because the pack's Phase 3 exit gate requires "export and restore" (SI-05) while encrypted backup/sync stays P1; A11Y-001 is P0 because WCAG 2.2 AA is the pack's stated target @SD@.
 
 ## 4.2 Functional requirements — Personal and shared
-@@REQ_PER@@
+> **Catalogue gap:** The detailed Personal/shared requirement rows are not included in this repository edition. The parent PRDs and scope summary above remain useful for orientation, but do not substitute for individually testable requirements. Appendix E is also missing its generated test rows; restore both catalogues before treating traceability as complete.
 ## 4.3 Functional requirements — Investigative
-@@REQ_INV@@
+> **Catalogue gap:** The detailed Investigative requirement rows are not included in this repository edition. This is not evidence that the Investigative scope is empty; consult the parent PRDs above and the [Investigative Contour Foundation](15_Investigative_Contour_Foundation.md). Restore the requirement rows before implementation planning.
 ## 4.4 Non-functional requirements by category
 Categories by ID prefix: **REL** reliability, **INT** data integrity, **SEC** security, **PRV** privacy, **PERF** performance, **A11Y** accessibility, **OPS** operational.
-@@REQ_NFR@@
+> **Catalogue gap:** The detailed non-functional requirement rows are not included in this repository edition. The category definitions and selected constraints in this document are summaries, not a complete acceptance baseline. See [Security and Data Integrity](11_Security_and_Data_Integrity.md) and [Testing and Production Readiness](16_Testing_and_Production_Readiness.md) for the related design guidance.
 Performance requirement PERF-001 deliberately contains **no numeric SLA**. The source targets — 50k nodes at 60 FPS, sub-15 ms typing, sub-80 MB runtime — are *benchmark targets* @SD@ to be turned into named profiles (small/medium/large) and measured; thresholds are ratified by the product owner after a baseline (RK-13).
 
 # 5. Design
@@ -76,7 +76,7 @@ Template fields (every record in Appendix A): ADR ID, Title, Status, Context, Pr
 1. Author opens a PR adding an ADR (status Proposed). 2. Reviewers include an architect and, for security/privacy-affecting ADRs, a security reviewer. 3. Acceptance requires the *Validation evidence* items to exist and a named owner's approval. 4. Supersession creates a new ADR; the old one is marked Superseded with a link. 5. Gate reviews check ADR statuses (SG0, SG1, SG2).
 
 ## 7.3 Current ADR set
-@@ADR_SUM@@
+The authoritative decision register belongs in [Appendix A](../appendices/A_Architecture_Decision_Records.md). Its detailed register is not present in this repository edition; the technology status table above records only the decisions and proposals explicitly summarized here. Confirm status and validation evidence in Appendix A before relying on any decision.
 
 # 8. Data & Contracts
 Requirement record: `{id, title, priority, scope, parent_prd, source, release, verified_by[]}`; test record: Appendix E; ADR record: Appendix A. These are generated from structured data so cross-references cannot drift.

@@ -13,7 +13,7 @@ Programme-level requirements: (a) every stage ends with a gate backed by archive
 # 5. Design
 
 ## 5.1 Programme structure
-@@IMG|d21_wbs_dependencies|Figure 1.1 Programme stages (solid = sequential, dashed = parallel/optional)|@R@@@
+![Figure 1.1 Programme stages (solid = sequential, dashed = parallel/optional)](../diagrams/rendered/d21_wbs_dependencies.svg)
 
 | Stage | Name | Documents | Outcome |
 |---|---|---|---|
@@ -57,11 +57,10 @@ Programme tooling @R@: Git + pull-request reviews; CI (doc 04); issue tracker mi
 
 # 7. Implementation
 ## 7.1 Work breakdown structure and dependency matrix
-@@WP@@
-The "Depends on" column is the dependency matrix; Figure 1.1 is its stage-level view.
+> **Planning gap:** The detailed work-package and dependency table is not included in this repository edition. Work-package identifiers are referenced throughout the plan, but owners, estimates, and row-level dependencies cannot be verified here. The stage overview above and the critical path below are the available planning detail; restore the full work breakdown before using this document for scheduling or estimation.
 
 ## 7.2 Stage gates
-@@GATES@@
+> **Planning gap:** The stage-gate pass/fail checklist is not included in this repository edition. The stage outcomes in §5.1 are summaries, not gate evidence. Do not treat SG0–SG7 as passed until their criteria and evidence are restored and reviewed; see [Testing and Production Readiness](16_Testing_and_Production_Readiness.md) for the proposed production gates.
 
 ## 7.3 Critical decisions register
 | Decision | ADR / OQ | Needed by | Evidence needed |

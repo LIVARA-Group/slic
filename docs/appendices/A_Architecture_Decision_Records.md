@@ -1,5 +1,5 @@
 # 1. Purpose
-Single register of every architecture decision in the SLIC engineering programme. It carries the ten decisions from the Research Pack (ADR-001…ADR-010 @SD@) and sixteen new decisions identified during the audit (ADR-011…ADR-026 @R@). It is the authoritative place to read the status of a decision; other documents quote it.
+This appendix is intended to be the authoritative register for the ten decisions from the Research Pack (ADR-001…ADR-010 @SD@) and sixteen decisions identified during the audit (ADR-011…ADR-026 @R@). The record tables are not included in this repository edition, so decision status and evidence must be confirmed with the project owner before implementation.
 
 # 2. Rules
 - **Statuses** are exactly: Proposed, Accepted, Rejected, Superseded, Deferred. A decision is never promoted from Proposed to Accepted without the validation evidence listed in its record, and without a named decision owner (owner is still TBD — see OQ-16, WP-002).
@@ -9,7 +9,7 @@ Single register of every architecture decision in the SLIC engineering programme
 - Review dates are expressed as gate or evidence triggers because calendar commitments cannot be made without team capacity data (OQ-16).
 
 # 3. Decision register
-@@ADR_SUM@@
+> **Register gap:** The ADR summary rows (ADR-001…ADR-026) are not included in this repository edition. The rules above preserve the source's stated status that ADR-002 is Accepted but still awaits owner ratification; they do not establish the status of other decisions. Do not infer acceptance from a technology appearing in a design document.
 
 # 4. Decision dependency map
 | Decision | Blocked by / informed by | Blocks |
@@ -22,4 +22,4 @@ Single register of every architecture decision in the SLIC engineering programme
 | ADR-026 Epistemic model | OQ-04, OQ-13 | WP-030, WP-044, WP-064 |
 
 # 5. Full records
-@@ADR_FULL@@
+> **Record gap:** Full ADR records, including options, consequences, validation evidence, and owners, are not included in this repository edition. Restore the records before treating this appendix as an operational decision register.

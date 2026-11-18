@@ -53,7 +53,7 @@ Boundary rules (T-ISO-001): `personal/*` and `investigative/*` cannot import eac
 Full matrix (configuration, DB, storage, logging, monitoring) in Appendix F §3.
 
 ## 5.3 CI/CD
-@@IMG|d18_cicd|Figure 4.1 CI/CD pipeline (stages from Research Pack 06§7 and brief; gates @R@)|@R@@@
+![Figure 4.1 CI/CD pipeline (stages from Research Pack 06§7 and brief; gates @R@)](../diagrams/rendered/d18_cicd.svg)
 | # | Stage | Gate behaviour |
 |---|---|---|
 | 1–2 | Checkout; install with frozen lockfile | Fails on lockfile drift |

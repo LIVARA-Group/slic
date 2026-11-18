@@ -24,7 +24,7 @@ FR-SRCH-001 (P0), FR-SRCH-002 (P1), FR-SRCH-003 (P2), FR-NAV-001 (P0), FR-NAV-00
 Hybrid fusion (RRF) is **not** introduced until POC-04 has scored each retriever independently @SD@.
 
 ## 5.2 Search pipeline
-@@IMG|d13_search_pipeline|Figure 10.1 Search pipeline (derived, rebuildable index; Investigative authorisation precedes querying)|@R@@@
+![Figure 10.1 Search pipeline (derived, rebuildable index; Investigative authorisation precedes querying)](../diagrams/rendered/d13_search_pipeline.svg)
 Index structure: per field (title, body, alias, observation text, claim text) with field weights; stores index version and normalisation version. Update strategy: event-driven incremental updates in a worker after commit; last-applied sequence persisted; full rebuild resumable. Query execution: parse → normalise (NFC, case folding, language-aware tokenisation per OQ-14) → retrieve → rank → apply filters → explain. Ranking: documented, deterministic scoring (BM25-style) with field boosts; ties by recency. Permissions: Personal = vault only; Investigative = tenant/case + role filter applied **before** query, counts, facets, autocomplete and snippets (SEC-009, T-SRCH-005). Rebuild: from canonical records only. Metrics: Recall@K, Precision@K, nDCG, latency, index size, build time (POC-04).
 
 **Explanation.** Each hit carries `matched_fields`, `terms`, `via` (direct | alias | backlink | graph) — FR-SRCH-002.

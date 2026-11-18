@@ -39,8 +39,8 @@ Authentication to the relay (account/session) is **separate** from content keys 
 Visible to relay regardless: sizes, timing, IP, access patterns, device count (leakage profile published per PRV-001).
 
 ## 5.3 Protocol
-@@IMG|d15_sync_protocol|Figure 14.1 Sync protocol flow (candidate)|@R@@@
-@@IMG|s02_sync_sequence|Figure 14.2 Sequence — two devices (candidate)|@R@@@
+![Figure 14.1 Sync protocol flow (candidate)](../diagrams/rendered/d15_sync_protocol.svg)
+![Figure 14.2 Sequence — two devices (candidate)](../diagrams/rendered/s02_sync_sequence.png)
 Steps: (1) local change detection through **outbox rows written in the same UoW** (doc 08 §5.3); (2) build/encrypt envelope; (3) upload idempotently (envelope ID); (4) relay authenticates device, stores ciphertext, assigns a **cursor**; (5) remote discovery by cursor; (6) download; (7) decrypt and verify AAD/hash; (8) validate schema and domain invariants; (9) merge by data class (§5.4); (10) acknowledge and advance cursor; (11) retry with backoff; **replay protection** via per-device monotonic sequence + object version + envelope-ID memory; **idempotency** by envelope ID; (12) **compaction** of superseded envelopes, key-epoch-aware, retaining enough history for late devices; tombstone retention window defined by POC-07. The relay is authoritative only for ordering and delivery, **never for authorization claims made by clients** @SD@ (03§9).
 
 ## 5.4 Conflict resolution by data class
