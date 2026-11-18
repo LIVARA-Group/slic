@@ -1,0 +1,24 @@
+name: Production health monitoring
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  health-check:
+    if: ${{ vars.PRODUCTION_URL != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check public API readiness
+        env:
+          PRODUCTION_URL: ${{ vars.PRODUCTION_URL }}
+        run: |
+          base_url="${PRODUCTION_URL%/}"
+          curl --fail --silent --show-error --retry 2 --retry-delay 5 \
+            --connect-timeout 10 --max-time 20 \
+            "$base_url/api/health/ready"

@@ -1,0 +1,69 @@
+name: Production backup verification
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  restore-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Prepare pinned SSH access
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Download latest production backup
+        env:
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          APP_DIR: ${{ vars.DEPLOY_PATH || '/opt/app' }}
+        run: |
+          set -euo pipefail
+          : "${DEPLOY_USER:?Configure DEPLOY_USER}"
+          : "${DEPLOY_HOST:?Configure DEPLOY_HOST}"
+          target="${DEPLOY_USER}@${DEPLOY_HOST}"
+          backup_path=$(ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes "$target" \
+            "cd '$APP_DIR' && find backups -maxdepth 1 -type f -name '*.sql.gz' -printf '%T@ %p\\n' | sort -nr | cut -d' ' -f2- | sed -n '1p'")
+          case "$backup_path" in
+            backups/*.sql.gz) ;;
+            *) echo 'No valid backup path returned by server' >&2; exit 1 ;;
+          esac
+          scp -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            "$target:$APP_DIR/$backup_path" latest.sql.gz
+          gzip -t latest.sql.gz
+
+      - name: Restore backup into disposable PostgreSQL
+        run: |
+          set -euo pipefail
+          docker run --detach --rm --name backup-restore-test \
+            -e POSTGRES_PASSWORD=restore-only \
+            -e POSTGRES_DB=restore_test \
+            postgres:17-alpine
+          trap 'docker rm --force backup-restore-test >/dev/null 2>&1 || true; rm -f latest.sql.gz' EXIT
+          for attempt in $(seq 1 30); do
+            if docker exec backup-restore-test pg_isready -U postgres -d restore_test; then
+              break
+            fi
+            echo "Waiting for disposable PostgreSQL (attempt $attempt/30)"
+            sleep 2
+          done
+          docker exec backup-restore-test pg_isready -U postgres -d restore_test
+          gzip -dc latest.sql.gz | docker exec --interactive backup-restore-test \
+            psql -v ON_ERROR_STOP=1 -U postgres -d restore_test
+          docker exec backup-restore-test psql -v ON_ERROR_STOP=1 -U postgres -d restore_test \
+            --tuples-only --command='SELECT current_database()'
+
+      - name: Remove SSH material
+        if: always()
+        run: rm -f ~/.ssh/id_deploy ~/.ssh/known_hosts
