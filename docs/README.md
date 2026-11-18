@@ -46,7 +46,7 @@ The current repository is a pnpm/Turborepo TypeScript workspace:
 - `packages/shared` — shared schemas and types.
 - `infra/` — Caddy and deployment scripts.
 
-For setup, tests, boundaries, CI, and common failure resolution, use the [Development Handbook](DEVELOPMENT.md). It documents the code in this repository rather than the future product architecture.
+For setup, tests, boundaries, and common failure resolution, use the [Development Handbook](DEVELOPMENT.md). See [CI and GitHub Actions](CI.md) for automated checks, required repository settings, and production operations. These documents describe the code in this repository rather than the future product architecture.
 
 ## Engineering blueprint
 

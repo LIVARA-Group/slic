@@ -1,0 +1,30 @@
+name: Workflow and container quality
+
+on:
+  pull_request:
+    branches: [production]
+  push:
+    branches: [production]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Lint GitHub Actions workflows
+        run: docker run --rm -v "${{ github.workspace }}:/repo" -w /repo rhysd/actionlint:1.7.7
+
+  hadolint:
+    name: hadolint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Lint Dockerfiles
+        run: |
+          docker run --rm -i hadolint/hadolint:v2.12.0 < apps/api/Dockerfile
+          docker run --rm -i hadolint/hadolint:v2.12.0 < apps/web/Dockerfile

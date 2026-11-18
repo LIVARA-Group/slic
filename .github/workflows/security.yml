@@ -1,0 +1,39 @@
+name: Secret and vulnerability scanning
+
+on:
+  pull_request:
+    branches: [production]
+  push:
+    branches: [production]
+  schedule:
+    - cron: '15 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    name: Gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - name: Scan repository history for secrets
+        run: >-
+          docker run --rm -v "${{ github.workspace }}:/repo" -w /repo
+          zricethezav/gitleaks:v8.24.2
+          detect --source=/repo --redact --verbose
+
+  trivy:
+    name: Trivy filesystem scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Scan dependencies, secrets, and configuration
+        run: >-
+          docker run --rm -v "${{ github.workspace }}:/repo"
+          aquasec/trivy:0.76.2
+          fs --scanners vuln,misconfig,secret --severity HIGH,CRITICAL
+          --ignore-unfixed --exit-code 1 /repo
