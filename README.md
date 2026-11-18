@@ -1,98 +1,94 @@
-# SLIC — Engineering Foundation
+<p align="center">
+  <img src="apps/web/public/logo.png" alt="SLIC" width="104" />
+</p>
 
-A TypeScript monorepo managed with **pnpm** and **Turborepo**, providing the current web/API foundation for SLIC:
+<h1 align="center">SLIC</h1>
 
-| Path              | What it is                                          | Stack                                                              |
-| ----------------- | --------------------------------------------------- | ------------------------------------------------------------------ |
-| `apps/web`        | Browser app                                         | React 19, Vite, TanStack Router (file-based) + TanStack Query, Zod |
-| `apps/api`        | HTTP API                                            | NestJS (ESM), Terminus health checks, Helmet, Zod-validated env    |
-| `packages/shared` | Contracts shared by both apps (Zod schemas + types) | Pure ESM, no framework imports                                     |
-| `infra/`          | Reverse proxy config and server scripts             | Caddy, bash                                                        |
-| `.github/`        | CI/CD, CodeQL, Dependabot                           | GitHub Actions                                                     |
+<p align="center"><strong>Knowledge with context. Sources in view.</strong></p>
 
-Single long-lived branch: **`production`**. Pull requests target it; every push to it is verified, built into images and deployed.
+<p align="center">
+  <a href="docs/PRODUCT.md">Product</a> ·
+  <a href="docs/README.md">Documentation</a> ·
+  <a href="docs/DEVELOPMENT.md">Development</a> ·
+  <a href="SECURITY.md">Security</a>
+</p>
 
-## Quick start
+---
 
-```bash
-nvm use                      # Node 22 (see .nvmrc)
-corepack enable              # or: npm i -g pnpm@12.21.0
+SLIC is being designed as a local-first workspace for structuring knowledge and examining evidence. It connects source material to observations, claims, entities, relationships, and change over time—while keeping the origin and status of information visible.
+
+> **Project status** · SLIC is in its engineering-foundation stage. This repository contains the web/API starter and deployment foundation, not a finished knowledge-management product. The product capabilities below describe the documented direction and must not be read as shipped features.
+
+## A product with two distinct contexts
+
+The product plan defines two contours. They share vocabulary and engineering principles, but not data, identities, keys, or operating authority.
+
+| Personal                                                           | Investigative                                                                |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| An individual builds and revisits a private body of knowledge.     | An authorised team works with governed cases and evidence.                   |
+| Designed around local-first use and user control.                  | Designed around explicit access policy, custody, and audit.                  |
+| The server, when used, is planned as an optional ciphertext relay. | The service is planned to enforce case access and preserve evidence history. |
+| The first proposed user-facing release is scoped here.             | A separate technical foundation and release gate are required.               |
+
+![Proposed separation between Personal and Investigative contours](docs/diagrams/rendered/d01_contour_separation.svg)
+
+The boundary is a product invariant, not just a deployment preference: no implicit transfer is planned between the contours. The diagram is a target design, not a description of capabilities already running in this repository.
+
+## How SLIC is intended to work
+
+A user captures information, preserves its source, records what was observed, and then develops claims or links that can be revisited against their evidence. New interpretations should not overwrite the history that led to them.
+
+![Proposed SLIC knowledge and evidence flows](docs/diagrams/rendered/d08_data_flow.svg)
+
+The workflow is deliberately human-centred. A stored source or a hash does not prove that a statement is true; relationships do not prove causation; and AI output, if introduced, is intended to remain a proposal until reviewed.
+
+## Product principles
+
+- **Keep provenance attached.** Make it possible to ask where an observation or claim came from.
+- **Preserve uncertainty.** Source, observation, claim, hypothesis, and decision are different kinds of records.
+- **Respect time.** Record change and distinguish when something was true from when the system learned or recorded it.
+- **Make knowledge portable.** Export, backup, and restore are core product concerns in the plan, not afterthoughts.
+- **Separate contexts by design.** Personal and Investigative data must not mix implicitly.
+- **Treat automation as assistance.** Suggested or derived content must be reviewable and must not silently become verified fact.
+
+## What exists today
+
+| In this repository                                                        | Product direction, not yet implemented here                                                              |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| React 19 + Vite web application; NestJS API; shared Zod contracts.        | Personal capture, notes, typed entities, provenance, local persistence, and knowledge navigation.        |
+| API status route and web/API integration.                                 | A separate Investigative workflow for cases, evidence custody, and governed access.                      |
+| Optional PostgreSQL Compose service and production deployment foundation. | Encrypted sync, AI-assisted proposals, advanced graph views, and other independently gated capabilities. |
+
+The current API does not use the optional PostgreSQL service. The app does not yet provide the planned local knowledge store, user authentication, sync, or AI workflows. See the [product overview](docs/PRODUCT.md) for the intended scope and the [engineering plan](docs/markdown/01_Engineering_Master_Plan.md) for stage and release boundaries.
+
+## Explore the project
+
+| If you want to…                                        | Start here                                                                         |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Understand the product, users, concepts, and non-goals | [Product overview](docs/PRODUCT.md)                                                |
+| Find the full documentation set                        | [Documentation portal](docs/README.md)                                             |
+| Run the current code and contribute                    | [Development guide](docs/DEVELOPMENT.md)                                           |
+| Understand the proposed system structure               | [System architecture](docs/markdown/03_System_Architecture.md)                     |
+| Review stages, dependencies, and release gates         | [Engineering master plan](docs/markdown/01_Engineering_Master_Plan.md)             |
+| Inspect decisions, risks, and source limitations       | [Appendices and source register](docs/README.md#decisions-evidence-and-appendices) |
+
+## Run the current foundation
+
+Requirements: Node.js 22.12+, pnpm 12+ (the repository pins pnpm 12.21.0). Docker is optional unless you need local PostgreSQL.
+
+```sh
+corepack enable
 pnpm install
-cp .env.example .env
-pnpm infra:up                # optional: local Postgres (Docker)
-pnpm dev                     # API on :3000, web on :5173 (proxies /api to the API)
 ```
 
-Open http://localhost:5173 and the **API status** page: it calls `GET /api/v1/status`, validated with the schema from `@repo/shared`.
+Copy `.env.example` to `.env`, then run:
 
-### Why local Compose starts only PostgreSQL
-
-`docker-compose.yml` is intentionally a local database dependency, not the local app stack. `pnpm dev` runs the NestJS API on the host at `:3000` and Vite on the host at `:5173`; Vite proxies `/api` to the API. PostgreSQL is optional because no current API feature uses it. There is no local nginx container in this workflow.
-
-The production stack is separate: `docker-compose.prod.yml` runs **Caddy** at the public edge (TLS and routing), the **web** image (static files served by unprivileged nginx), the **API** image, and **PostgreSQL**. It pulls built images from GHCR and requires production environment variables, so it is not the normal local development command. See [the web design notes](apps/web/README.md) for the frontend visual system.
-
-## Commands (run from the repository root)
-
-| Command                             | Does                                                   |
-| ----------------------------------- | ------------------------------------------------------ |
-| `pnpm dev`                          | Watch mode for shared, api and web                     |
-| `pnpm check`                        | Format, lint, typecheck, unit/e2e tests, and build     |
-| `pnpm test` / `pnpm test:e2e`       | Unit tests (Vitest) / API end-to-end tests (Supertest) |
-| `pnpm lint`                         | oxlint with type-aware rules and import-boundary rules |
-| `pnpm format`                       | Prettier                                               |
-| `pnpm --filter @repo/api add <pkg>` | Add a dependency to one package                        |
-
-Versions used by several packages live in the `catalog:` section of `pnpm-workspace.yaml`.
-
-## Architecture rules (enforced by lint)
-
-- `apps/web` must not import NestJS/Express or `@repo/api`.
-- `apps/api` must not import React, TanStack or `@repo/web`.
-- `packages/shared` must stay pure: no React, Nest, TanStack, app imports or `node:*`.
-- Anything both apps need (request/response shapes, constants) goes into `packages/shared`.
-
-To add a package: create `packages/<name>` with `"name": "@repo/<name>"`, depend on it with `"workspace:*"`, and add its `package.json` to the `COPY` lines of the Dockerfiles that use it.
-
-## Environments and deployment
-
-```
-push to production ─▶ ci (verify, audit, docker builds) ─▶ images (GHCR, tagged with the commit SHA)
-                                                         ─▶ deploy over SSH ─▶ health check ─▶ done / automatic rollback
+```sh
+pnpm dev
 ```
 
-Runtime: one server running `docker-compose.prod.yml` — **Caddy** (automatic HTTPS, routes `/api/*` to the API and everything else to the web container), **web** (unprivileged nginx), **api**, and **postgres**. The API and database communicate on a private internal network; only the API also joins the edge network. PostgreSQL has no published host port. The API currently does not use the database, so readiness checks do not claim database health.
+The web app runs at <http://localhost:5173>, the API at <http://localhost:3000>. Visit `/status` in the web app to check its API connection. For tests, package commands, deployment setup, and troubleshooting, use the [development guide](docs/DEVELOPMENT.md).
 
-### One-time setup
+## A note on claims
 
-1. **Server** (Ubuntu/Debian): review and run `infra/scripts/bootstrap-server.sh` as root (`DOMAIN`, `ACME_EMAIL` required). Point DNS for the domain at the server.
-2. **SSH key** for deployment: create a key pair, put the public key in the deploy user's `authorized_keys`. Get the pinned host key with `ssh-keyscan -t ed25519 <host>`.
-3. **GitHub → Settings → Environments → `production`**: add required reviewers if you want manual approval, and set:
-
-   | Kind     | Name                 | Value                        |
-   | -------- | -------------------- | ---------------------------- |
-   | Secret   | `DEPLOY_HOST`        | server host name or IP       |
-   | Secret   | `DEPLOY_USER`        | the deploy user              |
-   | Secret   | `DEPLOY_SSH_KEY`     | the **private** key          |
-   | Secret   | `DEPLOY_KNOWN_HOSTS` | output of `ssh-keyscan`      |
-   | Variable | `DEPLOY_PATH`        | optional, default `/opt/app` |
-   | Variable | `PRODUCTION_URL`     | e.g. `https://example.com`   |
-
-4. **Repository → Settings → Actions → General**: allow workflows to create packages (GHCR).
-5. Protect the branch: `./infra/scripts/protect-production-branch.sh owner/repo` (needs `gh` and admin rights) or configure the same rules in the UI. Replace `@your-github-user` in `.github/CODEOWNERS`.
-
-First push to `production` deploys. If verification fails after deploy, `deploy.sh` brings back the previous tag and the workflow fails.
-
-### Operations
-
-- Logs: `docker compose -f docker-compose.prod.yml logs -f api` (JSON in production).
-- Backups: `infra/scripts/backup-postgres.sh` (schedule it with cron and **copy the files off the server**). It writes owner-only, validated compressed dumps atomically and retains 14 days locally.
-- Rollback by hand: re-run the `Release` workflow on an older commit, or on the server `TAG=<sha> IMAGE_PREFIX=ghcr.io/owner/repo docker compose -f docker-compose.prod.yml up -d`.
-- Secrets live in `/opt/app/.env` on the server (created by the bootstrap script); never commit `.env`.
-
-## Verification boundaries
-
-Run `pnpm check` before opening a pull request; CI also runs API end-to-end tests and builds both container images. The release workflow publishes commit-tagged images and deploys only after CI succeeds. Production-only behavior still needs validation against a real Docker host and GitHub environment: TLS issuance, browser CSP behavior, SSH deployment, backup restoration, and the automatic rollback path. Schedule and rehearse database restores, and keep an off-server copy of backups.
-
-## Not included (add when you need it)
-
-A database layer/ORM and migrations (Postgres runs, `DATABASE_URL` is wired, nothing uses it yet), authentication, API documentation (`@nestjs/swagger`), error tracking, remote Turbo cache, staging environment.
+SLIC is not presented as a system that establishes truth, causation, guilt, or legal admissibility. Hashes can help detect changes but do not establish truth or lawful acquisition; append-only records do not by themselves guarantee immutability. Security and performance statements require evidence and review. See [security and data integrity](docs/markdown/11_Security_and_Data_Integrity.md) and the [source register](docs/Source_Register.md).

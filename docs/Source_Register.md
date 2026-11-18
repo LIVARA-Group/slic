@@ -12,20 +12,20 @@ Audit record of the evidence base: what was supplied, what was extracted, which 
 | 05_AI_Reasoning_Retrieval_and_Evaluation.pdf | 5 | AI role, pipeline, lifecycle, retrieval, prompt injection, tiers, evaluation, hypotheses, causality, governance, first AI release | Doc 13 |
 | 06_Validation_Roadmap_Operations_and_Governance.pdf | 6 | Phases 0–7, 30-day programme, benchmark protocol, test strategy, observability, environments, ADR governance, readiness, production gates, risks | Docs 01, 05, 16, 17 |
 | README_and_Pack_Index.pdf | 3 | Reading guide, package contents, method, confidence and limitations, reference register | Method, labels |
-All eight PDFs have an embedded text layer and were read in full. A merged copy is `sources/Original_Research_Pack.pdf`.
+All eight PDFs in the supplied research ZIP have an embedded text layer and were read in full. The research ZIP was supplied outside this repository; the original PDFs and a merged copy are not checked into this working tree.
 
 **Not supplied:** *LIVARA Group.pdf* (4-page visual export: company identity, second-brain schema, secure backend diagrams, algorithm-core parts, feature hierarchy, phased lifecycle) and *SLIC-Research-and-Documentation-Checklist.pdf* (10 pages). Everything known about them is second-hand through the pack (OQ-18). Consequence: requirements or constraints that exist only in those files may be missing here.
 
 # 3. Extraction summary
-| Item | Count | Where preserved |
-|---|---|---|
-| Source requirement IDs (PRD-001…012) | 12 | Doc 02 §4.1 (as parents of 74 requirements) |
-| ADRs / decision register entries | 10 | Appendix A (ADR-001…010) |
-| Architecture invariants | 5 explicit in Master §6; the programme brief lists 10 — the other five (hash ≠ truth, graph topology ≠ causation, append-only audit ≠ legal guarantee, etc.) are consistent with Master §2 and Domain/Security text but were not each re-located line by line | Doc 02 §5.1 |
-| Critical unknowns | 7 in Master §9; the brief lists 10 — recovery mechanism (OQ-08), multi-device sync requirements (OQ-09) and audit/evidence retention guarantees (OQ-10) are added by the brief | Appendix H OQ-01…10 |
-| Pack risk register entries | 10 | Appendix H RK-01…10 |
-| Pack POCs (A–E) | 5 | Mapped to POC-01…10 (doc 05 §3) |
-| Pack phases (0–7) | 8 | Stages S0–S7 (doc 01) |
+| Item | Count in source programme | Where referenced / status in this repository edition |
+|---|---:|---|
+| Source requirement IDs (PRD-001…012) | 12 | Summarised in doc 02 §4.1; the 74 refined requirement rows are not included in this checkout. |
+| ADR entries | 26 (ADR-001…026) | Referenced in Appendix A and the engineering docs; the decision-record tables are not included, so most statuses cannot be verified here. |
+| Architecture invariants | 5 explicit in Master §6; the programme brief lists 10 | Summarised in doc 02 §5.1; source distinctions and limits are retained, while the complete structured catalogue is not present. |
+| Critical unknowns | 7 in Master §9; 10 in the programme brief | OQ IDs are referenced; Appendix H currently documents the missing register rows. |
+| Pack risk register entries | 10 | RK IDs are referenced; Appendix H currently documents the missing register rows. |
+| Pack POCs (A–E) | 5 | Mapped to the 10 experiment protocols in doc 05 §3; protocols are described, results are not executed. |
+| Pack phases (0–7) | 8 | Stages S0–S7 in doc 01; detailed work-package and gate tables are not included. |
 | Source "corrections" (claims to remove/qualify) | 9 | §5 below |
 
 # 4. Inconsistencies, gaps and resolutions

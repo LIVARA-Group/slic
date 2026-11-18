@@ -12,7 +12,7 @@ REL-001 (no lost acknowledged write), REL-002 (safe migrations), REL-003 (quota/
 
 # 5. Design
 ## 5.1 Architecture
-@@IMG|d12_storage_architecture|Figure 8.1 Storage architecture (engine-neutral ports; two candidate adapters)|@R@@@
+![Figure 8.1 Storage architecture (engine-neutral ports; two candidate adapters)](../diagrams/rendered/d12_storage_architecture.svg)
 Layers: services → **UnitOfWork** (multi-object transaction + outbox) → **Repository interfaces** → **Engine adapter**. Queries (search, neighbourhood, as-of) go through a **QueryPort** implemented per engine. Binaries go through **BlobStore**. All engine access happens in a dedicated storage worker.
 
 ## 5.2 Repository design

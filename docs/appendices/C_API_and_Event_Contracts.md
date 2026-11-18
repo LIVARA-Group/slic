@@ -12,11 +12,11 @@ Operation, event and error contracts derived from domain operations (doc 06), no
 - **Error shape.** `{code, message, details[], correlation_id}`; `correlation_id` carries no content (PRV-002).
 
 # 3. Operations
-@@OPS@@
+> **Contract gap:** The operation catalogue and request/response schemas are not included in this repository edition. The current repository API is a foundation and this appendix is a proposal, not a published API specification. See [Core Product Implementation](../markdown/09_Core_Product_Implementation.md) for planned product operations.
 
 # 4. Application Events
 Application Events are software messages, distinct from the domain type **Event** (glossary). Personal events are in-process; Investigative events use a transactional outbox so that a state change and its event commit together. Delivery is at-least-once; consumers must be idempotent.
-@@EVENTS@@
+> **Contract gap:** The application-event names and payload schemas are not included in this repository edition. The rules above describe the intended contract properties, not a complete event catalogue.
 
 # 5. Event payload rules
 - Payloads carry identifiers, revisions and hashes — not content — so that telemetry, logs and audit sinks cannot become content leaks (PRV-002).
@@ -24,7 +24,7 @@ Application Events are software messages, distinct from the domain type **Event*
 - Breaking payload changes require a new event name or major schema version.
 
 # 6. Error codes
-@@ERRORS@@
+> **Contract gap:** The typed error-code catalogue and payload definitions are not included in this repository edition. Add them alongside the operation schemas and tests before treating this appendix as an implementation contract.
 
 # 7. Retry semantics
 Clients retry only on `STORAGE_FAILURE`, `INDEX_REBUILDING`, `QUOTA` (after user action) and network errors, always with the same idempotency key. `STALE_REVISION` requires re-read and re-decision, never blind retry. `REPLAY` is terminal and treated as success if the original result is known.

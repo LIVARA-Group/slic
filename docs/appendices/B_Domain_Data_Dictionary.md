@@ -36,4 +36,4 @@ Field-level dictionary for the canonical domain model defined in document 06. It
 1. Every committed change creates a `revision` row; rows are never updated. 2. `rev` is contiguous per object. 3. A restore creates a new revision. 4. Source artifacts and observations are immutable; corrections add new rows that reference and supersede. 5. Tombstones are revisions with `change_kind = tombstone`; in governed contexts nothing is hard-deleted except under an explicit retention/erasure workflow (doc 15 §5.10).
 
 # 6. Entity tables
-@@DD@@
+> **Dictionary gap:** The field-level entity/table definitions are not included in this repository edition. The enums, temporal fields, and versioning rules above are useful design notes, but are not a complete schema. See [Domain and Data Architecture](../markdown/06_Domain_and_Data_Architecture.md); do not implement storage from this appendix alone.

@@ -8,7 +8,7 @@ Backend architecture, tenant/case model, authorization, evidence registry and pi
 Docs 03, 06, 11; POC-09/10; Research Pack 01§2.2, §4–5, 03§5–6, 04§8–11 @SD@. Open: OQ-02 (customer model), OQ-03 (jurisdictions), OQ-10 (audit/retention guarantees), ADR-003/009/020/021/022.
 
 # 4. Requirements
-@@REQ_INV@@
+> **Catalogue gap:** Detailed Investigative functional requirement rows are not included in this repository edition. The controls below describe proposed architecture, not an approved or implemented authorization/evidence system. Use the parent requirements in [Engineering Foundation](02_Engineering_Foundation.md) for orientation and restore the test-linked requirement catalogue before implementation planning.
 Plus SEC-006/007/008/009, PRV-004, OPS-003/004 (doc 02 §4.4).
 
 # 5. Design
@@ -63,7 +63,7 @@ Positive examples: analyst assigned to case X creates observation in X (allowed,
 Originals are never modified; corrections append events; derivatives are separate objects linked to originals @SD@.
 
 ## 5.5 Evidence pipeline
-@@IMG|d17_evidence_pipeline|Figure 15.1 Evidence pipeline (recommended; originals never modified by parsing, extraction or normalisation)|@R@@@
+![Figure 15.1 Evidence pipeline (recommended; originals never modified by parsing, extraction or normalisation)](../diagrams/rendered/d17_evidence_pipeline.svg)
 Each step writes an audit event; hash calculation can be repeated by an independent verifier.
 
 ## 5.6 Ontology, claims, hypotheses, review

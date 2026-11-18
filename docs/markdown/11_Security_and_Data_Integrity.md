@@ -8,7 +8,7 @@ Cross-cutting design. Sync protocol specifics: doc 14. Investigative mechanics: 
 Research Pack 04 (all) @SD@; docs 03, 06; ADR-002, 007, 009; OQ-01, 02, 03, 08, 10, 11.
 
 # 4. Requirements
-@@REQ_SEC@@
+> **Catalogue gap:** The detailed SEC/PRV requirement rows are not included in this repository edition. This document describes proposed controls and risks, not a complete security acceptance baseline. See [Appendix D](../appendices/D_Threat_Model_and_Security_Matrix.md) for the threat-matrix status and restore the requirement/test rows before using these sections as release criteria.
 
 # 5. Design
 ## 5.1 Threat models
@@ -29,7 +29,7 @@ Deny-by-default authorization; case-scoped permissions; purpose limitation (mani
 Passkeys/WebAuthn provide public-key authentication scoped to a relying party; the authenticator protects its credential; the standard defines no general-purpose protocol for exporting/backing up that key @SD@ (W3C WebAuthn L3, pack-cited). Therefore: multiple registered authenticators; **content-key recovery designed independently**; phishing-resistant auth + step-up for Investigative export, role change, custody transfer and recovery; separate account identity, session auth, device identity, vault unlock and case authorization @SD@.
 
 ## 5.6 Cryptographic architecture (requirements and candidate design)
-@@IMG|d14_key_hierarchy|Figure 11.1 Candidate key hierarchy — for specialist review, not an approved protocol (ADR-007)|@R@/@OD@@@
+![Figure 11.1 Candidate key hierarchy — for specialist review, not an approved protocol (ADR-007)](../diagrams/rendered/d14_key_hierarchy.svg)
 **Requirements @SD@ (04§4):** envelope encryption with explicit key hierarchy; authenticated encryption with unique nonces per key; AAD binding (object ID, vault ID, schema version, key epoch) to prevent object substitution; authentication credentials separate from content keys; key recovery defined **before** sync ships; model key rotation, device revocation, collaborator removal, backup retention, account deletion; reviewed libraries only; no invented primitives.
 **Candidate design @R@:**
 | Element | Candidate | Open point |
@@ -95,7 +95,7 @@ Sync envelope fields: doc 14 §5.2; classification table: §5.8 (to be encoded a
 Key loss → documented recovery or declared irrecoverable (user informed at setup); key compromise → rotation + revocation runbook; failed AEAD verification → object quarantined, not silently dropped; audit-chain break → alert, freeze exports, investigate; dependency vulnerability → out-of-band patch process; incident → breach assessment under applicable law (legal input, OQ-03).
 
 # 11. Testing
-@@TESTS_SEC@@
+> **Test-catalogue gap:** Security test IDs and procedures are not expanded in this repository edition. The test catalogue in [Appendix E](../appendices/E_Test_Catalogue_and_Acceptance_Matrix.md) must be populated and linked to requirements before any security gate can be considered complete.
 
 # 12. Acceptance Criteria
 SG4: client security tests green; leakage statements published and matched by traffic captures; SG5: crypto review closed, replay/revocation/recovery tests green; SG6: isolation, custody, audit tests green and independent verifier passes.

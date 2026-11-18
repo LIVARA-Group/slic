@@ -10,10 +10,10 @@ Impact is qualitative. "Verification" lists test IDs from Appendix E or a review
 - Legal admissibility is out of scope for any technical control (doc 11 §5.9).
 
 # 4. Personal Contour
-@@THREAT_P@@
+> **Threat-matrix gap:** Personal-contour asset/threat/mitigation rows are not included in this repository edition. The assumptions above and the security design in [Document 11](../markdown/11_Security_and_Data_Integrity.md) are not a substitute for a reviewed, test-linked threat model.
 
 # 5. Investigative Contour
-@@THREAT_I@@
+> **Threat-matrix gap:** Investigative-contour asset/threat/mitigation rows are not included in this repository edition. The cross-cutting STRIDE table below is illustrative coverage, not a complete risk assessment or security sign-off.
 
 # 6. Cross-cutting STRIDE coverage check
 | Category | Covered by (examples) |

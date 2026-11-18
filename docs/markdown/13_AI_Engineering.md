@@ -25,8 +25,8 @@ FR-AI-001, FR-AI-002 (P1), INT-005 (P0), SEC-010 (P1), T-AI-001…005. Source ru
 Default posture (ADR-023): **AI features off**; explicit consent per provider per contour; local model preferred for private Personal content; Investigative uses approved tiers by classification and case policy; **no cross-contour context ever**.
 
 ## 5.2 Processing pipeline
-@@IMG|d16_ai_pipeline|Figure 13.1 AI processing pipeline (recommended for validation; permission check and validation are deterministic code, not prompts)|@R@@@
-@@IMG|s04_ai_sequence|Figure 13.2 Sequence — proposal, review and explicit commit|@R@@@
+![Figure 13.1 AI processing pipeline (recommended for validation; permission check and validation are deterministic code, not prompts)](../diagrams/rendered/d16_ai_pipeline.svg)
+![Figure 13.2 Sequence — proposal, review and explicit commit](../diagrams/rendered/s04_ai_sequence.png)
 
 ## 5.3 AI object lifecycle
 Each AI run records: model, model version, prompt version, timestamp, input references, retrieved sources (IDs + locators), context metadata (included/excluded), processing parameters, output, validation result, review status, human decision @SD@. Stored as `activity (ai_run)` + `ai_proposal` (Appendix B). Proposal → **staging only**; `commit` is an explicit command that creates canonical objects with provenance and a `review_event`. Rejections leave canonical data untouched and are kept for evaluation. A reviewed claim retains both model and human provenance.

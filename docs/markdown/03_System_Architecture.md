@@ -20,11 +20,11 @@ Doc 02 (requirements, ADR statuses); Research Pack 00 §5–6, 03 §2–5 @SD@. 
 
 # 5. Design
 ## 5.1 System context
-@@IMG|d02_c4_context|Figure 3.1 C4 level 1 — System context (actors and external systems are proposals; separation of trust models is Source-derived)|@SD@/@R@@@
+![Figure 3.1 C4 level 1 — System context (actors and external systems are proposals; separation of trust models is Source-derived)](../diagrams/rendered/d02_c4_context.svg)
 Actors: Personal owner; Analyst, Supervisor, Custodian, Auditor, Platform administrator @SD@ (01§4). External systems: identity/authenticators, AI providers (tiered), external sources, optional timestamp authority/witness, object storage (provider not selected, ADR-022). **Platform administrator status never implies plaintext access** @SD@.
 
 ## 5.2 Contour separation
-@@IMG|d01_contour_separation|Figure 3.2 Personal / Investigative separation (isolation axes @SD@; "Shared" package restriction @R@)|@SD@/@R@@@
+![Figure 3.2 Personal / Investigative separation (isolation axes @SD@; "Shared" package restriction @R@)](../diagrams/rendered/d01_contour_separation.svg)
 Isolation axes and how each is realised:
 | Axis | Personal | Investigative | Enforcement |
 |---|---|---|---|
@@ -35,7 +35,7 @@ Isolation axes and how each is realised:
 | Audit | User-visible activity/revision history | Tamper-evident audit chain | Separate stores and verification tools |
 
 ## 5.3 Containers
-@@IMG|d03_c4_container|Figure 3.3 C4 level 2 — Containers (technology labels are the baseline @R@; local persistence is @OD@)|@R@@@
+![Figure 3.3 C4 level 2 — Containers (technology labels are the baseline @R@; local persistence is @OD@)](../diagrams/rendered/d03_c4_container.svg)
 | Container | Responsibility | Trust |
 |---|---|---|
 | Personal web client | UI, application layer, domain core | Trusted only while unlocked |
@@ -49,23 +49,23 @@ Isolation axes and how each is realised:
 | AI gateway | Model routing, prompt assembly | Policy gate; no autonomous writes |
 
 ## 5.4 Components
-@@IMG|d04_personal_components|Figure 3.4 Personal Contour components (v1.0: all solid; dashed = deferred)|@R@@@
+![Figure 3.4 Personal Contour components (v1.0: all solid; dashed = deferred)](../diagrams/rendered/d04_personal_components.svg)
 Layering and rules: Shell → application services → Domain Core → repository interfaces → storage engine adapter. Services depend on Domain Core and repository **interfaces**, never on a concrete engine. Search and graph read through the query port; indexes are derived and rebuildable.
 
-@@IMG|d05_investigative_components|Figure 3.5 Investigative Contour components (logical modules inside a modular monolith; extraction to services only on evidence)|@R@@@
+![Figure 3.5 Investigative Contour components (logical modules inside a modular monolith; extraction to services only on evidence)](../diagrams/rendered/d05_investigative_components.svg)
 Rules: every module call passes an authorization context; **Authorization** is the only module allowed to answer "may X do Y on Z"; Parser Workers return only validated, schema-checked output; AI Gateway output goes to staging, never to canonical tables.
 
 ## 5.5 Deployment
-@@IMG|d06_deployment|Figure 3.6 Deployment topology (proposal; provider and sizing are @OD@, ADR-022)|@R@@@
+![Figure 3.6 Deployment topology (proposal; provider and sizing are @OD@, ADR-022)](../diagrams/rendered/d06_deployment.svg)
 Production Personal and Investigative live in separate accounts/projects with separate secrets, networks and backups @SD@ (03§11, 06§7). An air-gapped Investigative profile is a separate deployment profile with its own update and model distribution @SD@.
 
 ## 5.6 Data flows
-@@IMG|d08_data_flow|Figure 3.7 Data flow diagrams (Personal capture to derived data; Investigative acquisition to analysis)|@R@@@
-@@IMG|s01_capture_sequence|Figure 3.8 Sequence — offline capture (ack only after durable commit; indexing is asynchronous)|@R@@@
-@@IMG|s03_evidence_sequence|Figure 3.9 Sequence — authorised evidence ingestion|@R@@@
+![Figure 3.7 Data flow diagrams (Personal capture to derived data; Investigative acquisition to analysis)](../diagrams/rendered/d08_data_flow.svg)
+![Figure 3.8 Sequence — offline capture (ack only after durable commit; indexing is asynchronous)](../diagrams/rendered/s01_capture_sequence.png)
+![Figure 3.9 Sequence — authorised evidence ingestion](../diagrams/rendered/s03_evidence_sequence.png)
 
 ## 5.7 Trust boundaries
-@@IMG|d07_trust_boundaries|Figure 3.10 Trust boundaries TB1–TB4 (boundaries @SD@ 04§3; controls @R@)|@SD@/@R@@@
+![Figure 3.10 Trust boundaries TB1–TB4 (boundaries @SD@ 04§3; controls @R@)](../diagrams/rendered/d07_trust_boundaries.svg)
 Controls per boundary are specified in doc 11 §5 and Appendix D.
 
 # 6. Technology

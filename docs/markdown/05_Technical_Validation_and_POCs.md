@@ -30,7 +30,20 @@ Declared by the executor in the environment manifest: CPU model/cores, RAM, stor
 
 # 5. Design
 POC register:
-@@POCS@@
+| ID | Experiment |
+| --- | --- |
+| POC-01 | [Local database engine](#poc-01--local-database-engine) |
+| POC-02 | [OPFS and attachment handling](#poc-02--opfs-and-attachment-handling) |
+| POC-03 | [Graph persistence and traversal](#poc-03--graph-persistence-and-traversal) |
+| POC-04 | [Search quality and performance](#poc-04--search-quality-and-performance) |
+| POC-05 | [Background processing](#poc-05--background-processing) |
+| POC-06 | [Graph visualisation](#poc-06--graph-visualisation) |
+| POC-07 | [Sync conflict behaviour](#poc-07--sync-conflict-behaviour) |
+| POC-08 | [Crypto, keys and recovery prototype](#poc-08--crypto-keys-and-recovery-prototype) |
+| POC-09 | [Investigative isolation](#poc-09--investigative-isolation) |
+| POC-10 | [Ingestion sandbox](#poc-10--ingestion-sandbox) |
+
+The experiment protocols below are proposals. Results remain **NOT EXECUTED** unless a dated report and reproducible evidence are added.
 Each POC below uses the mandatory format. **Results: NOT EXECUTED.**
 
 ## POC-01 — Local database engine

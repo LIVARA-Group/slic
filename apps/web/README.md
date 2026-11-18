@@ -1,6 +1,8 @@
-# Web Design System
+# Web App and Design System
 
-The web app follows the SLIC Swiss-style interface specification: a restrained black-and-white base, a red action color, precise typography, square geometry, and strong alignment. The design is intentionally applied to the existing routes and content rather than introducing new product screens.
+`apps/web` is the React 19 + Vite browser application. It currently provides the web/API foundation and a small set of routes; the larger Personal-contour screens described in the engineering roadmap are not yet implemented. See the [repository development guide](../../docs/DEVELOPMENT.md) for setup and [engineering docs index](../../docs/README.md) for the proposed product architecture.
+
+The web app follows the SLIC Swiss-style interface specification: a restrained black-and-white base, a red action color, precise typography, square geometry, and strong alignment. The design is intentionally applied to existing routes and content rather than introducing roadmap screens.
 
 ## Foundations
 
@@ -46,3 +48,11 @@ pnpm --filter @repo/web build
 ```
 
 The Tailwind Vite plugin processes `@import`, `@theme`, and `@apply` in `src/globals.css` in both development and production builds. The `apps/web/Dockerfile` builds the Vite output and serves it from the unprivileged nginx image.
+
+## Related documentation
+
+- [Root README](../../README.md) — product summary and workspace quick start.
+- [Product overview](../../docs/PRODUCT.md) — SLIC's intended user journeys, knowledge model, and release boundaries.
+- [Development guide](../../docs/DEVELOPMENT.md) — change workflow, API integration, tests, and troubleshooting.
+- [Application architecture plan](../../docs/markdown/07_Application_Architecture.md) — proposed SLIC application layers and state model.
+- [Design-system diagram assets](../../docs/diagrams/rendered/) — architecture diagrams are linked from the [system architecture plan](../../docs/markdown/03_System_Architecture.md).

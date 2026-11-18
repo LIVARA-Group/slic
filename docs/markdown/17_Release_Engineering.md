@@ -54,7 +54,7 @@ v1.x-A: fuzzy search, nested collections, entity merge/split, visual graph, time
 
 
 ## 5.7 Acceptance matrix — Personal v1.0 P0 requirements
-@@ACC@@
+> **Acceptance-matrix gap:** The per-requirement acceptance cases are not included in this repository edition. The release scope above is a planning boundary, not evidence of acceptance. Restore the acceptance rows and link each P0 requirement to a reproducible test before declaring a release candidate ready.
 
 # 6. Technology
 CI/CD per doc 04; signing and SBOM tooling per SEC-003; feature flags for dark launches; static hosting for the client (COOP/COEP headers only if the selected storage engine requires them — POC-02).
