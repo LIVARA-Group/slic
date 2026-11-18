@@ -11,7 +11,7 @@ The repository's automated checks live in [`.github/workflows/`](../.github/work
 | P0 | Gitleaks history scan, Trivy filesystem scan | `security.yml` |
 | P1 | Nightly full-workspace `pnpm audit` | `nightly-audit.yml` |
 | P1 | Local Markdown links and fragments | `docs.yml` |
-| P1 | Lighthouse CI and 500 KiB compressed-JavaScript budget | `web-quality.yml` |
+| P2 | 500 KiB compressed-JavaScript budget | `web-quality.yml` |
 | P2 | Conventional PR titles and draft release notes | `pull-requests.yml` |
 | P2 | Stale issue and PR triage | `stale.yml` |
 | P3 | Manual production rollback; automatic deploy rollback remains in `release.yml` | `rollback.yml` |
@@ -39,6 +39,6 @@ The GHCR cleanup job can delete package versions. It keeps the 20 most recent ve
 - `rollback.yml` accepts an existing GHCR tag. Prefer the SHA of a previously deployed release. It uses the same deployment script and health verification as a normal release; if the selected tag is unhealthy, the script attempts to restore the currently recorded tag.
 - `backup-verification.yml` downloads the latest `.sql.gz` from the server, validates gzip integrity, and restores it into an isolated PostgreSQL container on the GitHub runner. It requires the server backup job to have produced at least one backup. Backup archives contain production data; the workflow does not print their contents, but they transit the runner and are deleted after the restore test. Review your data-handling policy before enabling this hosted-runner workflow.
 - The server backup script itself documents the expected daily schedule and recommends copying backups off-host. A restore test cannot recover data if the only copy on the server is lost.
-- Lighthouse runs on the built web app. The JavaScript budget measures the combined gzip output of emitted `.js` assets and is intentionally set to 500 KiB.
+- The JavaScript budget measures the combined gzip output of emitted `.js` assets and is intentionally set to 500 KiB. Lighthouse is not included because its Chrome sandbox is incompatible with the current hosted runner setup.
 - Release Drafter maintains a draft; it does not publish a release or choose a production release date/version automatically.
 - Scheduled workflows run on GitHub's schedule and may start later than the exact cron time.
