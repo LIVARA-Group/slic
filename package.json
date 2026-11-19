@@ -10,6 +10,8 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
+    "desktop": "pnpm --filter @repo/desktop dev",
+    "desktop:build": "pnpm --filter @repo/desktop build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
