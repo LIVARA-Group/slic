@@ -26,6 +26,7 @@ COPY packages/database packages/database
 COPY apps/api apps/api
 RUN pnpm --filter @repo/shared build \
     && pnpm --filter @repo/database build \
+    && pnpm --filter @repo/brain build \
     && pnpm --filter @repo/api build
 RUN pnpm --filter @repo/api deploy --prod /out
 

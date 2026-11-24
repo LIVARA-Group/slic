@@ -21,6 +21,7 @@
     "@nestjs/platform-express": "^12.5.1",
     "@nestjs/terminus": "^12.2.0",
     "@repo/database": "workspace:*",
+    "@repo/brain": "workspace:*",
     "@repo/shared": "workspace:*",
     "drizzle-orm": "^0.45.4",
     "helmet": "^8.3.0",

@@ -1,0 +1,38 @@
+{
+  "name": "@repo/brain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "description": "A typed, data-driven anatomical and functional brain model for SLIC.",
+  "license": "UNLICENSED",
+  "files": ["dist", "README.md", "docs"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./anatomy": {
+      "types": "./dist/anatomy/index.d.ts",
+      "import": "./dist/anatomy/index.js"
+    },
+    "./connectome": {
+      "types": "./dist/connectome/index.d.ts",
+      "import": "./dist/connectome/index.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
