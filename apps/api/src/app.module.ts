@@ -1,6 +1,6 @@
+import { fileURLToPath } from 'node:url';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { fileURLToPath } from 'node:url';
 import { validateEnv } from './config/env.js';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';

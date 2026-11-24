@@ -13,21 +13,21 @@ updates:
     groups:
       nestjs:
         patterns:
-          - '@nestjs/*'
+          - "@nestjs/*"
       tanstack:
         patterns:
-          - '@tanstack/*'
+          - "@tanstack/*"
       react:
         patterns:
           - react
           - react-dom
-          - '@types/react'
-          - '@types/react-dom'
+          - "@types/react"
+          - "@types/react-dom"
       tooling:
         patterns:
           - vite
           - vitest
-          - '@vitest/*'
+          - "@vitest/*"
           - oxlint*
           - prettier
           - turbo

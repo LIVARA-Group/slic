@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import type { ConfigService } from '@nestjs/config';
 import type { StatusResponse } from '@repo/shared';
 import type { Env } from '../config/env.js';
 

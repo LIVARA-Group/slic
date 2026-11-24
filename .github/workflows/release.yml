@@ -3,7 +3,7 @@ name: Release
 # Every push to `production` is verified, built into images and deployed.
 on:
   push:
-    branches: [production]
+    branches: [ production ]
   workflow_dispatch:
 
 permissions:
@@ -27,7 +27,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        app: [api, web]
+        app: [ api, web ]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 

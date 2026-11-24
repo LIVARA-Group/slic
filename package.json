@@ -15,14 +15,14 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
     "clean": "turbo run clean && rm -rf node_modules .turbo",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down"
   },
   "devDependencies": {
-    "prettier": "catalog:",
+    "@biomejs/biome": "^2.6.8",
     "turbo": "catalog:",
     "typescript": "catalog:"
   }

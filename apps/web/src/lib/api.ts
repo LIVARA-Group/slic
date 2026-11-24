@@ -1,5 +1,5 @@
-import { queryOptions } from '@tanstack/react-query';
 import { statusResponseSchema } from '@repo/shared';
+import { queryOptions } from '@tanstack/react-query';
 import type { z } from 'zod';
 
 export class ApiError extends Error {

@@ -1,7 +1,7 @@
 import { Injectable, type OnApplicationShutdown, type OnModuleInit } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { sql } from 'drizzle-orm';
+import type { ConfigService } from '@nestjs/config';
 import { createDatabase, type Database } from '@repo/database';
+import { sql } from 'drizzle-orm';
 import type { Env } from '../config/env.js';
 
 @Injectable()
