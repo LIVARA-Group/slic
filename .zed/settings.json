@@ -1,47 +1,60 @@
 {
+  "code_actions_on_format": {
+    "source.fixAll.biome": true,
+    "source.organizeImports.biome": true
+  },
   "languages": {
     "CSS": {
       "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."],
+      "formatter": "language_server",
       "tab_size": 2,
       "hard_tabs": false,
       "format_on_save": "on"
     },
     "HTML": {
+      "formatter": "language_server",
       "tab_size": 2,
       "hard_tabs": false,
       "format_on_save": "on"
     },
     "JavaScript": {
+      "formatter": "language_server",
       "tab_size": 2,
       "hard_tabs": false,
       "format_on_save": "on"
     },
     "JSON": {
+      "formatter": "language_server",
       "tab_size": 2,
       "hard_tabs": false,
       "format_on_save": "on"
     },
     "JSONC": {
+      "formatter": "language_server",
       "tab_size": 2,
       "hard_tabs": false,
       "format_on_save": "on"
     },
     "Markdown": {
+      "formatter": "language_server",
       "tab_size": 2,
       "hard_tabs": false,
       "format_on_save": "on"
     },
     "TSX": {
+      "formatter": "language_server",
       "tab_size": 2,
       "hard_tabs": false,
       "format_on_save": "on"
     },
     "TypeScript": {
+      "formatter": "language_server",
       "tab_size": 2,
       "hard_tabs": false,
       "format_on_save": "on"
     },
     "YAML": {
+      "formatter": "language_server",
       "tab_size": 2,
       "hard_tabs": false,
       "format_on_save": "on"
