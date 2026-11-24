@@ -26,6 +26,7 @@ flowchart TD
 Registries are immutable runtime data (`as const`). Public identifier types are derived from registry keys. This avoids trying to inspect erased TypeScript interfaces at runtime and ensures that graph references can be statically checked.
 
 The package deliberately separates:
+
 - **Anatomical hierarchy:** parent-child containment (for example, brain → telencephalon → cerebral cortex).
 - **Connectivity:** edges between structures, which are not containment relationships.
 - **Functional membership:** a structure may participate in multiple functional systems.
@@ -39,6 +40,7 @@ The package has no runtime dependencies. It must not import application, databas
 ## Suggested future package boundaries
 
 Do not split prematurely. If the model grows, consider:
+
 - `@repo/brain-data-*` for separately versioned source datasets;
 - `@repo/brain-sim` for validated numerical simulation;
 - `@repo/brain-viz` for interactive rendering.

@@ -28,6 +28,7 @@ The following are authoritative starting points for dataset-backed expansion. Th
 ## Required provenance fields before scientific release
 
 For each imported or curated datum, record:
+
 - source title and publisher;
 - source URL or persistent identifier;
 - dataset/atlas version and release date;

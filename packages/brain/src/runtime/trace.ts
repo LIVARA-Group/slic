@@ -1,5 +1,5 @@
-import type { RegionId } from "../anatomy/regions.js";
-import type { ConnectionDefinition } from "../connectome/connections.js";
+import type { RegionId } from '../anatomy/regions.js';
+import type { ConnectionDefinition } from '../connectome/connections.js';
 
 export interface TraceSignalOptions {
   readonly origin: RegionId;
@@ -29,7 +29,8 @@ export function traceSignal(options: TraceSignalOptions): SignalTrace {
   const maxHops = options.maxHops ?? 3;
   const includeFunctional = options.includeFunctional ?? true;
   const includeModulatory = options.includeModulatory ?? true;
-  if (!Number.isInteger(maxHops) || maxHops < 0) throw new RangeError("maxHops must be a non-negative integer.");
+  if (!Number.isInteger(maxHops) || maxHops < 0)
+    throw new RangeError('maxHops must be a non-negative integer.');
 
   const visited: SignalTraceStep[] = [{ regionId: options.origin, hop: 0, viaConnectionId: null }];
   const seen = new Set<RegionId>([options.origin]);
@@ -40,9 +41,10 @@ export function traceSignal(options: TraceSignalOptions): SignalTrace {
     const next: RegionId[] = [];
     for (const current of frontier) {
       for (const edge of options.connections) {
-        if (edge.kind === "functional" && !includeFunctional) continue;
-        if (edge.kind === "modulatory" && !includeModulatory) continue;
-        const canFollow = edge.from === current || (edge.direction === "bidirectional" && edge.to === current);
+        if (edge.kind === 'functional' && !includeFunctional) continue;
+        if (edge.kind === 'modulatory' && !includeModulatory) continue;
+        const canFollow =
+          edge.from === current || (edge.direction === 'bidirectional' && edge.to === current);
         if (!canFollow) continue;
         const target = edge.from === current ? edge.to : edge.from;
         if (seen.has(target)) continue;
@@ -54,7 +56,11 @@ export function traceSignal(options: TraceSignalOptions): SignalTrace {
     frontier = next;
     if (frontier.length === 0) break;
     if (hop === maxHops) {
-      truncated = options.connections.some((edge) => frontier.includes(edge.from) || (edge.direction === "bidirectional" && frontier.includes(edge.to)));
+      truncated = options.connections.some(
+        (edge) =>
+          frontier.includes(edge.from) ||
+          (edge.direction === 'bidirectional' && frontier.includes(edge.to)),
+      );
     }
   }
   return { origin: options.origin, visited, truncated };

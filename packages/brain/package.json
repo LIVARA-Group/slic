@@ -29,9 +29,12 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
+    "test:ui": "vitest --ui",
     "clean": "rm -rf dist"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "catalog:",
+    "@vitest/ui": "5.1.0",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

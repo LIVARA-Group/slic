@@ -1,2 +1,2 @@
-export * from "./connections.js";
-export * from "./pathways.js";
+export * from './connections.js';
+export * from './pathways.js';

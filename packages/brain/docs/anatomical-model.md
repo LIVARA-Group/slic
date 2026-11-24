@@ -3,6 +3,7 @@
 ## Structure record
 
 Every region has:
+
 - a stable machine identifier;
 - display name;
 - structural kind;
@@ -15,6 +16,7 @@ Every region has:
 ## Coverage in this baseline
 
 The initial registry includes:
+
 - central nervous system and brain divisions;
 - cerebral hemispheres and selected cortical lobes/regions;
 - selected primary cortical areas and Brodmann associations;
@@ -31,6 +33,7 @@ Some structures are intentionally represented as grouped nodes. For example, the
 ## Later anatomical expansion
 
 Recommended hierarchy:
+
 1. Major divisions and lobes.
 2. Cortical gyri, sulci, and parcellation-specific cortical areas.
 3. Subcortical nuclei and their subdivisions.

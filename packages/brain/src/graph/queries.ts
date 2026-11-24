@@ -50,11 +50,11 @@ export function getIncomingConnections(
 
 export interface GraphValidationIssue {
   readonly code:
-  | 'missing-region'
-  | 'duplicate-connection-id'
-  | 'self-connection'
-  | 'orphan-region'
-  | 'hierarchy-cycle';
+    | 'missing-region'
+    | 'duplicate-connection-id'
+    | 'self-connection'
+    | 'orphan-region'
+    | 'hierarchy-cycle';
   readonly message: string;
   readonly subject: string;
 }

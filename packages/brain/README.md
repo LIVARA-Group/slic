@@ -3,6 +3,7 @@
 A data-driven, strongly typed brain model for SLIC.
 
 `@repo/brain` provides a shared vocabulary and graph model for representing:
+
 - gross neuroanatomy and nested brain structures;
 - cortical areas and functional systems;
 - directed and undirected anatomical/functional connections;
@@ -36,7 +37,7 @@ Add the package to a consumer's `package.json`:
 Then import:
 
 ```ts
-import { Brain, regions, connections, traceSignal } from "@repo/brain";
+import { Brain, regions, connections, traceSignal } from '@repo/brain';
 ```
 
 ## Package map
@@ -54,18 +55,12 @@ src/
 ## Quick example
 
 ```ts
-import {
-  connections,
-  getChildren,
-  getConnections,
-  regions,
-  traceSignal,
-} from "@repo/brain";
+import { connections, getChildren, getConnections, regions, traceSignal } from '@repo/brain';
 
-const children = getChildren("telencephalon");
-const thalamicEdges = getConnections("thalamus");
+const children = getChildren('telencephalon');
+const thalamicEdges = getConnections('thalamus');
 const trace = traceSignal({
-  origin: "retina",
+  origin: 'retina',
   connections,
   maxHops: 4,
 });
@@ -78,6 +73,7 @@ console.log(regions.retina.name, children, thalamicEdges, trace);
 The initial registry covers major divisions, selected cortical regions, subcortical structures, brainstem nuclei/regions, cerebellar structures, selected sensory/motor structures, pathways, and functional systems. It is intentionally a curated baseline, not an exhaustive atlas.
 
 See:
+
 - [Architecture](docs/architecture.md)
 - [Anatomical model](docs/anatomical-model.md)
 - [Connectome model](docs/connectome-model.md)

@@ -5,6 +5,7 @@
 `traceSignal` performs bounded graph traversal from an origin region. It follows directed edges from `from` to `to`, and follows the reverse direction only for edges marked `bidirectional`.
 
 Options:
+
 - `maxHops`: maximum graph distance;
 - `includeFunctional`: include functional association edges;
 - `includeModulatory`: include modulatory edges.
@@ -14,6 +15,7 @@ The result is an ordered list of visited regions with hop count and traversed ed
 ## What this does not model
 
 It does not simulate:
+
 - action potentials or membrane dynamics;
 - synaptic transmission or plasticity;
 - excitatory/inhibitory population dynamics;
@@ -28,6 +30,7 @@ It does not simulate:
 ## Rust/WASM gate
 
 Do not introduce Rust/WASM for the current graph traversal. It is simple and likely dominated by data/model design, not compute. Consider a Rust engine only after:
+
 1. a defined numerical model exists;
 2. representative workloads and correctness fixtures exist;
 3. profiling identifies a CPU-bound hot path in TypeScript;
