@@ -1,92 +1,161 @@
 # @repo/brain
 
-A data-driven, strongly typed brain model for SLIC.
+A curated conceptual model of selected human neuroanatomical structures, connectivity and distributed functional relationships.
 
-`@repo/brain` provides a shared vocabulary and graph model for representing:
+## Scope
 
-- gross neuroanatomy and nested brain structures;
-- cortical areas and functional systems;
-- directed and undirected anatomical/functional connections;
-- neural pathways as ordered sequences of structures;
-- cognitive-process and signal-event contracts;
-- graph queries and a deliberately simplified event-propagation runtime.
+`@repo/brain` provides:
 
-It is a **model and software abstraction**, not a biologically complete digital twin, medical tool, or validated neural simulator.
+- A typed anatomical registry.
+- Anatomical hierarchy queries.
+- Functional system definitions.
+- Cortical area references.
+- Curated connectivity definitions.
+- Simplified pathway descriptions.
+- Cognitive process contracts.
+- Graph traversal utilities.
+- Bounded graph tracing.
+- Model validation.
 
-## Design principles
+The package is a conceptual and curated model. It is not:
 
-1. **Data is the source of truth.** Runtime registries are `as const` data. TypeScript types are derived from those registries.
-2. **Anatomy is not cognition.** Physical structures, functional systems, cognitive processes, and runtime events are separate concepts.
-3. **Connections carry epistemic metadata.** A connection records its kind, direction, evidence status, and a source note. The model does not imply that every edge is equally certain.
-4. **No false precision.** Latency, neurotransmitter, strength, and other biological values are omitted unless a dataset-specific source justifies them.
-5. **Runtime is an abstraction.** The included propagation utility traverses a graph; it does not simulate action potentials, synapses, consciousness, or human thought.
-6. **SLIC boundaries remain outside this package.** This package defines a reusable model only. It must not couple Personal and Investigative storage, identity, keys, authorization, or audit boundaries.
+- A complete human brain atlas.
+- A clinically validated anatomical reference.
+- A medical diagnostic tool.
+- A validated human connectome.
+- A biologically faithful neural simulator.
+- A model of consciousness.
 
-## Installation inside the SLIC workspace
+## Architecture
 
-Add the package to a consumer's `package.json`:
+| Module       | Responsibility                              |
+| ------------ | ------------------------------------------- |
+| `anatomy`    | Anatomical vocabulary and hierarchy         |
+| `connectome` | Connectivity definitions and pathways       |
+| `cognition`  | Distributed functional process descriptions |
+| `graph`      | Graph queries and traversal                 |
+| `runtime`    | Bounded graph tracing                       |
+| `validation` | Referential and structural validation       |
 
-```json
-{
-  "dependencies": {
-    "@repo/brain": "workspace:*"
-  }
-}
-```
+## Installation
 
-Then import:
-
-```ts
-import { Brain, regions, connections, traceSignal } from '@repo/brain';
-```
-
-## Package map
-
-```text
-src/
-├── anatomy/       # structures, hierarchy, cortical areas
-├── connectome/    # connection registry and pathway definitions
-├── cognition/     # cognitive process and event contracts
-├── graph/         # graph traversal and structural queries
-├── runtime/       # simplified event propagation
-└── index.ts       # public API and aggregate Brain model
-```
-
-## Quick example
-
-```ts
-import { connections, getChildren, getConnections, regions, traceSignal } from '@repo/brain';
-
-const children = getChildren('telencephalon');
-const thalamicEdges = getConnections('thalamus');
-const trace = traceSignal({
-  origin: 'retina',
-  connections,
-  maxHops: 4,
-});
-
-console.log(regions.retina.name, children, thalamicEdges, trace);
-```
-
-## Current scope
-
-The initial registry covers major divisions, selected cortical regions, subcortical structures, brainstem nuclei/regions, cerebellar structures, selected sensory/motor structures, pathways, and functional systems. It is intentionally a curated baseline, not an exhaustive atlas.
-
-See:
-
-- [Architecture](docs/architecture.md)
-- [Anatomical model](docs/anatomical-model.md)
-- [Connectome model](docs/connectome-model.md)
-- [Runtime semantics](docs/runtime-semantics.md)
-- [Scientific limitations and source register](docs/scientific-scope.md)
-- [Roadmap](docs/roadmap.md)
-
-## Development
+This package is part of the SLIC monorepo.
 
 ```bash
-pnpm --filter @repo/brain typecheck
-pnpm --filter @repo/brain test
+pnpm install
+```
+
+## Build
+
+```bash
 pnpm --filter @repo/brain build
 ```
 
-The package expects the workspace TypeScript and Vitest versions to be supplied through the pnpm catalog.
+## Typecheck
+
+```bash
+pnpm --filter @repo/brain typecheck
+```
+
+## Tests
+
+```bash
+pnpm --filter @repo/brain test
+```
+
+## Test UI
+
+```bash
+pnpm --filter @repo/brain test:ui
+```
+
+## Coverage
+
+```bash
+pnpm --filter @repo/brain test:coverage
+```
+
+## Usage
+
+### Anatomical lookup
+
+```ts
+import { getStructure, getChildren, getAncestors } from '@repo/brain/anatomy';
+
+const hippocampus = getStructure('left-hippocampus');
+
+const children = getChildren('brain');
+
+const ancestors = getAncestors('left-hippocampus');
+```
+
+### Functional systems
+
+```ts
+import { getSystemsForRegion } from '@repo/brain/anatomy';
+
+const systems = getSystemsForRegion('left-hippocampus');
+```
+
+### Connectivity
+
+```ts
+import { getOutgoingConnections } from '@repo/brain/graph';
+
+const connections = getOutgoingConnections('retina');
+```
+
+### Cognitive processes
+
+```ts
+import { findCognitiveProcessesByRegion } from '@repo/brain/cognition';
+
+const processes = findCognitiveProcessesByRegion('left-hippocampus');
+```
+
+### Graph tracing
+
+```ts
+import { traceSignal } from '@repo/brain/runtime';
+
+const trace = traceSignal('retina', {
+  maxDepth: 3,
+  maxNodes: 50,
+});
+```
+
+### Validation
+
+```ts
+import { validateAnatomy, validateConnectome } from '@repo/brain/validation';
+
+const anatomyResult = validateAnatomy();
+const connectomeResult = validateConnectome();
+
+if (!anatomyResult.valid || !connectomeResult.valid) {
+  throw new Error('Brain model validation failed.');
+}
+```
+
+## Scientific constraints
+
+Connection definitions represent curated relationships. They do not imply:
+
+- Synaptic strength.
+- Excitatory or inhibitory effects.
+- Neurotransmitter identity.
+- Conduction latency.
+- Neuron counts.
+- Physiological signal propagation.
+
+Pathways are explanatory sequences. They may omit intermediate structures.
+
+`traceSignal` performs bounded graph traversal. It does not simulate action potentials, synaptic transmission, plasticity or neural population dynamics.
+
+## Data provenance
+
+The current baseline uses curated conceptual definitions. Empty source lists mean that source-level provenance has not yet been attached to the individual definition.
+
+Do not interpret `curated_baseline` as a numerical confidence score.
+
+Future dataset-derived definitions must include dataset identity, version and mapping provenance.

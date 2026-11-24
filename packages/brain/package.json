@@ -1,11 +1,9 @@
 {
   "name": "@repo/brain",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "sideEffects": false,
-  "description": "A typed, data-driven anatomical and functional brain model for SLIC.",
-  "license": "UNLICENSED",
   "files": ["dist", "README.md", "docs"],
   "exports": {
     ".": {
@@ -20,9 +18,21 @@
       "types": "./dist/connectome/index.d.ts",
       "import": "./dist/connectome/index.js"
     },
+    "./cognition": {
+      "types": "./dist/cognition/index.d.ts",
+      "import": "./dist/cognition/index.js"
+    },
+    "./graph": {
+      "types": "./dist/graph/index.d.ts",
+      "import": "./dist/graph/index.js"
+    },
     "./runtime": {
       "types": "./dist/runtime/index.d.ts",
       "import": "./dist/runtime/index.js"
+    },
+    "./validation": {
+      "types": "./dist/validation/index.d.ts",
+      "import": "./dist/validation/index.js"
     }
   },
   "scripts": {
@@ -30,11 +40,12 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "clean": "rm -rf dist"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "catalog:",
-    "@vitest/ui": "5.1.0",
+    "@vitest/ui": "^5.1.0",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }

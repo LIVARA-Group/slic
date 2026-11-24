@@ -1,67 +1,127 @@
 import type { RegionId } from '../anatomy/regions.js';
-import type { ConnectionDefinition } from '../connectome/connections.js';
+import type { ConnectionDefinition } from '../connectome/types.js';
+import { getOutgoingConnections } from '../graph/queries.js';
 
-export interface TraceSignalOptions {
-  readonly origin: RegionId;
-  readonly connections: readonly ConnectionDefinition[];
-  readonly maxHops?: number;
-  readonly includeFunctional?: boolean;
-  readonly includeModulatory?: boolean;
+export interface TraceOptions {
+  readonly maxDepth?: number;
+  readonly maxNodes?: number;
+  readonly includeStart?: boolean;
 }
 
-export interface SignalTraceStep {
+export interface TraceNode {
   readonly regionId: RegionId;
-  readonly hop: number;
+  readonly depth: number;
   readonly viaConnectionId: string | null;
 }
 
-export interface SignalTrace {
+export interface TraceResult {
   readonly origin: RegionId;
-  readonly visited: readonly SignalTraceStep[];
+  readonly nodes: readonly TraceNode[];
+  readonly connections: readonly ConnectionDefinition[];
+  readonly maxDepth: number;
   readonly truncated: boolean;
 }
 
-/**
- * Traverses a curated connectivity graph. This is a graph-query utility,
- * not a physiological model of action-potential propagation.
- */
-export function traceSignal(options: TraceSignalOptions): SignalTrace {
-  const maxHops = options.maxHops ?? 3;
-  const includeFunctional = options.includeFunctional ?? true;
-  const includeModulatory = options.includeModulatory ?? true;
-  if (!Number.isInteger(maxHops) || maxHops < 0)
-    throw new RangeError('maxHops must be a non-negative integer.');
+interface QueueEntry {
+  readonly regionId: RegionId;
+  readonly depth: number;
+  readonly viaConnectionId: string | null;
+}
 
-  const visited: SignalTraceStep[] = [{ regionId: options.origin, hop: 0, viaConnectionId: null }];
-  const seen = new Set<RegionId>([options.origin]);
-  let frontier: RegionId[] = [options.origin];
+const DEFAULT_MAX_DEPTH = 3;
+const DEFAULT_MAX_NODES = 100;
+
+export function traceSignal(origin: RegionId, options: TraceOptions = {}): TraceResult {
+  const maxDepth = options.maxDepth ?? DEFAULT_MAX_DEPTH;
+  const maxNodes = options.maxNodes ?? DEFAULT_MAX_NODES;
+  const includeStart = options.includeStart ?? true;
+
+  if (!Number.isInteger(maxDepth) || maxDepth < 0) {
+    throw new RangeError('maxDepth must be a non-negative integer.');
+  }
+
+  if (!Number.isInteger(maxNodes) || maxNodes < 1) {
+    throw new RangeError('maxNodes must be a positive integer.');
+  }
+
+  const visited = new Set<RegionId>([origin]);
+  const visitedConnections = new Set<string>();
+
+  const nodes: TraceNode[] = [];
+  const traversedConnections: ConnectionDefinition[] = [];
+
+  const queue: QueueEntry[] = [
+    {
+      regionId: origin,
+      depth: 0,
+      viaConnectionId: null,
+    },
+  ];
+
+  if (includeStart) {
+    nodes.push({
+      regionId: origin,
+      depth: 0,
+      viaConnectionId: null,
+    });
+  }
+
   let truncated = false;
 
-  for (let hop = 1; hop <= maxHops; hop += 1) {
-    const next: RegionId[] = [];
-    for (const current of frontier) {
-      for (const edge of options.connections) {
-        if (edge.kind === 'functional' && !includeFunctional) continue;
-        if (edge.kind === 'modulatory' && !includeModulatory) continue;
-        const canFollow =
-          edge.from === current || (edge.direction === 'bidirectional' && edge.to === current);
-        if (!canFollow) continue;
-        const target = edge.from === current ? edge.to : edge.from;
-        if (seen.has(target)) continue;
-        seen.add(target);
-        next.push(target);
-        visited.push({ regionId: target, hop, viaConnectionId: edge.id });
-      }
+  while (queue.length > 0) {
+    const current = queue.shift();
+
+    if (!current) {
+      continue;
     }
-    frontier = next;
-    if (frontier.length === 0) break;
-    if (hop === maxHops) {
-      truncated = options.connections.some(
-        (edge) =>
-          frontier.includes(edge.from) ||
-          (edge.direction === 'bidirectional' && frontier.includes(edge.to)),
-      );
+
+    if (current.depth >= maxDepth) {
+      continue;
+    }
+
+    const outgoing = getOutgoingConnections(current.regionId);
+
+    for (const connection of outgoing) {
+      const nextRegion = connection.from === current.regionId ? connection.to : connection.from;
+
+      if (!visitedConnections.has(connection.id)) {
+        visitedConnections.add(connection.id);
+        traversedConnections.push(connection);
+      }
+
+      if (visited.has(nextRegion)) {
+        continue;
+      }
+
+      if (nodes.length >= maxNodes) {
+        truncated = true;
+        queue.length = 0;
+        break;
+      }
+
+      visited.add(nextRegion);
+
+      const nextDepth = current.depth + 1;
+
+      nodes.push({
+        regionId: nextRegion,
+        depth: nextDepth,
+        viaConnectionId: connection.id,
+      });
+
+      queue.push({
+        regionId: nextRegion,
+        depth: nextDepth,
+        viaConnectionId: connection.id,
+      });
     }
   }
-  return { origin: options.origin, visited, truncated };
+
+  return {
+    origin,
+    nodes,
+    connections: traversedConnections,
+    maxDepth,
+    truncated,
+  };
 }

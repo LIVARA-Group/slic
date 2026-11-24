@@ -1,48 +1,90 @@
 # Architecture
 
-## Package responsibility
+## Purpose
 
-`@repo/brain` is a domain-model package. It owns a stable vocabulary for anatomical structures, connections, functional groupings, pathways, cognitive-process descriptions, and event contracts.
+The `@repo/brain` package provides a typed, curated conceptual model of selected neuroanatomical structures and their functional relationships.
 
-It does not own application state, user content, persistence, authorization, AI orchestration, or UI components.
+## Responsibilities
 
-## Conceptual layers
+The package owns:
 
-```mermaid
-flowchart TD
-  A[Anatomical registry] --> G[Brain graph]
-  C[Connection registry] --> G
-  P[Pathway registry] --> G
-  S[Functional systems] --> M[Cognitive process model]
-  G --> Q[Graph queries]
-  G --> R[Signal trace runtime]
-  M --> E[Typed events]
-  Q --> V[Visualization adapter]
-  R --> V
-```
+- Anatomical identifiers and definitions.
+- Parent-child anatomical hierarchy.
+- Functional system membership.
+- Curated connectivity definitions.
+- Simplified pathway descriptions.
+- Cognitive process contracts.
+- Graph queries.
+- Bounded graph traversal.
+- Model integrity validation.
 
-## Source-of-truth strategy
+## Non-responsibilities
 
-Registries are immutable runtime data (`as const`). Public identifier types are derived from registry keys. This avoids trying to inspect erased TypeScript interfaces at runtime and ensures that graph references can be statically checked.
+The package does not own:
 
-The package deliberately separates:
+- User data.
+- Application state.
+- Persistence.
+- Authentication or authorization.
+- AI orchestration.
+- User interface.
+- Medical diagnosis.
+- Physiological neural simulation.
 
-- **Anatomical hierarchy:** parent-child containment (for example, brain → telencephalon → cerebral cortex).
-- **Connectivity:** edges between structures, which are not containment relationships.
-- **Functional membership:** a structure may participate in multiple functional systems.
-- **Cognitive process descriptions:** distributed processes associated with candidate regions.
-- **Runtime traces:** graph traversal over selected edges, not neural physiology.
+## Module boundaries
 
-## Dependency policy
+### Anatomy
 
-The package has no runtime dependencies. It must not import application, database, API, UI, AI, or storage packages. Consumers depend on `@repo/brain`, never the reverse.
+The anatomy module owns the canonical structural vocabulary.
 
-## Suggested future package boundaries
+`brainStructures` is the source of truth.
 
-Do not split prematurely. If the model grows, consider:
+`RegionId` is derived from its literal identifiers.
 
-- `@repo/brain-data-*` for separately versioned source datasets;
-- `@repo/brain-sim` for validated numerical simulation;
-- `@repo/brain-viz` for interactive rendering.
+The `regions` object is a lookup index derived from the registry.
 
-Keep `@repo/brain` as the canonical domain contract unless independent release cycles become necessary.
+### Connectome
+
+The connectome module owns typed connectivity definitions and explanatory pathways.
+
+Connectivity is independent of the anatomical parent-child hierarchy.
+
+### Cognition
+
+The cognition module describes distributed functional processes.
+
+A cognitive process may involve multiple regions and functional systems.
+
+### Graph
+
+The graph module exposes read-only graph queries.
+
+### Runtime
+
+The runtime module provides bounded traversal over curated connections.
+
+### Validation
+
+The validation module checks registry integrity and cross-module references.
+
+## Dependency direction
+
+- Anatomy depends only on shared types.
+- Connectome depends on anatomy and shared types.
+- Cognition depends on anatomy and shared types.
+- Graph depends on connectome and anatomy.
+- Runtime depends on graph.
+- Validation depends on anatomy, connectome and cognition.
+- The root entry point composes public exports.
+
+No module may import from the root entry point.
+
+## Registry immutability
+
+Registries are authored as immutable definitions.
+
+Identifier types must be derived from registry literals rather than maintained as separate duplicated unions.
+
+## Runtime dependencies
+
+The package has no runtime dependencies.

@@ -401,7 +401,7 @@ importers:
         specifier: 'catalog:'
         version: 5.1.0(vitest@5.1.0)
       '@vitest/ui':
-        specifier: 5.1.0
+        specifier: ^5.1.0
         version: 5.1.0(vitest@5.1.0)
       typescript:
         specifier: 'catalog:'

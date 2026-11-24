@@ -1,45 +1,75 @@
-# Anatomical model
+# Anatomical Model
 
-## Structure record
+## Scope
 
-Every region has:
+The anatomy registry represents selected human neuroanatomical structures and selected sensory interfaces.
 
-- a stable machine identifier;
-- display name;
-- structural kind;
-- optional parent identifier;
-- high-level functional annotations;
-- a short scope note.
+It is a curated conceptual baseline, not an exhaustive atlas.
 
-`RegionId` is derived from the `regions` registry. Parent-child nesting describes anatomical containment or a curated organizational grouping; it is not a connectivity edge.
+## Identifiers
 
-## Coverage in this baseline
+Identifiers use stable kebab-case names.
 
-The initial registry includes:
+Examples:
 
-- central nervous system and brain divisions;
-- cerebral hemispheres and selected cortical lobes/regions;
-- selected primary cortical areas and Brodmann associations;
-- medial temporal structures and hippocampal formation;
-- amygdala and basal ganglia structures;
-- thalamic nuclei and hypothalamus;
-- midbrain, pons, medulla and selected brainstem nuclei;
-- cerebellar cortex and deep nuclei;
-- selected white-matter tracts;
-- sensory boundary structures (retina, cochlea, dorsal root ganglion) and spinal cord.
+- `central-nervous-system`
+- `left-hippocampus`
+- `lateral-geniculate-nucleus`
+- `primary-visual-cortex`
 
-Some structures are intentionally represented as grouped nodes. For example, the thalamus is a parent node with selected relay nuclei, not an exhaustive thalamic nuclear atlas.
+Identifiers are part of the package API and should not be renamed without considering compatibility.
 
-## Later anatomical expansion
+## Structure definitions
 
-Recommended hierarchy:
+Every structure has:
 
-1. Major divisions and lobes.
-2. Cortical gyri, sulci, and parcellation-specific cortical areas.
-3. Subcortical nuclei and their subdivisions.
-4. White-matter tracts and tract segments.
-5. Brainstem nuclei and cranial nerve nuclei.
-6. Cerebellar lobules, zones and nuclei.
-7. Cell types and microcircuits only when a specific dataset and use case justify them.
+- Stable ID.
+- Display name.
+- Structural kind.
+- Functional classification.
+- Laterality.
+- Optional parent ID.
+- Description.
+- Evidence metadata.
+- Optional aliases.
 
-Do not mix parcellation systems without recording the atlas and version. A region identifier should remain stable even if labels or atlas mappings evolve; atlas-specific identifiers belong in a mapping layer.
+## Hierarchy
+
+Parent-child relationships represent anatomical containment or a deliberate conceptual grouping.
+
+They do not represent neural connectivity.
+
+A structure may participate in multiple functional systems while having only one parent in the hierarchy.
+
+## Laterality
+
+Supported values:
+
+- `left`
+- `right`
+- `midline`
+- `bilateral`
+- `unspecified`
+
+## Sensory boundaries
+
+The retina and cochlea are included as sensory interfaces.
+
+Their inclusion does not classify them as brain structures.
+
+The registry explicitly distinguishes sensory boundaries from the brain proper.
+
+## Cortical areas
+
+Cortical area definitions may reference Brodmann areas.
+
+Brodmann mappings are approximate references and must not be treated as exact one-to-one equivalences with modern parcellations.
+
+## Limitations
+
+The registry is not:
+
+- A complete anatomical atlas.
+- A complete list of nuclei.
+- A validated spatial coordinate system.
+- A clinical reference.

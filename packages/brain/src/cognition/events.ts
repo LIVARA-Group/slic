@@ -1,48 +1,46 @@
 import type { RegionId } from '../anatomy/regions.js';
-import type { CognitiveProcessKind } from './processes.js';
+import type { CognitiveProcessId } from './processes.js';
 
-export type SensoryModality =
-  | 'visual'
-  | 'auditory'
-  | 'somatosensory'
-  | 'olfactory'
-  | 'gustatory'
-  | 'vestibular'
-  | 'visceral';
+export interface NeuralEventBase {
+  readonly id: string;
+  readonly occurredAt: number;
+  readonly source: string;
+}
+
+export interface SensoryInputEvent extends NeuralEventBase {
+  readonly type: 'sensory-input';
+  readonly modality: 'visual' | 'auditory' | 'somatosensory' | 'other';
+  readonly targetRegion: RegionId;
+}
+
+export interface RegionalSignalEvent extends NeuralEventBase {
+  readonly type: 'regional-signal';
+  readonly from: RegionId;
+  readonly to: RegionId;
+  readonly description?: string;
+}
+
+export interface CognitiveProcessEvent extends NeuralEventBase {
+  readonly type: 'cognitive-process';
+  readonly processId: CognitiveProcessId;
+  readonly phase: 'started' | 'updated' | 'completed' | 'interrupted';
+}
+
+export interface MotorCommandEvent extends NeuralEventBase {
+  readonly type: 'motor-command';
+  readonly sourceRegion: RegionId;
+  readonly targetRegion: RegionId;
+}
+
+export interface BehavioralOutputEvent extends NeuralEventBase {
+  readonly type: 'behavioral-output';
+  readonly category: 'movement' | 'speech' | 'autonomic' | 'other';
+  readonly description?: string;
+}
+
 export type NeuralEvent =
-  | {
-      readonly type: 'sensory-input';
-      readonly modality: SensoryModality;
-      readonly source: RegionId;
-      readonly payload: unknown;
-      readonly occurredAt: number;
-    }
-  | {
-      readonly type: 'regional-signal';
-      readonly source: RegionId;
-      readonly target: RegionId;
-      readonly signalClass: 'excitatory' | 'inhibitory' | 'modulatory' | 'unspecified';
-      readonly payload?: unknown;
-      readonly occurredAt: number;
-    }
-  | {
-      readonly type: 'cognitive-process';
-      readonly process: CognitiveProcessKind;
-      readonly participants: readonly RegionId[];
-      readonly payload?: unknown;
-      readonly occurredAt: number;
-    }
-  | {
-      readonly type: 'motor-command';
-      readonly source: RegionId;
-      readonly target: RegionId;
-      readonly effector: 'skeletal-muscle' | 'eye' | 'autonomic' | 'other';
-      readonly payload?: unknown;
-      readonly occurredAt: number;
-    }
-  | {
-      readonly type: 'behavioral-output';
-      readonly source: RegionId;
-      readonly behavior: string;
-      readonly occurredAt: number;
-    };
+  | SensoryInputEvent
+  | RegionalSignalEvent
+  | CognitiveProcessEvent
+  | MotorCommandEvent
+  | BehavioralOutputEvent;

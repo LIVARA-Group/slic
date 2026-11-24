@@ -1,27 +1,69 @@
-# Connectome model
+# Connectome Model
 
-A connection is a typed edge with `from`, `to`, `kind`, `direction`, `evidence`, and a human-readable description.
+## Purpose
 
-## Edge semantics
+The connectome module represents selected curated relationships between anatomical structures.
 
-- `anatomical`: a reported anatomical projection or tract relationship.
-- `functional`: a functional/network relationship that should not be interpreted as a direct axonal tract.
-- `commissural`: interhemispheric connection class reserved for explicit commissural edges.
-- `modulatory`: broad modulatory relationship.
+## Connection definition
 
-Direction is recorded as `afferent`, `efferent`, or `bidirectional` relative to the listed source/target pair. This is a simplified metadata convention, not a complete description of axonal populations or direction-specific physiology.
+Each connection includes:
+
+- Stable identifier.
+- Source region.
+- Target region.
+- Connection kind.
+- Directionality.
+- Evidence status.
+- Evidence metadata.
+- Description.
+
+## Directionality
+
+`directed` means the graph edge is traversable from source to target.
+
+`bidirectional` means the edge may be traversed in both directions.
+
+Directionality is a graph traversal property and does not represent physiological signal polarity.
+
+## Connection kinds
+
+Connection kinds categorize the conceptual relationship.
+
+They do not encode:
+
+- Excitatory or inhibitory effects.
+- Neurotransmitter identity.
+- Synaptic strength.
+- Conduction speed.
+- Connection weight.
+- Neuron count.
 
 ## Evidence status
 
-- `curated-baseline`: manually curated initial entry with a short source-context note; not a formal evidence grade.
-- `dataset-derived`: to be used only when a specific named dataset, version and mapping are recorded.
-- `hypothesis`: proposed edge, not established fact.
-- `unknown`: evidence has not been assessed.
+`curated_baseline` identifies a manually curated conceptual definition.
 
-The current registry uses `curated-baseline`. Do not infer neurotransmitter, excitation/inhibition, latency, axon count, connection weight or confidence from the edge kind.
+It is not a confidence score.
+
+`dataset_derived` must only be used when dataset identity, version and mapping provenance are available.
+
+`research_candidate` identifies a relationship requiring further review.
 
 ## Pathways
 
-Pathway definitions are ordered explanatory sequences. Entries marked partial omit known intermediate structures and must not be interpreted as a complete anatomical route.
+Pathways are explanatory ordered sequences of regions and connection references.
 
-Future work should add source references per edge, laterality, species, atlas mapping, tract evidence type, and provenance. Weighted connectomes should be a separate dataset-specific layer rather than arbitrary numbers in the base model.
+They may omit intermediate anatomical structures.
+
+A pathway is not necessarily a complete anatomical route.
+
+## Future extensions
+
+Dataset-backed connectivity should add:
+
+- Dataset identifier.
+- Dataset version.
+- Source record identifier.
+- Atlas mapping.
+- Parcellation identity.
+- Mapping procedure.
+- Provenance and review status.

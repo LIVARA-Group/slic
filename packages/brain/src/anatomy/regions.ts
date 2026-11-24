@@ -1,608 +1,836 @@
-export type RegionKind =
-  | 'System'
-  | 'Organ'
-  | 'Division'
-  | 'Lobe'
-  | 'Structure'
-  | 'Region'
-  | 'CorticalRegion'
-  | 'CorticalArea'
-  | 'RegionGroup'
-  | 'Substructure'
-  | 'Nucleus'
-  | 'NucleiGroup'
-  | 'Network'
-  | 'FunctionalRegion'
-  | 'WhiteMatterTract'
-  | 'CranialNerve'
-  | 'SensoryStructure'
-  | 'SensoryGanglion';
+import type { BrainStructure } from './types.js';
 
-export interface RegionDefinition {
-  readonly name: string;
-  readonly kind: RegionKind;
-  readonly parentId: string | null;
-  readonly functions: readonly string[];
-  readonly description: string;
-}
+const establishedReview = {
+  level: 'established',
+  kind: 'review',
+  sources: [],
+} as const;
 
-export const regions = {
-  central_nervous_system: {
-    name: 'Central nervous system',
-    kind: 'System',
+export const brainStructures: readonly BrainStructure[] = [
+  {
+    id: 'nervous-system',
+    name: 'Nervous system',
+    kind: 'system',
+    system: 'nervous',
+    laterality: 'bilateral',
     parentId: null,
-    functions: ['integration', 'control'],
     description:
-      'The brain and spinal cord; the registry models brain structures and selected spinal interfaces.',
+      'The biological system responsible for neural signaling, sensory processing, motor control and physiological regulation.',
+    evidence: establishedReview,
   },
-  brain: {
+  {
+    id: 'central-nervous-system',
+    name: 'Central nervous system',
+    kind: 'subsystem',
+    system: 'central_nervous',
+    laterality: 'bilateral',
+    parentId: 'nervous-system',
+    description: 'The central nervous system consists of the brain and spinal cord.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'peripheral-nervous-system',
+    name: 'Peripheral nervous system',
+    kind: 'subsystem',
+    system: 'peripheral_nervous',
+    laterality: 'bilateral',
+    parentId: 'nervous-system',
+    description:
+      'Neural structures outside the brain and spinal cord, including peripheral nerves and ganglia.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'sensory-boundaries',
+    name: 'Sensory boundaries',
+    kind: 'subsystem',
+    system: 'sensory',
+    laterality: 'bilateral',
+    parentId: null,
+    description:
+      'Conceptual grouping of peripheral sensory interfaces included to represent input boundaries. It is not a formal anatomical division of the nervous system.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'brain',
     name: 'Brain',
-    kind: 'Organ',
-    parentId: 'central_nervous_system',
-    functions: ['sensory processing', 'motor control', 'homeostasis', 'cognition'],
-    description: 'Top-level organ node.',
-  },
-  telencephalon: {
-    name: 'Telencephalon',
-    kind: 'Division',
-    parentId: 'brain',
-    functions: ['cognition', 'perception', 'voluntary action'],
-    description: 'Includes cerebral hemispheres and basal forebrain structures.',
-  },
-  diencephalon: {
-    name: 'Diencephalon',
-    kind: 'Division',
-    parentId: 'brain',
-    functions: ['sensory relay', 'homeostasis', 'endocrine regulation'],
-    description: 'Includes thalamus, hypothalamus, epithalamus and subthalamus.',
-  },
-  brainstem: {
-    name: 'Brainstem',
-    kind: 'Division',
-    parentId: 'brain',
-    functions: ['arousal', 'autonomic regulation', 'cranial nerve functions'],
-    description: 'Midbrain, pons and medulla oblongata.',
-  },
-  cerebellum: {
-    name: 'Cerebellum',
-    kind: 'Division',
-    parentId: 'brain',
-    functions: ['coordination', 'motor learning', 'timing', 'balance'],
-    description: 'Cerebellar cortex and deep nuclei.',
-  },
-  cerebral_hemispheres: {
-    name: 'Cerebral hemispheres',
-    kind: 'Structure',
-    parentId: 'telencephalon',
-    functions: ['higher-order processing'],
-    description: 'Left and right hemispheres are not expanded as separate copies in this baseline.',
-  },
-  cerebral_cortex: {
-    name: 'Cerebral cortex',
-    kind: 'Structure',
-    parentId: 'cerebral_hemispheres',
-    functions: ['perception', 'planning', 'language', 'voluntary movement'],
+    kind: 'organ',
+    system: 'central_nervous',
+    laterality: 'bilateral',
+    parentId: 'central-nervous-system',
     description:
-      'Layered sheet of neocortex and allocortex; this registry focuses on selected regions.',
-  },
-  frontal_lobe: {
-    name: 'Frontal lobe',
-    kind: 'Lobe',
-    parentId: 'cerebral_cortex',
-    functions: ['executive function', 'planning', 'voluntary movement', 'language production'],
-    description: 'Includes prefrontal and motor regions.',
-  },
-  prefrontal_cortex: {
-    name: 'Prefrontal cortex',
-    kind: 'CorticalRegion',
-    parentId: 'frontal_lobe',
-    functions: ['working memory', 'planning', 'decision making', 'cognitive control'],
-    description: 'Broad prefrontal territory; subdivisions are represented below.',
-  },
-  dorsolateral_prefrontal_cortex: {
-    name: 'Dorsolateral prefrontal cortex',
-    kind: 'CorticalRegion',
-    parentId: 'prefrontal_cortex',
-    functions: ['working memory', 'planning', 'cognitive control'],
-    description: 'Functional territory; boundaries vary by parcellation.',
-  },
-  ventromedial_prefrontal_cortex: {
-    name: 'Ventromedial prefrontal cortex',
-    kind: 'CorticalRegion',
-    parentId: 'prefrontal_cortex',
-    functions: ['valuation', 'social cognition', 'emotion regulation'],
-    description: 'Functional territory.',
-  },
-  orbitofrontal_cortex: {
-    name: 'Orbitofrontal cortex',
-    kind: 'CorticalRegion',
-    parentId: 'prefrontal_cortex',
-    functions: ['value representation', 'decision making', 'reward processing'],
-    description: 'Functional territory.',
-  },
-  primary_motor_cortex: {
-    name: 'Primary motor cortex',
-    kind: 'CorticalArea',
-    parentId: 'frontal_lobe',
-    functions: ['voluntary movement execution'],
-    description: 'Precentral gyrus; commonly associated with Brodmann area 4.',
-  },
-  premotor_cortex: {
-    name: 'Premotor cortex',
-    kind: 'CorticalRegion',
-    parentId: 'frontal_lobe',
-    functions: ['movement planning', 'sensorimotor transformation'],
-    description: 'Includes lateral premotor territories.',
-  },
-  supplementary_motor_area: {
-    name: 'Supplementary motor area',
-    kind: 'CorticalRegion',
-    parentId: 'frontal_lobe',
-    functions: ['movement sequencing', 'internally guided movement'],
-    description: 'Medial frontal motor territory.',
-  },
-  brocas_area: {
-    name: 'Broca region',
-    kind: 'CorticalRegion',
-    parentId: 'frontal_lobe',
-    functions: ['speech production', 'language planning'],
-    description:
-      'Usually associated with parts of the dominant inferior frontal gyrus; not a single universal point.',
-  },
-  parietal_lobe: {
-    name: 'Parietal lobe',
-    kind: 'Lobe',
-    parentId: 'cerebral_cortex',
-    functions: ['somatosensation', 'spatial attention', 'multisensory integration'],
-    description: 'Includes primary and association somatosensory territories.',
-  },
-  primary_somatosensory_cortex: {
-    name: 'Primary somatosensory cortex',
-    kind: 'CorticalArea',
-    parentId: 'parietal_lobe',
-    functions: ['touch', 'proprioception', 'somatic sensation'],
-    description: 'Postcentral gyrus; commonly associated with Brodmann areas 3, 1 and 2.',
-  },
-  posterior_parietal_cortex: {
-    name: 'Posterior parietal cortex',
-    kind: 'CorticalRegion',
-    parentId: 'parietal_lobe',
-    functions: ['spatial attention', 'sensorimotor integration', 'body schema'],
-    description: 'Broad association territory.',
-  },
-  precuneus: {
-    name: 'Precuneus',
-    kind: 'CorticalRegion',
-    parentId: 'parietal_lobe',
-    functions: ['visuospatial imagery', 'self-related processing', 'memory'],
-    description: 'Medial parietal association cortex.',
-  },
-  temporal_lobe: {
-    name: 'Temporal lobe',
-    kind: 'Lobe',
-    parentId: 'cerebral_cortex',
-    functions: ['auditory processing', 'memory', 'language comprehension'],
-    description: 'Includes auditory, medial temporal and association regions.',
-  },
-  primary_auditory_cortex: {
-    name: 'Primary auditory cortex',
-    kind: 'CorticalArea',
-    parentId: 'temporal_lobe',
-    functions: ['auditory perception'],
-    description: "Located on Heschl's gyrus; commonly associated with Brodmann areas 41 and 42.",
-  },
-  superior_temporal_gyrus: {
-    name: 'Superior temporal gyrus',
-    kind: 'CorticalRegion',
-    parentId: 'temporal_lobe',
-    functions: ['auditory association', 'language processing'],
-    description: 'Includes multiple functionally distinct territories.',
-  },
-  wernickes_region: {
-    name: 'Wernicke-related language network',
-    kind: 'CorticalRegion',
-    parentId: 'temporal_lobe',
-    functions: ['language comprehension'],
-    description: 'A network-level label; exact anatomical definition varies across literature.',
-  },
-  inferior_temporal_cortex: {
-    name: 'Inferior temporal cortex',
-    kind: 'CorticalRegion',
-    parentId: 'temporal_lobe',
-    functions: ['visual object recognition'],
-    description: 'High-level ventral visual pathway territory.',
-  },
-  medial_temporal_lobe: {
-    name: 'Medial temporal lobe',
-    kind: 'RegionGroup',
-    parentId: 'temporal_lobe',
-    functions: ['episodic memory', 'memory consolidation'],
-    description: 'Includes hippocampal formation and adjacent cortices.',
-  },
-  hippocampal_formation: {
-    name: 'Hippocampal formation',
-    kind: 'Structure',
-    parentId: 'medial_temporal_lobe',
-    functions: ['episodic memory', 'spatial memory'],
-    description: 'Includes hippocampus proper, dentate gyrus and subiculum.',
-  },
-  hippocampus: {
-    name: 'Hippocampus',
-    kind: 'Structure',
-    parentId: 'hippocampal_formation',
-    functions: ['memory encoding', 'memory consolidation', 'spatial navigation'],
-    description: 'Anatomical formation; not a single-purpose memory switch.',
-  },
-  dentate_gyrus: {
-    name: 'Dentate gyrus',
-    kind: 'Substructure',
-    parentId: 'hippocampal_formation',
-    functions: ['pattern separation', 'memory processing'],
-    description: 'Hippocampal formation subregion.',
-  },
-  subiculum: {
-    name: 'Subiculum',
-    kind: 'Substructure',
-    parentId: 'hippocampal_formation',
-    functions: ['hippocampal output', 'spatial and memory processing'],
-    description: 'Major hippocampal output region.',
-  },
-  entorhinal_cortex: {
-    name: 'Entorhinal cortex',
-    kind: 'CorticalRegion',
-    parentId: 'medial_temporal_lobe',
-    functions: ['memory', 'spatial navigation'],
-    description: 'Interface between neocortical association areas and hippocampal formation.',
-  },
-  parahippocampal_cortex: {
-    name: 'Parahippocampal cortex',
-    kind: 'CorticalRegion',
-    parentId: 'medial_temporal_lobe',
-    functions: ['contextual memory', 'scene processing'],
-    description: 'Medial temporal cortical region.',
-  },
-  amygdala: {
-    name: 'Amygdala',
-    kind: 'Structure',
-    parentId: 'telencephalon',
-    functions: ['salience', 'emotional learning', 'threat processing'],
-    description: 'Complex of nuclei; not a unitary fear center.',
-  },
-  basal_ganglia: {
-    name: 'Basal ganglia',
-    kind: 'System',
-    parentId: 'telencephalon',
-    functions: ['action selection', 'motor control', 'learning'],
-    description: 'Functional grouping of interconnected nuclei.',
-  },
-  striatum: {
-    name: 'Striatum',
-    kind: 'Structure',
-    parentId: 'basal_ganglia',
-    functions: ['action selection', 'reinforcement learning'],
-    description: 'Includes caudate and putamen; ventral striatum is related.',
-  },
-  caudate_nucleus: {
-    name: 'Caudate nucleus',
-    kind: 'Nucleus',
-    parentId: 'striatum',
-    functions: ['goal-directed action', 'associative learning'],
-    description: 'Dorsal striatal nucleus.',
-  },
-  putamen: {
-    name: 'Putamen',
-    kind: 'Nucleus',
-    parentId: 'striatum',
-    functions: ['motor and habit-related loops'],
-    description: 'Dorsal striatal nucleus.',
-  },
-  globus_pallidus: {
-    name: 'Globus pallidus',
-    kind: 'Structure',
-    parentId: 'basal_ganglia',
-    functions: ['basal ganglia output and modulation'],
-    description: 'External and internal segments are not separately modeled here.',
-  },
-  subthalamic_nucleus: {
-    name: 'Subthalamic nucleus',
-    kind: 'Nucleus',
-    parentId: 'diencephalon',
-    functions: ['basal ganglia circuit modulation'],
-    description: 'Functionally part of basal ganglia loops.',
-  },
-  substantia_nigra: {
-    name: 'Substantia nigra',
-    kind: 'Structure',
-    parentId: 'brainstem',
-    functions: ['dopaminergic modulation', 'motor circuit regulation'],
-    description: 'Includes pars compacta and pars reticulata.',
-  },
-  thalamus: {
-    name: 'Thalamus',
-    kind: 'Structure',
-    parentId: 'diencephalon',
-    functions: ['sensory relay', 'cortical coordination', 'attention'],
-    description: 'Multiple nuclei with distinct connections; represented as a parent node.',
-  },
-  lateral_geniculate_nucleus: {
-    name: 'Lateral geniculate nucleus',
-    kind: 'Nucleus',
-    parentId: 'thalamus',
-    functions: ['visual relay'],
-    description: 'Thalamic visual relay nucleus.',
-  },
-  medial_geniculate_nucleus: {
-    name: 'Medial geniculate nucleus',
-    kind: 'Nucleus',
-    parentId: 'thalamus',
-    functions: ['auditory relay'],
-    description: 'Thalamic auditory relay nucleus.',
-  },
-  ventral_posterior_nucleus: {
-    name: 'Ventral posterior thalamic nuclei',
-    kind: 'Nucleus',
-    parentId: 'thalamus',
-    functions: ['somatosensory relay'],
-    description: 'Includes VPL and VPM territories.',
-  },
-  hypothalamus: {
-    name: 'Hypothalamus',
-    kind: 'Structure',
-    parentId: 'diencephalon',
-    functions: ['homeostasis', 'autonomic regulation', 'endocrine control'],
-    description: 'Complex of nuclei coordinating autonomic, endocrine and behavioral functions.',
-  },
-  pituitary_gland: {
-    name: 'Pituitary gland',
-    kind: 'Organ',
-    parentId: 'brain',
-    functions: ['endocrine signaling'],
-    description:
-      'Connected to hypothalamus; anatomically an endocrine gland, not brain tissue proper.',
-  },
-  epithalamus: {
-    name: 'Epithalamus',
-    kind: 'Structure',
-    parentId: 'diencephalon',
-    functions: ['circadian and limbic-related functions'],
-    description: 'Includes habenular complex and pineal gland.',
-  },
-  pineal_gland: {
-    name: 'Pineal gland',
-    kind: 'Organ',
-    parentId: 'epithalamus',
-    functions: ['melatonin secretion', 'circadian timing'],
-    description: 'Endocrine organ.',
-  },
-  midbrain: {
-    name: 'Midbrain',
-    kind: 'Structure',
-    parentId: 'brainstem',
-    functions: ['orienting', 'motor modulation', 'arousal'],
-    description: 'Mesencephalon.',
-  },
-  superior_colliculus: {
-    name: 'Superior colliculus',
-    kind: 'Structure',
-    parentId: 'midbrain',
-    functions: ['visual orienting', 'saccades'],
-    description: 'Midbrain tectal structure.',
-  },
-  inferior_colliculus: {
-    name: 'Inferior colliculus',
-    kind: 'Structure',
-    parentId: 'midbrain',
-    functions: ['auditory processing'],
-    description: 'Major auditory midbrain nucleus.',
-  },
-  periaqueductal_gray: {
-    name: 'Periaqueductal gray',
-    kind: 'Region',
-    parentId: 'midbrain',
-    functions: ['defensive behavior', 'pain modulation', 'autonomic coordination'],
-    description: 'Midbrain region around cerebral aqueduct.',
-  },
-  pons: {
-    name: 'Pons',
-    kind: 'Structure',
-    parentId: 'brainstem',
-    functions: ['relay', 'sleep and arousal', 'cranial nerve functions'],
-    description: 'Brainstem subdivision.',
-  },
-  medulla_oblongata: {
-    name: 'Medulla oblongata',
-    kind: 'Structure',
-    parentId: 'brainstem',
-    functions: ['cardiorespiratory regulation', 'reflexes'],
-    description: 'Caudal brainstem subdivision.',
-  },
-  reticular_formation: {
-    name: 'Reticular formation',
-    kind: 'Network',
-    parentId: 'brainstem',
-    functions: ['arousal', 'state regulation', 'autonomic functions'],
-    description: 'Distributed brainstem network, not a sharply bounded nucleus.',
-  },
-  locus_coeruleus: {
-    name: 'Locus coeruleus',
-    kind: 'Nucleus',
-    parentId: 'pons',
-    functions: ['noradrenergic modulation', 'arousal'],
-    description: 'Pontine nucleus.',
-  },
-  raphe_nuclei: {
-    name: 'Raphe nuclei',
-    kind: 'NucleiGroup',
-    parentId: 'brainstem',
-    functions: ['serotonergic modulation'],
-    description: 'Distributed brainstem nuclei.',
-  },
-  ventral_tegmental_area: {
-    name: 'Ventral tegmental area',
-    kind: 'Region',
-    parentId: 'midbrain',
-    functions: ['dopaminergic modulation', 'reward learning'],
-    description: 'Midbrain region.',
-  },
-  nucleus_tractus_solitarius: {
-    name: 'Nucleus of the solitary tract',
-    kind: 'Nucleus',
-    parentId: 'medulla_oblongata',
-    functions: ['visceral sensory integration'],
-    description: 'Receives visceral afferent information.',
-  },
-  cerebellar_cortex: {
-    name: 'Cerebellar cortex',
-    kind: 'Structure',
-    parentId: 'cerebellum',
-    functions: ['coordination', 'prediction', 'motor learning'],
-    description: 'Layered cerebellar cortex.',
-  },
-  vermis: {
-    name: 'Cerebellar vermis',
-    kind: 'Region',
-    parentId: 'cerebellar_cortex',
-    functions: ['posture', 'gait', 'axial control'],
-    description: 'Midline cerebellar cortex.',
-  },
-  cerebellar_hemispheres: {
-    name: 'Cerebellar hemispheres',
-    kind: 'Region',
-    parentId: 'cerebellar_cortex',
-    functions: ['limb coordination', 'cognitive contributions'],
-    description: 'Lateral cerebellar territories.',
-  },
-  deep_cerebellar_nuclei: {
-    name: 'Deep cerebellar nuclei',
-    kind: 'NucleiGroup',
-    parentId: 'cerebellum',
-    functions: ['cerebellar output'],
-    description: 'Includes dentate, interposed and fastigial nuclei.',
-  },
-  dentate_nucleus: {
-    name: 'Dentate nucleus',
-    kind: 'Nucleus',
-    parentId: 'deep_cerebellar_nuclei',
-    functions: ['planning and coordination'],
-    description: 'Largest deep cerebellar nucleus.',
-  },
-  vestibulocerebellum: {
-    name: 'Vestibulocerebellum',
-    kind: 'FunctionalRegion',
-    parentId: 'cerebellum',
-    functions: ['balance', 'eye movement'],
-    description: 'Flocculonodular lobe and related circuitry.',
-  },
-  corpus_callosum: {
-    name: 'Corpus callosum',
-    kind: 'WhiteMatterTract',
-    parentId: 'cerebral_hemispheres',
-    functions: ['interhemispheric communication'],
-    description: 'Major commissural white-matter tract.',
-  },
-  internal_capsule: {
-    name: 'Internal capsule',
-    kind: 'WhiteMatterTract',
-    parentId: 'telencephalon',
-    functions: ['corticofugal and thalamocortical transmission'],
-    description: 'Major projection-fiber corridor.',
-  },
-  fornix: {
-    name: 'Fornix',
-    kind: 'WhiteMatterTract',
-    parentId: 'telencephalon',
-    functions: ['hippocampal output'],
-    description: 'Major efferent pathway of hippocampal formation.',
-  },
-  optic_nerve: {
-    name: 'Optic nerve',
-    kind: 'CranialNerve',
-    parentId: 'brain',
-    functions: ['visual input'],
-    description: 'Retinal ganglion-cell axons; technically cranial nerve II.',
-  },
-  retina: {
-    name: 'Retina',
-    kind: 'SensoryStructure',
-    parentId: 'brain',
-    functions: ['phototransduction', 'visual preprocessing'],
-    description: 'Neural tissue of the eye; included as an input boundary, not brain tissue.',
-  },
-  cochlea: {
-    name: 'Cochlea',
-    kind: 'SensoryStructure',
-    parentId: 'brain',
-    functions: ['auditory transduction'],
-    description: 'Inner-ear sensory structure; included as an input boundary.',
-  },
-  spinal_cord: {
+      'The central organ of the nervous system, integrating sensory information and coordinating cognitive, autonomic and motor functions.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'spinal-cord',
     name: 'Spinal cord',
-    kind: 'Structure',
-    parentId: 'central_nervous_system',
-    functions: ['sensorimotor transmission', 'reflexes'],
-    description: 'Included as a boundary node for ascending and descending pathways.',
+    kind: 'organ',
+    system: 'central_nervous',
+    laterality: 'bilateral',
+    parentId: 'central-nervous-system',
+    description:
+      'A central nervous system structure that conducts information between the brain and body and supports spinal reflexes.',
+    evidence: establishedReview,
   },
-  dorsal_root_ganglion: {
+
+  // Major brain divisions
+
+  {
+    id: 'forebrain',
+    name: 'Forebrain',
+    kind: 'division',
+    system: 'central_nervous',
+    laterality: 'bilateral',
+    parentId: 'brain',
+    description:
+      'The anterior major division of the brain, including the telencephalon and diencephalon.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'midbrain',
+    name: 'Midbrain',
+    kind: 'division',
+    system: 'central_nervous',
+    laterality: 'midline',
+    parentId: 'brainstem',
+    description:
+      'The mesencephalon, involved in sensory and motor integration, orienting responses and arousal.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'hindbrain',
+    name: 'Hindbrain',
+    kind: 'division',
+    system: 'central_nervous',
+    laterality: 'midline',
+    parentId: 'brain',
+    description: 'The rhombencephalon, including the pons, medulla and cerebellum.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'brainstem',
+    name: 'Brainstem',
+    kind: 'division',
+    system: 'central_nervous',
+    laterality: 'midline',
+    parentId: 'brain',
+    description: 'The brainstem comprises the midbrain, pons and medulla oblongata.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'cerebrum',
+    name: 'Cerebrum',
+    kind: 'division',
+    system: 'central_nervous',
+    laterality: 'bilateral',
+    parentId: 'forebrain',
+    description:
+      'The largest brain division, comprising the cerebral hemispheres and their associated structures.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'diencephalon',
+    name: 'Diencephalon',
+    kind: 'division',
+    system: 'central_nervous',
+    laterality: 'midline',
+    parentId: 'forebrain',
+    description:
+      'A forebrain division containing the thalamus, hypothalamus, epithalamus and subthalamus.',
+    evidence: establishedReview,
+  },
+
+  // Cerebral hemispheres
+
+  {
+    id: 'left-hemisphere',
+    name: 'Left cerebral hemisphere',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'cerebrum',
+    description: 'The left cerebral hemisphere, containing cortical and subcortical structures.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-hemisphere',
+    name: 'Right cerebral hemisphere',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'cerebrum',
+    description: 'The right cerebral hemisphere, containing cortical and subcortical structures.',
+    evidence: establishedReview,
+  },
+
+  // Left cortical lobes
+
+  {
+    id: 'left-frontal-lobe',
+    name: 'Left frontal lobe',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-hemisphere',
+    description:
+      'The left frontal lobe, associated with motor control, executive functions and aspects of language.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-parietal-lobe',
+    name: 'Left parietal lobe',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-hemisphere',
+    description:
+      'The left parietal lobe, involved in somatosensory processing and spatial and sensorimotor integration.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-temporal-lobe',
+    name: 'Left temporal lobe',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-hemisphere',
+    description:
+      'The left temporal lobe, contributing to auditory processing, language and memory.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-occipital-lobe',
+    name: 'Left occipital lobe',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-hemisphere',
+    description: 'The left occipital lobe, containing visual cortical areas.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-insula',
+    name: 'Left insula',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-hemisphere',
+    description:
+      'The left insular cortex, contributing to interoception, salience processing and integration of bodily and cognitive information.',
+    evidence: establishedReview,
+  },
+
+  // Right cortical lobes
+
+  {
+    id: 'right-frontal-lobe',
+    name: 'Right frontal lobe',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'right-hemisphere',
+    description:
+      'The right frontal lobe, involved in motor control, executive functions and behavioral regulation.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-parietal-lobe',
+    name: 'Right parietal lobe',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'right-hemisphere',
+    description:
+      'The right parietal lobe, contributing to spatial attention and somatosensory integration.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-temporal-lobe',
+    name: 'Right temporal lobe',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'right-hemisphere',
+    description:
+      'The right temporal lobe, contributing to auditory processing, memory and aspects of social perception.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-occipital-lobe',
+    name: 'Right occipital lobe',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'right-hemisphere',
+    description: 'The right occipital lobe, containing visual cortical areas.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-insula',
+    name: 'Right insula',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'right-hemisphere',
+    description:
+      'The right insular cortex, contributing to interoception, salience processing and autonomic integration.',
+    evidence: establishedReview,
+  },
+
+  // Frontal cortical structures
+
+  {
+    id: 'left-prefrontal-cortex',
+    name: 'Left prefrontal cortex',
+    kind: 'cortical_area',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-frontal-lobe',
+    description:
+      'A broad left prefrontal region involved in executive control, working memory and goal-directed behavior.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-prefrontal-cortex',
+    name: 'Right prefrontal cortex',
+    kind: 'cortical_area',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'right-frontal-lobe',
+    description:
+      'A broad right prefrontal region involved in executive control, attention and behavioral regulation.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-primary-motor-cortex',
+    name: 'Left primary motor cortex',
+    abbreviation: 'M1',
+    kind: 'cortical_area',
+    system: 'motor',
+    laterality: 'left',
+    parentId: 'left-frontal-lobe',
+    description:
+      'The left primary motor cortex, contributing to voluntary motor execution, predominantly controlling the contralateral body.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-primary-motor-cortex',
+    name: 'Right primary motor cortex',
+    abbreviation: 'M1',
+    kind: 'cortical_area',
+    system: 'motor',
+    laterality: 'right',
+    parentId: 'right-frontal-lobe',
+    description:
+      'The right primary motor cortex, contributing to voluntary motor execution, predominantly controlling the contralateral body.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-premotor-cortex',
+    name: 'Left premotor cortex',
+    kind: 'cortical_area',
+    system: 'motor',
+    laterality: 'left',
+    parentId: 'left-frontal-lobe',
+    description:
+      'A lateral frontal motor region involved in movement preparation and sensorimotor transformations.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-premotor-cortex',
+    name: 'Right premotor cortex',
+    kind: 'cortical_area',
+    system: 'motor',
+    laterality: 'right',
+    parentId: 'right-frontal-lobe',
+    description:
+      'A lateral frontal motor region involved in movement preparation and sensorimotor transformations.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-broca-area',
+    name: 'Left Broca area',
+    kind: 'cortical_area',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-frontal-lobe',
+    description:
+      'A language-related region in the left inferior frontal gyrus, with functions extending beyond speech production.',
+    evidence: establishedReview,
+  },
+
+  // Parietal cortical structures
+
+  {
+    id: 'left-primary-somatosensory-cortex',
+    name: 'Left primary somatosensory cortex',
+    abbreviation: 'S1',
+    kind: 'cortical_area',
+    system: 'sensory',
+    laterality: 'left',
+    parentId: 'left-parietal-lobe',
+    description:
+      'The left primary somatosensory cortex, processing tactile and proprioceptive information from the contralateral body.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-primary-somatosensory-cortex',
+    name: 'Right primary somatosensory cortex',
+    abbreviation: 'S1',
+    kind: 'cortical_area',
+    system: 'sensory',
+    laterality: 'right',
+    parentId: 'right-parietal-lobe',
+    description:
+      'The right primary somatosensory cortex, processing tactile and proprioceptive information from the contralateral body.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-posterior-parietal-cortex',
+    name: 'Left posterior parietal cortex',
+    kind: 'cortical_area',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-parietal-lobe',
+    description:
+      'A region involved in multisensory integration, spatial representation and sensorimotor coordination.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-posterior-parietal-cortex',
+    name: 'Right posterior parietal cortex',
+    kind: 'cortical_area',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'right-parietal-lobe',
+    description:
+      'A region involved in multisensory integration, spatial representation and sensorimotor coordination.',
+    evidence: establishedReview,
+  },
+
+  // Temporal cortical structures
+
+  {
+    id: 'left-primary-auditory-cortex',
+    name: 'Left primary auditory cortex',
+    abbreviation: 'A1',
+    kind: 'cortical_area',
+    system: 'sensory',
+    laterality: 'left',
+    parentId: 'left-temporal-lobe',
+    description:
+      'The left primary auditory cortex, involved in the cortical processing of auditory information.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-primary-auditory-cortex',
+    name: 'Right primary auditory cortex',
+    abbreviation: 'A1',
+    kind: 'cortical_area',
+    system: 'sensory',
+    laterality: 'right',
+    parentId: 'right-temporal-lobe',
+    description:
+      'The right primary auditory cortex, involved in the cortical processing of auditory information.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-hippocampus',
+    name: 'Left hippocampus',
+    kind: 'subregion',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-temporal-lobe',
+    description:
+      'A medial temporal structure essential to several forms of memory formation and spatial representation.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-hippocampus',
+    name: 'Right hippocampus',
+    kind: 'subregion',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'right-temporal-lobe',
+    description:
+      'A medial temporal structure essential to several forms of memory formation and spatial representation.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'left-amygdala',
+    name: 'Left amygdala',
+    kind: 'nucleus',
+    system: 'central_nervous',
+    laterality: 'left',
+    parentId: 'left-temporal-lobe',
+    description:
+      'A medial temporal nuclear complex involved in emotional learning and the processing of biologically relevant stimuli.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-amygdala',
+    name: 'Right amygdala',
+    kind: 'nucleus',
+    system: 'central_nervous',
+    laterality: 'right',
+    parentId: 'right-temporal-lobe',
+    description:
+      'A medial temporal nuclear complex involved in emotional learning and the processing of biologically relevant stimuli.',
+    evidence: establishedReview,
+  },
+
+  // Occipital cortical structures
+
+  {
+    id: 'left-primary-visual-cortex',
+    name: 'Left primary visual cortex',
+    abbreviation: 'V1',
+    kind: 'cortical_area',
+    system: 'sensory',
+    laterality: 'left',
+    parentId: 'left-occipital-lobe',
+    description:
+      'The left primary visual cortex, receiving visual information through thalamocortical pathways.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'right-primary-visual-cortex',
+    name: 'Right primary visual cortex',
+    abbreviation: 'V1',
+    kind: 'cortical_area',
+    system: 'sensory',
+    laterality: 'right',
+    parentId: 'right-occipital-lobe',
+    description:
+      'The right primary visual cortex, receiving visual information through thalamocortical pathways.',
+    evidence: establishedReview,
+  },
+
+  // Diencephalon
+
+  {
+    id: 'thalamus',
+    name: 'Thalamus',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'midline',
+    parentId: 'diencephalon',
+    description:
+      'A set of diencephalic nuclei involved in sensory and motor information routing and broader cortical-subcortical interactions.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'hypothalamus',
+    name: 'Hypothalamus',
+    kind: 'region',
+    system: 'autonomic',
+    laterality: 'midline',
+    parentId: 'diencephalon',
+    description:
+      'A diencephalic region involved in homeostasis, endocrine regulation and autonomic control.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'epithalamus',
+    name: 'Epithalamus',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'midline',
+    parentId: 'diencephalon',
+    description: 'A diencephalic region including the habenular complex and pineal gland.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'subthalamus',
+    name: 'Subthalamus',
+    kind: 'region',
+    system: 'motor',
+    laterality: 'midline',
+    parentId: 'diencephalon',
+    description:
+      'A diencephalic region containing structures involved in basal ganglia motor circuits.',
+    evidence: establishedReview,
+  },
+
+  // Basal ganglia
+
+  {
+    id: 'basal-ganglia',
+    name: 'Basal ganglia',
+    kind: 'subsystem',
+    system: 'motor',
+    laterality: 'bilateral',
+    parentId: 'cerebrum',
+    description:
+      'A group of interconnected subcortical nuclei involved in action selection, movement and learning.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'caudate-nucleus',
+    name: 'Caudate nucleus',
+    kind: 'nucleus',
+    system: 'motor',
+    laterality: 'bilateral',
+    parentId: 'basal-ganglia',
+    description: 'A striatal nucleus participating in associative and action-selection circuits.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'putamen',
+    name: 'Putamen',
+    kind: 'nucleus',
+    system: 'motor',
+    laterality: 'bilateral',
+    parentId: 'basal-ganglia',
+    description: 'A striatal nucleus participating in sensorimotor and associative circuits.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'globus-pallidus',
+    name: 'Globus pallidus',
+    kind: 'nucleus',
+    system: 'motor',
+    laterality: 'bilateral',
+    parentId: 'basal-ganglia',
+    description:
+      'A basal ganglia structure involved in the regulation of thalamocortical activity.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'substantia-nigra',
+    name: 'Substantia nigra',
+    kind: 'nucleus',
+    system: 'motor',
+    laterality: 'bilateral',
+    parentId: 'midbrain',
+    description:
+      'A midbrain structure with important roles in basal ganglia circuits and dopaminergic modulation.',
+    evidence: establishedReview,
+  },
+
+  // Brainstem
+
+  {
+    id: 'pons',
+    name: 'Pons',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'midline',
+    parentId: 'brainstem',
+    description:
+      'A brainstem region involved in communication with the cerebellum and in multiple cranial and autonomic functions.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'medulla-oblongata',
+    name: 'Medulla oblongata',
+    kind: 'region',
+    system: 'autonomic',
+    laterality: 'midline',
+    parentId: 'brainstem',
+    description:
+      'A brainstem region containing nuclei and networks important for vital autonomic functions.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'reticular-formation',
+    name: 'Reticular formation',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'midline',
+    parentId: 'brainstem',
+    description:
+      'A distributed brainstem network involved in arousal, autonomic regulation and motor functions.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'superior-colliculus',
+    name: 'Superior colliculus',
+    kind: 'nucleus',
+    system: 'sensory',
+    laterality: 'bilateral',
+    parentId: 'midbrain',
+    description:
+      'A midbrain structure involved in visual orienting and multisensory control of orienting responses.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'inferior-colliculus',
+    name: 'Inferior colliculus',
+    kind: 'nucleus',
+    system: 'sensory',
+    laterality: 'bilateral',
+    parentId: 'midbrain',
+    description: 'A midbrain auditory structure participating in ascending auditory pathways.',
+    evidence: establishedReview,
+  },
+
+  // Cerebellum
+
+  {
+    id: 'cerebellum',
+    name: 'Cerebellum',
+    kind: 'organ',
+    system: 'motor',
+    laterality: 'bilateral',
+    parentId: 'hindbrain',
+    description:
+      'A hindbrain structure involved in coordination, motor adaptation, timing and several non-motor functions.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'cerebellar-cortex',
+    name: 'Cerebellar cortex',
+    kind: 'region',
+    system: 'motor',
+    laterality: 'bilateral',
+    parentId: 'cerebellum',
+    description:
+      'The layered cortical tissue of the cerebellum, involved in processing information within cerebellar circuits.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'dentate-nucleus',
+    name: 'Dentate nucleus',
+    kind: 'nucleus',
+    system: 'motor',
+    laterality: 'bilateral',
+    parentId: 'cerebellum',
+    description: 'A deep cerebellar nucleus contributing to cerebellar output pathways.',
+    evidence: establishedReview,
+  },
+
+  // Sensory interfaces and peripheral structures
+
+  {
+    id: 'retina',
+    name: 'Retina',
+    kind: 'region',
+    system: 'sensory',
+    laterality: 'bilateral',
+    parentId: 'sensory-boundaries',
+    description:
+      'The light-sensitive neural tissue of the eye. Included as a sensory boundary, not as part of the brain.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'lateral-geniculate-nucleus',
+    name: 'Lateral geniculate nucleus',
+    abbreviation: 'LGN',
+    kind: 'nucleus',
+    system: 'sensory',
+    laterality: 'bilateral',
+    parentId: 'thalamus',
+    description: 'A thalamic relay nucleus in the principal geniculostriate visual pathway.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'cochlea',
+    name: 'Cochlea',
+    kind: 'region',
+    system: 'sensory',
+    laterality: 'bilateral',
+    parentId: 'sensory-boundaries',
+    description:
+      'The auditory sensory organ of the inner ear. Included as a sensory boundary, not as part of the brain.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'medial-geniculate-nucleus',
+    name: 'Medial geniculate nucleus',
+    abbreviation: 'MGN',
+    kind: 'nucleus',
+    system: 'sensory',
+    laterality: 'bilateral',
+    parentId: 'thalamus',
+    description: 'A thalamic relay complex participating in auditory pathways to the cortex.',
+    evidence: establishedReview,
+  },
+  {
+    id: 'dorsal-root-ganglion',
     name: 'Dorsal root ganglion',
-    kind: 'SensoryGanglion',
-    parentId: 'spinal_cord',
-    functions: ['somatic and visceral afferents'],
-    description: 'Peripheral sensory neuron cell bodies; outside brain proper.',
+    kind: 'ganglion',
+    system: 'sensory',
+    laterality: 'bilateral',
+    parentId: 'peripheral-nervous-system',
+    description:
+      'A peripheral sensory ganglion containing cell bodies of many primary somatosensory neurons.',
+    evidence: establishedReview,
   },
-  primary_visual_cortex: {
-    name: 'Primary visual cortex',
-    kind: 'CorticalArea',
-    parentId: 'cerebral_cortex',
-    functions: ['visual perception'],
-    description: 'V1; occipital cortex; commonly associated with Brodmann area 17.',
+  {
+    id: 'ventral-posterior-nucleus',
+    name: 'Ventral posterior nucleus',
+    kind: 'nucleus',
+    system: 'sensory',
+    laterality: 'bilateral',
+    parentId: 'thalamus',
+    description: 'A thalamic nuclear complex relaying somatosensory information to cortical areas.',
+    evidence: establishedReview,
   },
-  visual_association_cortex: {
-    name: 'Visual association cortex',
-    kind: 'CorticalRegion',
-    parentId: 'cerebral_cortex',
-    functions: ['visual interpretation', 'object and motion processing'],
-    description: 'Includes multiple extrastriate territories.',
+  {
+    id: 'hippocampal-formation',
+    name: 'Hippocampal formation',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'bilateral',
+    parentId: 'cerebrum',
+    description:
+      'A medial temporal system including the hippocampus and related cortical structures.',
+    evidence: establishedReview,
   },
-  cingulate_cortex: {
-    name: 'Cingulate cortex',
-    kind: 'CorticalRegion',
-    parentId: 'cerebral_cortex',
-    functions: ['motivation', 'pain-related processing', 'cognitive control'],
-    description: 'Medial cortical region with multiple subdivisions.',
+  {
+    id: 'entorhinal-cortex',
+    name: 'Entorhinal cortex',
+    kind: 'region',
+    system: 'central_nervous',
+    laterality: 'bilateral',
+    parentId: 'hippocampal-formation',
+    description:
+      'A medial temporal cortical region serving as a major interface between the hippocampal formation and neocortex.',
+    evidence: establishedReview,
   },
-  insula: {
-    name: 'Insular cortex',
-    kind: 'CorticalRegion',
-    parentId: 'cerebral_cortex',
-    functions: ['interoception', 'taste', 'salience'],
-    description: 'Buried cortical region.',
+  {
+    id: 'subiculum',
+    name: 'Subiculum',
+    kind: 'subregion',
+    system: 'central_nervous',
+    laterality: 'bilateral',
+    parentId: 'hippocampal-formation',
+    description: 'A hippocampal formation subregion involved in hippocampal output pathways.',
+    evidence: establishedReview,
   },
-  olfactory_bulb: {
-    name: 'Olfactory bulb',
-    kind: 'Structure',
-    parentId: 'telencephalon',
-    functions: ['olfactory processing'],
-    description: 'Receives input from olfactory receptor neurons.',
+  {
+    id: 'fornix',
+    name: 'Fornix',
+    kind: 'tract',
+    system: 'central_nervous',
+    laterality: 'bilateral',
+    parentId: 'hippocampal-formation',
+    description:
+      'A major white matter pathway connecting the hippocampal formation with subcortical targets.',
+    evidence: establishedReview,
   },
-  olfactory_cortex: {
-    name: 'Primary olfactory cortex',
-    kind: 'CorticalRegion',
-    parentId: 'telencephalon',
-    functions: ['olfactory perception'],
-    description: 'Includes piriform cortex and related regions.',
+  {
+    id: 'autonomic-nervous-system',
+    name: 'Autonomic nervous system',
+    kind: 'subsystem',
+    system: 'autonomic',
+    laterality: 'bilateral',
+    parentId: 'peripheral-nervous-system',
+    description:
+      'The peripheral and central networks regulating involuntary physiological functions.',
+    evidence: establishedReview,
   },
-  nucleus_accumbens: {
-    name: 'Nucleus accumbens',
-    kind: 'Nucleus',
-    parentId: 'striatum',
-    functions: ['motivation', 'reinforcement'],
-    description: 'Ventral striatal structure.',
-  },
-} as const satisfies Record<string, RegionDefinition>;
+];
 
-export type RegionId = keyof typeof regions;
-export type Region = (typeof regions)[RegionId];
+export type RegionId = (typeof brainStructures)[number]['id'];
 
-export function isRegionId(value: string): value is RegionId {
-  return Object.hasOwn(regions, value);
-}
+export type BrainStructureDefinition = BrainStructure;
+
+export const regions: Readonly<Record<string, BrainStructure>> = Object.freeze(
+  Object.fromEntries(brainStructures.map((structure) => [structure.id, structure])),
+);
+
+export const brainStructureIds: readonly RegionId[] = brainStructures.map(
+  (structure) => structure.id,
+);

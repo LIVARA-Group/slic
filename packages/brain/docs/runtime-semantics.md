@@ -1,39 +1,48 @@
-# Runtime semantics
+# Runtime Semantics
 
-## Current runtime
+## Purpose
 
-`traceSignal` performs bounded graph traversal from an origin region. It follows directed edges from `from` to `to`, and follows the reverse direction only for edges marked `bidirectional`.
+The runtime module provides bounded traversal over the curated graph.
 
-Options:
+## traceSignal
 
-- `maxHops`: maximum graph distance;
-- `includeFunctional`: include functional association edges;
-- `includeModulatory`: include modulatory edges.
+`traceSignal` performs breadth-first graph traversal.
 
-The result is an ordered list of visited regions with hop count and traversed edge identifier.
+Inputs:
 
-## What this does not model
+- Origin region.
+- Maximum depth.
+- Maximum number of returned nodes.
+- Whether to include the origin in the result.
 
-It does not simulate:
+Outputs:
 
-- action potentials or membrane dynamics;
-- synaptic transmission or plasticity;
-- excitatory/inhibitory population dynamics;
-- neurotransmitter concentrations;
-- oscillations or timing;
-- neural coding;
-- muscle activation or biomechanics;
-- consciousness or semantic content of thoughts.
+- Origin.
+- Visited regions.
+- Traversed connections.
+- Maximum depth.
+- Truncation status.
 
-`NeuralEvent` is a software event contract for application-level representation. It is not a claim that a biological neural event has this exact shape.
+## Traversal rules
 
-## Rust/WASM gate
+- Directed edges are traversed from source to target.
+- Bidirectional edges may be traversed in either direction.
+- Already visited regions are not added again.
+- Traversal stops at the configured depth.
+- Traversal stops at the configured node limit.
 
-Do not introduce Rust/WASM for the current graph traversal. It is simple and likely dominated by data/model design, not compute. Consider a Rust engine only after:
+## Explicit non-goals
 
-1. a defined numerical model exists;
-2. representative workloads and correctness fixtures exist;
-3. profiling identifies a CPU-bound hot path in TypeScript;
-4. a benchmark shows a material improvement that justifies FFI and packaging complexity.
+`traceSignal` does not simulate:
 
-A future simulator should live in a separate package and consume the domain schema.
+- Action potentials.
+- Membrane potentials.
+- Synaptic transmission.
+- Neurotransmitter release.
+- Excitation or inhibition.
+- Synaptic plasticity.
+- Neural population dynamics.
+- Oscillations.
+- Consciousness.
+
+The function is a graph utility, not a biological neural simulator.

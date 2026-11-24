@@ -1,103 +1,66 @@
-import { type RegionId, regions } from '../anatomy/regions.js';
-import { type ConnectionDefinition, connections } from '../connectome/connections.js';
+import type { RegionId } from '../anatomy/regions.js';
+import { connections } from '../connectome/connections.js';
+import type { ConnectionDefinition } from '../connectome/types.js';
 
-export function getChildren(parentId: RegionId): RegionId[] {
-  return (Object.keys(regions) as RegionId[]).filter((id) => regions[id].parentId === parentId);
+export function getConnections(regionId: RegionId): readonly ConnectionDefinition[] {
+  return connections.filter(
+    (connection) => connection.from === regionId || connection.to === regionId,
+  );
 }
 
-export function getDescendants(parentId: RegionId): RegionId[] {
-  const result: RegionId[] = [];
-  const visit = (id: RegionId) => {
-    for (const child of getChildren(id)) {
-      result.push(child);
-      visit(child);
-    }
-  };
-  visit(parentId);
-  return result;
+export function getOutgoingConnections(regionId: RegionId): readonly ConnectionDefinition[] {
+  return connections.filter(
+    (connection) =>
+      connection.from === regionId ||
+      (connection.direction === 'bidirectional' && connection.to === regionId),
+  );
 }
 
-export function getAncestors(regionId: RegionId): RegionId[] {
-  const result: RegionId[] = [];
-  let parentId = regions[regionId].parentId;
-  while (parentId !== null) {
-    result.push(parentId as RegionId);
-    parentId = regions[parentId as RegionId].parentId;
+export function getIncomingConnections(regionId: RegionId): readonly ConnectionDefinition[] {
+  return connections.filter(
+    (connection) =>
+      connection.to === regionId ||
+      (connection.direction === 'bidirectional' && connection.from === regionId),
+  );
+}
+
+export function getOutgoingNeighbors(regionId: RegionId): readonly RegionId[] {
+  const neighbors = new Set<RegionId>();
+
+  for (const connection of getOutgoingConnections(regionId)) {
+    const neighbor = connection.from === regionId ? connection.to : connection.from;
+
+    neighbors.add(neighbor);
   }
-  return result;
+
+  return [...neighbors];
 }
 
-export function getConnections(
-  regionId: RegionId,
-  source: readonly ConnectionDefinition[] = connections,
-): ConnectionDefinition[] {
-  return source.filter((edge) => edge.from === regionId || edge.to === regionId);
-}
+export function getIncomingNeighbors(regionId: RegionId): readonly RegionId[] {
+  const neighbors = new Set<RegionId>();
 
-export function getOutgoingConnections(
-  regionId: RegionId,
-  source: readonly ConnectionDefinition[] = connections,
-): ConnectionDefinition[] {
-  return source.filter((edge) => edge.from === regionId);
-}
+  for (const connection of getIncomingConnections(regionId)) {
+    const neighbor = connection.to === regionId ? connection.from : connection.to;
 
-export function getIncomingConnections(
-  regionId: RegionId,
-  source: readonly ConnectionDefinition[] = connections,
-): ConnectionDefinition[] {
-  return source.filter((edge) => edge.to === regionId);
-}
-
-export interface GraphValidationIssue {
-  readonly code:
-    | 'missing-region'
-    | 'duplicate-connection-id'
-    | 'self-connection'
-    | 'orphan-region'
-    | 'hierarchy-cycle';
-  readonly message: string;
-  readonly subject: string;
-}
-
-export function validateBrainGraph(): GraphValidationIssue[] {
-  const issues: GraphValidationIssue[] = [];
-  const seen = new Set<string>();
-  for (const edge of connections) {
-    if (!regions[edge.from] || !regions[edge.to])
-      issues.push({
-        code: 'missing-region',
-        message: 'Connection references an unknown region.',
-        subject: edge.id,
-      });
-    if (seen.has(edge.id))
-      issues.push({
-        code: 'duplicate-connection-id',
-        message: 'Connection id is duplicated.',
-        subject: edge.id,
-      });
-    seen.add(edge.id);
-    if (edge.from === edge.to)
-      issues.push({
-        code: 'self-connection',
-        message: 'Self-connections require explicit justification.',
-        subject: edge.id,
-      });
+    neighbors.add(neighbor);
   }
-  for (const id of Object.keys(regions) as RegionId[]) {
-    const parent = regions[id].parentId;
-    if (parent !== null && !regions[parent as RegionId])
-      issues.push({
-        code: 'orphan-region',
-        message: 'Region references an unknown parent.',
-        subject: id,
-      });
-    const ancestors = getAncestors(id);
-    if (ancestors.includes(id))
-      issues.push({
-        code: 'hierarchy-cycle',
-        message: 'Anatomical hierarchy contains a cycle.',
-        subject: id,
-      });
-  }
-  return issues;
+
+  return [...neighbors];
+}
+
+export function getConnectionCount(): number {
+  return connections.length;
+}
+
+export function findConnectionsBetween(
+  from: RegionId,
+  to: RegionId,
+): readonly ConnectionDefinition[] {
+  return connections.filter(
+    (connection) =>
+      (connection.from === from && connection.to === to) ||
+      (connection.direction === 'bidirectional' &&
+        connection.from === to &&
+        connection.to === from),
+  );
 }
