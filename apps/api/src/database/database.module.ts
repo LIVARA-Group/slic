@@ -1,16 +1,29 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { createDatabase } from '@repo/database';
+import type { Env } from '../config/env.js';
 import { DATABASE } from './database.constants.js';
 import { DatabaseService } from './database.service.js';
 
+@Global()
 @Module({
+  imports: [ConfigModule],
   providers: [
-    DatabaseService,
     {
       provide: DATABASE,
-      useFactory: (database: DatabaseService) => database.db,
-      inject: [DatabaseService],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<Env, true>) => {
+        const connectionString = config.get('DATABASE_URL', { infer: true });
+
+        if (!connectionString) {
+          throw new Error('DATABASE_URL is required');
+        }
+
+        return createDatabase(connectionString);
+      },
     },
+    DatabaseService,
   ],
-  exports: [DATABASE],
+  exports: [DATABASE, DatabaseService],
 })
 export class DatabaseModule {}

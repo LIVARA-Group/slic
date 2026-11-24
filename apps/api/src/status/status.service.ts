@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import type { StatusResponse } from '@repo/shared';
 import type { Env } from '../config/env.js';
 
 @Injectable()
 export class StatusService {
-  constructor(private readonly config: ConfigService<Env, true>) {}
+  constructor(
+    @Inject(ConfigService)
+    private readonly config: ConfigService<Env, true>,
+  ) {}
 
   getStatus(): StatusResponse {
     return {

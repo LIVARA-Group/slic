@@ -1,31 +1,30 @@
-import { Injectable, type OnApplicationShutdown, type OnModuleInit } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
-import { createDatabase, type Database } from '@repo/database';
+import { Inject, Injectable, type OnApplicationShutdown, type OnModuleInit } from '@nestjs/common';
+import type { Database } from '@repo/database';
 import { sql } from 'drizzle-orm';
-import type { Env } from '../config/env.js';
+import type { Pool } from 'pg';
+import { DATABASE } from './database.constants.js';
+
+interface DatabaseConnection {
+  db: Database;
+  pool: Pool;
+}
 
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnApplicationShutdown {
-  private readonly connection;
+  readonly database: Database;
 
-  readonly db: Database;
-
-  constructor(config: ConfigService<Env, true>) {
-    const connectionString = config.get('DATABASE_URL', { infer: true });
-
-    if (!connectionString) {
-      throw new Error('DATABASE_URL is required');
-    }
-
-    this.connection = createDatabase(connectionString);
-    this.db = this.connection.db;
+  constructor(
+    @Inject(DATABASE)
+    private readonly connection: DatabaseConnection,
+  ) {
+    this.database = connection.db;
   }
 
-  async onModuleInit() {
-    await this.db.execute(sql`SELECT 1`);
+  async onModuleInit(): Promise<void> {
+    await this.database.execute(sql`SELECT 1`);
   }
 
-  async onApplicationShutdown() {
+  async onApplicationShutdown(): Promise<void> {
     await this.connection.pool.end();
   }
 }

@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import type { StatusResponse } from '@repo/shared';
-import type { StatusService } from './status.service.js';
+// biome-ignore lint/style/useImportType: NestJS requires the runtime class for dependency injection.
+import { StatusService } from './status.service.js';
 
 @Controller('v1/status')
 export class StatusController {

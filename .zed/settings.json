@@ -4,100 +4,53 @@
       "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."],
       "tab_size": 2,
       "hard_tabs": false,
-      "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "pnpm",
-          "arguments": ["exec", "prettier", "--stdin-filepath", "{buffer_path}"]
-        }
-      }
+      "format_on_save": "on"
     },
     "HTML": {
       "tab_size": 2,
       "hard_tabs": false,
-      "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "pnpm",
-          "arguments": ["exec", "prettier", "--stdin-filepath", "{buffer_path}"]
-        }
-      }
+      "format_on_save": "on"
     },
     "JavaScript": {
       "tab_size": 2,
       "hard_tabs": false,
-      "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "pnpm",
-          "arguments": ["exec", "prettier", "--stdin-filepath", "{buffer_path}"]
-        }
-      }
+      "format_on_save": "on"
     },
     "JSON": {
       "tab_size": 2,
       "hard_tabs": false,
-      "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "pnpm",
-          "arguments": ["exec", "prettier", "--stdin-filepath", "{buffer_path}"]
-        }
-      }
+      "format_on_save": "on"
     },
     "JSONC": {
       "tab_size": 2,
       "hard_tabs": false,
-      "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "pnpm",
-          "arguments": ["exec", "prettier", "--stdin-filepath", "{buffer_path}"]
-        }
-      }
+      "format_on_save": "on"
     },
     "Markdown": {
       "tab_size": 2,
       "hard_tabs": false,
-      "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "pnpm",
-          "arguments": ["exec", "prettier", "--stdin-filepath", "{buffer_path}"]
-        }
-      }
+      "format_on_save": "on"
     },
     "TSX": {
       "tab_size": 2,
       "hard_tabs": false,
-      "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "pnpm",
-          "arguments": ["exec", "prettier", "--stdin-filepath", "{buffer_path}"]
-        }
-      }
+      "format_on_save": "on"
     },
     "TypeScript": {
       "tab_size": 2,
       "hard_tabs": false,
-      "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "pnpm",
-          "arguments": ["exec", "prettier", "--stdin-filepath", "{buffer_path}"]
-        }
-      }
+      "format_on_save": "on"
     },
     "YAML": {
       "tab_size": 2,
       "hard_tabs": false,
-      "format_on_save": "on",
-      "formatter": {
-        "external": {
-          "command": "pnpm",
-          "arguments": ["exec", "prettier", "--stdin-filepath", "{buffer_path}"]
-        }
+      "format_on_save": "on"
+    }
+  },
+  "lsp": {
+    "biome": {
+      "settings": {
+        "requireConfiguration": true
       }
     }
   }
