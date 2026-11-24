@@ -1,47 +1,35 @@
-import type { Database } from '@repo/database';
-import type { Pool } from 'pg';
+import { createDatabase } from '@repo/database';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DatabaseService } from './database.service.js';
 
-vi.mock('@repo/database', () => ({
-  createDatabase: vi.fn(),
-}));
-
 describe('DatabaseService', () => {
-  const database = {
-    execute: vi.fn().mockResolvedValue([]),
-  } as unknown as Database;
+  const connection = createDatabase('postgres://test:test@localhost:5432/test');
 
-  const pool = {
-    end: vi.fn().mockResolvedValue(undefined),
-  } as unknown as Pool;
-
-  const connection = {
-    db: database,
-    pool,
-  };
+  const queryError = new Error('Query intercepted');
+  const execute = vi.spyOn(connection.db, 'execute').mockImplementation(() => {
+    throw queryError;
+  });
+  const end = vi.spyOn(connection.pool, 'end').mockResolvedValue(undefined);
 
   let service: DatabaseService;
 
   beforeEach(() => {
     vi.clearAllMocks();
-
     service = new DatabaseService(connection);
   });
 
   it('should expose the Drizzle database instance', () => {
-    expect(service.database).toBe(database);
+    expect(service.database).toBe(connection.db);
   });
 
-  it('should check database connection on module initialization', async () => {
-    await service.onModuleInit();
-
-    expect(database.execute).toHaveBeenCalledOnce();
+  it('should execute a database connection check on module initialization', async () => {
+    await expect(service.onModuleInit()).rejects.toThrow(queryError);
+    expect(execute).toHaveBeenCalledOnce();
   });
 
   it('should close the connection pool on application shutdown', async () => {
     await service.onApplicationShutdown();
 
-    expect(pool.end).toHaveBeenCalledOnce();
+    expect(end).toHaveBeenCalledOnce();
   });
 });
