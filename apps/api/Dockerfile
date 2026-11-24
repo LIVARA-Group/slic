@@ -24,6 +24,7 @@ FROM deps AS build
 COPY tsconfig.base.json ./
 COPY packages/shared packages/shared
 COPY packages/database packages/database
+COPY packages/brain packages/brain
 COPY apps/api apps/api
 RUN pnpm --filter @repo/shared build \
     && pnpm --filter @repo/database build \
