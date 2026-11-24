@@ -19,6 +19,8 @@ export default defineConfig({
       url: 'http://127.0.0.1:3000/api/health/live',
       reuseExistingServer: !ci,
       timeout: 120_000,
+      stdout: 'pipe',
+      stderr: 'pipe',
     },
     {
       command: 'pnpm --filter @repo/web run dev --host 127.0.0.1',

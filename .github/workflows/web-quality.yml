@@ -53,6 +53,7 @@ jobs:
         run: pnpm --filter @repo/web test:e2e
         env:
           CI: true
+          DEBUG: pw:webserver
 
   bundle-size:
     name: Bundle size
