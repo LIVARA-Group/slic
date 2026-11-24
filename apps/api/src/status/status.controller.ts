@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import type { StatusResponse } from '@repo/shared';
 import { StatusService } from './status.service.js';
+
+import type { StatusResponse } from '@repo/shared';
 
 @Controller('v1/status')
 export class StatusController {

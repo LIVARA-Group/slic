@@ -22,3 +22,10 @@ catalog:
 
 # Needed by `pnpm deploy` (used by the API Dockerfile) so workspace packages are copied, not linked.
 injectWorkspacePackages: true
+allowBuilds:
+  esbuild: false
+permissions:
+  '@tanstack/react-router':
+    skills: false
+  '@tanstack/router-plugin':
+    skills: false
