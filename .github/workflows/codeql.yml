@@ -2,11 +2,11 @@ name: CodeQL
 
 on:
   push:
-    branches: [production]
+    branches: [ production ]
   pull_request:
-    branches: [production]
+    branches: [ production ]
   schedule:
-    - cron: '30 5 * * 1'
+    - cron: "30 5 * * 1"
   workflow_dispatch:
 
 permissions:
@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [javascript-typescript]
+        language: [ javascript-typescript ]
 
     steps:
       - name: Checkout repository

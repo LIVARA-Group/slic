@@ -2,11 +2,11 @@ name: Secret and vulnerability scanning
 
 on:
   pull_request:
-    branches: [production]
+    branches: [ production ]
   push:
-    branches: [production]
+    branches: [ production ]
   schedule:
-    - cron: '15 4 * * 1'
+    - cron: "15 4 * * 1"
   workflow_dispatch:
 
 permissions:

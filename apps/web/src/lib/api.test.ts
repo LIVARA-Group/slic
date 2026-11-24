@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { z } from 'zod';
 import { ApiError, apiFetch } from './api';
 
 const schema = z.object({ ok: z.boolean() });

@@ -4,8 +4,8 @@
   "type": "module",
   "packageManager": "pnpm@12.21.0",
   "engines": {
-    "node": ">=22.12",
-    "pnpm": ">=12"
+    "node": ">=22.12.0",
+    "pnpm": ">=12.21.0"
   },
   "scripts": {
     "dev": "turbo run dev --parallel",
@@ -14,15 +14,17 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint:fix": "biome check --write .",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e && pnpm build",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "clean": "turbo run clean && pnpm exec rimraf node_modules .turbo",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down"
   },
   "devDependencies": {
-    "prettier": "catalog:",
+    "@biomejs/biome": "^2.6.8",
+    "rimraf": "^6.0.1",
     "turbo": "catalog:",
     "typescript": "catalog:"
   }

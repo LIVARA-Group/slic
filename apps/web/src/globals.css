@@ -1,7 +1,7 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import '@fontsource-variable/inter/opsz.css';
-@import '@fontsource-variable/jetbrains-mono';
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/inter/opsz.css";
+@import "@fontsource-variable/jetbrains-mono";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -95,8 +95,8 @@
 }
 
 @theme inline {
-  --font-sans: 'Inter Variable', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-sans: "Inter Variable", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -189,7 +189,7 @@
 
   body {
     @apply bg-background text-foreground font-sans text-body antialiased;
-    font-feature-settings: 'calt', 'kern';
+    font-feature-settings: "calt", "kern";
   }
 
   :focus-visible {
@@ -273,7 +273,7 @@
 }
 
 .site-nav a:hover,
-.site-nav a[aria-current='page'] {
+.site-nav a[aria-current="page"] {
   border-bottom-color: var(--brand);
   color: var(--foreground);
 }

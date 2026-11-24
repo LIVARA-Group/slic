@@ -2,9 +2,9 @@ name: Workflow and container quality
 
 on:
   pull_request:
-    branches: [production]
+    branches: [ production ]
   push:
-    branches: [production]
+    branches: [ production ]
   workflow_dispatch:
 
 permissions:

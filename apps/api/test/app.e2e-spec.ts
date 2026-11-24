@@ -1,4 +1,4 @@
-import { type INestApplication } from '@nestjs/common';
+import type { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { statusResponseSchema } from '@repo/shared';
 import request from 'supertest';
@@ -16,7 +16,7 @@ describe('API (e2e)', () => {
   });
 
   afterAll(async () => {
-    await app.close();
+    await app?.close();
   });
 
   it('GET /api/health/live -> 200', async () => {

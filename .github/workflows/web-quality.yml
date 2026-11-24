@@ -2,9 +2,9 @@ name: Browser, accessibility, and bundle checks
 
 on:
   pull_request:
-    branches: [production]
+    branches: [ production ]
   push:
-    branches: [production]
+    branches: [ production ]
   workflow_dispatch:
 
 permissions:
@@ -16,9 +16,28 @@ concurrency:
 
 jobs:
   playwright:
-    name: Playwright and axe
+    name: playwright
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: slic
+          POSTGRES_PASSWORD: slic
+          POSTGRES_DB: slic_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U slic -d slic_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgres://slic:slic@localhost:5432/slic_test
+
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
@@ -28,12 +47,14 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @repo/shared build
+      - run: pnpm --filter @repo/database build
       - name: Install Chromium and system dependencies
         run: pnpm --filter @repo/web exec playwright install --with-deps chromium
       - name: Run browser and accessibility tests
         run: pnpm --filter @repo/web test:e2e
         env:
           CI: true
+          DEBUG: pw:webserver
 
   bundle-size:
     name: Bundle size
