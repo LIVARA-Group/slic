@@ -2,9 +2,9 @@ name: Browser, accessibility, and bundle checks
 
 on:
   pull_request:
-    branches: [ production ]
+    branches: [production]
   push:
-    branches: [ production ]
+    branches: [production]
   workflow_dispatch:
 
 permissions:
@@ -47,6 +47,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @repo/shared build
+      - run: pnpm --filter @repo/database build
       - name: Install Chromium and system dependencies
         run: pnpm --filter @repo/web exec playwright install --with-deps chromium
       - name: Run browser and accessibility tests
