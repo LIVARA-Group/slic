@@ -16,7 +16,7 @@ describe('API (e2e)', () => {
   });
 
   afterAll(async () => {
-    await app.close();
+    await app?.close();
   });
 
   it('GET /api/health/live -> 200', async () => {

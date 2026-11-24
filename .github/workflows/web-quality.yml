@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   playwright:
-    name: Playwright and axe
+    name: playwright
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
