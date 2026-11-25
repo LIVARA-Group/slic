@@ -20,5 +20,8 @@ catalog:
   prettier: ^3.10.1
   turbo: ^2.11.11
 
+overrides:
+  '@esbuild-kit/core-utils>esbuild': 0.25.12
+
 # Needed by `pnpm deploy` (used by the API Dockerfile) so workspace packages are copied, not linked.
 injectWorkspacePackages: true

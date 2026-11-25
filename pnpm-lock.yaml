@@ -205,6 +205,9 @@ catalogs:
       specifier: ^4.6.7
       version: 4.6.7
 
+overrides:
+  '@esbuild-kit/core-utils>esbuild': 0.25.12
+
 importers:
 
   .:
