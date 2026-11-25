@@ -63,5 +63,9 @@ describe('benchmark workflow', () => {
     expect(restored.id).toBe('wp-010-smoke-test');
     expect(restored.benchmarks).toHaveLength(1);
     expect(restored.dataset).toEqual(datasetOptions);
+
+    expect(restored.benchmarks[0].memoryBefore).toEqual(benchmark.memoryBefore);
+    expect(restored.benchmarks[0].memoryAfter).toEqual(benchmark.memoryAfter);
+    expect(restored.benchmarks[0].memoryDelta).toEqual(benchmark.memoryDelta);
   });
 });

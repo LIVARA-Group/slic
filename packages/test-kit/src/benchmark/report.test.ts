@@ -43,6 +43,27 @@ describe('createBenchmarkReport', () => {
       startedAt: '2026-11-25T12:00:00.000Z',
       completedAt: '2026-11-25T12:00:01.000Z',
       samplesMs: [1, 2, 3, 4, 5],
+      memoryBefore: {
+        rss: 100_000_000,
+        heapTotal: 50_000_000,
+        heapUsed: 30_000_000,
+        external: 5_000_000,
+        arrayBuffers: 1_000_000,
+      },
+      memoryAfter: {
+        rss: 110_000_000,
+        heapTotal: 55_000_000,
+        heapUsed: 35_000_000,
+        external: 6_000_000,
+        arrayBuffers: 2_000_000,
+      },
+      memoryDelta: {
+        rss: 10_000_000,
+        heapTotal: 5_000_000,
+        heapUsed: 5_000_000,
+        external: 1_000_000,
+        arrayBuffers: 1_000_000,
+      },
       duration: {
         samples: 10,
         min: 1,

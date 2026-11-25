@@ -38,7 +38,7 @@ describe('runBenchmark', () => {
 
   it('rejects invalid iteration counts', async () => {
     await expect(
-      runBenchmark(() => {}, {
+      runBenchmark(() => undefined, {
         name: 'invalid',
         iterations: 0,
       }),
@@ -55,5 +55,30 @@ describe('runBenchmark', () => {
     });
 
     expect(operation).toHaveBeenCalledTimes(3);
+  });
+
+  it('captures memory snapshots and calculates memory delta', async () => {
+    const result = await runBenchmark(
+      () => {
+        const buffer = new Array(1000).fill('benchmark-data');
+        void buffer;
+      },
+      {
+        name: 'memory-test',
+        warmupIterations: 1,
+        iterations: 3,
+      },
+    );
+
+    expect(result.memoryBefore.rss).toBeGreaterThan(0);
+    expect(result.memoryAfter.rss).toBeGreaterThan(0);
+
+    expect(result.memoryDelta).toEqual({
+      rss: result.memoryAfter.rss - result.memoryBefore.rss,
+      heapTotal: result.memoryAfter.heapTotal - result.memoryBefore.heapTotal,
+      heapUsed: result.memoryAfter.heapUsed - result.memoryBefore.heapUsed,
+      external: result.memoryAfter.external - result.memoryBefore.external,
+      arrayBuffers: result.memoryAfter.arrayBuffers - result.memoryBefore.arrayBuffers,
+    });
   });
 });

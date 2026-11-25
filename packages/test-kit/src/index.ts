@@ -6,6 +6,8 @@ export {
 } from './benchmark/report.js';
 export { writeBenchmarkReport } from './benchmark/report-writer.js';
 export {
+  type BenchmarkMemoryDelta,
+  type BenchmarkMemorySnapshot,
   type BenchmarkOptions,
   type BenchmarkResult,
   runBenchmark,
