@@ -174,7 +174,8 @@ export const extendedPathways = [
   {
     id: 'reflex-arc-pathway',
     name: 'Spinal reflex arc',
-    description: 'A reflex response mediated by spinal circuits without requiring cortical involvement (survival-related behavior).',
+    description:
+      'A reflex response mediated by spinal circuits without requiring cortical involvement (survival-related behavior).',
     regions: ['somatic-receptors', 'dorsal-horn', 'ventral-horn', 'skeletal-muscles'],
     connectionIds: [
       'somatic-receptors-to-dorsal-horn',
@@ -445,7 +446,8 @@ export const extendedPathways = [
   {
     id: 'fear-low-road-pathway',
     name: 'Fear "low road"',
-    description: 'Rapid defensive responses before conscious awareness, such as freezing or fleeing.',
+    description:
+      'Rapid defensive responses before conscious awareness, such as freezing or fleeing.',
     regions: [
       'medial-geniculate-nucleus',
       'left-amygdala',

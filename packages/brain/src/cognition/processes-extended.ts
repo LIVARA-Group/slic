@@ -1,4 +1,3 @@
-
 import type { Evidence } from '../shared/types.js';
 import type { CognitiveProcessDefinition } from './types.js';
 
