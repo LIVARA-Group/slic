@@ -159,3 +159,37 @@ The current baseline uses curated conceptual definitions. Empty source lists mea
 Do not interpret `curated_baseline` as a numerical confidence score.
 
 Future dataset-derived definitions must include dataset identity, version and mapping provenance.
+
+## Merged model (0.4.0)
+
+The registry now combines the curated baseline with the SLIC prototype data:
+
+| Registry            | Baseline | Merged |
+| ------------------- | -------: | -----: |
+| Structures          |       71 |    144 |
+| Connections         |       26 |    208 |
+| Pathways            |        6 |     38 |
+| Cognitive processes |       10 |     24 |
+
+Merged entries use `evidence.level = 'moderate'` and empty `sources`. Use `getProvenanceSummary()` to track sourcing progress and `validateProvenance()` to list unsourced connections.
+
+### Frontal part and the rest of the brain
+
+```ts
+import { getBrainPart, type FrontalRegionId, type RestOfBrainRegionId } from '@repo/brain/anatomy';
+
+getBrainPart('dorsolateral-prefrontal-cortex'); // 'frontal'
+getBrainPart('thalamus'); // 'rest'
+getBrainPart('retina'); // null (outside the brain)
+```
+
+The types are derived from the `parentId` hierarchy, so adding a structure under a frontal lobe updates `FrontalRegionId` automatically.
+
+### Related packages
+
+| Package           | Purpose                                                              |
+| ----------------- | -------------------------------------------------------------------- |
+| `@repo/brain-sim` | Event-driven activity simulator (latency, weight, thoughts, actions) |
+| `@repo/brain-viz` | Renderer-neutral graph export and standalone HTML map                |
+
+See `docs/merge-notes.md` for modelling decisions and known gaps.

@@ -1,5 +1,5 @@
 import type { RegionId } from '../anatomy/regions.js';
-import type { Evidence, Identifier } from '../shared/types.js';
+import type { Evidence, Identifier, Neurotransmitter, SignalEffect } from '../shared/types.js';
 
 export type ConnectionKind =
   | 'projection'
@@ -24,6 +24,10 @@ export interface ConnectionDefinition {
   readonly evidenceStatus: EvidenceStatus;
   readonly evidence: Evidence;
   readonly description: string;
+  /** Sign of the postsynaptic effect, when known. Absent means unspecified. */
+  readonly effect?: SignalEffect;
+  /** Principal neurotransmitter, when known. */
+  readonly neurotransmitter?: Neurotransmitter;
 }
 
 export interface PathwayDefinition {

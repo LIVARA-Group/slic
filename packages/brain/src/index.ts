@@ -16,7 +16,7 @@ export * from './validation/index.js';
 export const brainModel = Object.freeze({
   metadata: Object.freeze({
     id: 'slic-brain',
-    version: '0.3.0',
+    version: '0.4.0',
     name: 'SLIC Brain Model',
     description:
       'A curated conceptual model of selected human neuroanatomical structures, connectivity and distributed functional relationships.',

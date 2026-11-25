@@ -45,3 +45,17 @@ export interface Coordinate3D {
 export interface VersionedDefinition {
   readonly version: string;
 }
+
+export type SignalEffect = 'excitatory' | 'inhibitory' | 'modulatory';
+
+export type Neurotransmitter =
+  | 'glutamate'
+  | 'GABA'
+  | 'dopamine'
+  | 'serotonin'
+  | 'acetylcholine'
+  | 'noradrenaline'
+  | 'histamine'
+  | 'orexin'
+  | 'oxytocin'
+  | 'CRH';

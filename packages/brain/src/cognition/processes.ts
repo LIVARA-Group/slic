@@ -1,4 +1,5 @@
 import type { Evidence } from '../shared/types.js';
+import { extendedCognitiveProcesses } from './processes-extended.js';
 import type { CognitiveProcessDefinition } from './types.js';
 
 const reviewEvidence = {
@@ -8,7 +9,7 @@ const reviewEvidence = {
   note: 'Distributed functional model. Specific contributions vary by task and context.',
 } as const satisfies Evidence;
 
-export const cognitiveProcesses = [
+export const coreCognitiveProcesses = [
   {
     id: 'visual-perception',
     name: 'Visual perception',
@@ -181,6 +182,11 @@ export const cognitiveProcesses = [
     participatingSystems: ['autonomic'],
     evidence: reviewEvidence,
   },
+] as const satisfies readonly CognitiveProcessDefinition[];
+
+export const cognitiveProcesses = [
+  ...coreCognitiveProcesses,
+  ...extendedCognitiveProcesses,
 ] as const satisfies readonly CognitiveProcessDefinition[];
 
 export type CognitiveProcessId = (typeof cognitiveProcesses)[number]['id'];

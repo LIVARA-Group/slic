@@ -1,3 +1,4 @@
+import { extendedCorticalAreas } from './cortical-areas-extended.js';
 import type { RegionId } from './regions.js';
 
 export interface CorticalArea {
@@ -8,7 +9,7 @@ export interface CorticalArea {
   readonly description: string;
 }
 
-export const corticalAreas = [
+export const coreCorticalAreas = [
   {
     id: 'primary-motor',
     name: 'Primary motor cortex',
@@ -45,6 +46,11 @@ export const corticalAreas = [
     description:
       'A language-related region commonly associated with portions of Brodmann areas 44 and 45.',
   },
+] as const satisfies readonly CorticalArea[];
+
+export const corticalAreas = [
+  ...coreCorticalAreas,
+  ...extendedCorticalAreas,
 ] as const satisfies readonly CorticalArea[];
 
 export function getCorticalArea(id: string): CorticalArea | undefined {

@@ -1,3 +1,4 @@
+import { extendedStructures } from './regions-extended.js';
 import type { BrainStructure } from './types.js';
 
 const establishedReview = {
@@ -6,7 +7,7 @@ const establishedReview = {
   sources: [],
 } as const;
 
-export const brainStructures: readonly BrainStructure[] = [
+export const coreStructures = [
   {
     id: 'nervous-system',
     name: 'Nervous system',
@@ -821,7 +822,12 @@ export const brainStructures: readonly BrainStructure[] = [
       'The peripheral and central networks regulating involuntary physiological functions.',
     evidence: establishedReview,
   },
-];
+] as const satisfies readonly BrainStructure[];
+
+export const brainStructures = [
+  ...coreStructures,
+  ...extendedStructures,
+] as const satisfies readonly BrainStructure[];
 
 export type RegionId = (typeof brainStructures)[number]['id'];
 

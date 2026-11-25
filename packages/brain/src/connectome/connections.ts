@@ -1,4 +1,5 @@
 import type { Evidence } from '../shared/types.js';
+import { extendedConnections } from './connections-extended.js';
 import type { ConnectionDefinition } from './types.js';
 
 const anatomicalReview = {
@@ -8,7 +9,7 @@ const anatomicalReview = {
   note: 'Curated conceptual baseline. Specific dataset provenance has not yet been attached.',
 } as const satisfies Evidence;
 
-export const connections = [
+export const coreConnections = [
   // Visual pathways
 
   {
@@ -305,3 +306,8 @@ export type ConnectionId = (typeof connections)[number]['id'];
 export function getConnection(id: ConnectionId): (typeof connections)[number] | undefined {
   return connections.find((connection) => connection.id === id);
 }
+
+export const connections = [
+  ...coreConnections,
+  ...extendedConnections,
+] as const satisfies readonly ConnectionDefinition[];

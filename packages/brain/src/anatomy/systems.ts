@@ -1,4 +1,5 @@
 import type { RegionId } from './regions.js';
+import { extendedSystemMembership } from './systems-extended.js';
 
 export type FunctionalSystemId =
   | 'visual'
@@ -145,9 +146,15 @@ export function getFunctionalSystem(id: FunctionalSystemId): FunctionalSystem | 
 }
 
 export function getSystemsForRegion(regionId: RegionId): readonly FunctionalSystem[] {
-  return functionalSystems.filter((system) => system.regions.some((id) => id === regionId));
+  return functionalSystems.filter(
+    (system) =>
+      system.regions.some((id) => id === regionId) ||
+      extendedSystemMembership[system.id].some((id) => id === regionId),
+  );
 }
 
 export function getRegionsForSystem(systemId: FunctionalSystemId): readonly RegionId[] {
-  return getFunctionalSystem(systemId)?.regions ?? [];
+  const base: readonly RegionId[] = getFunctionalSystem(systemId)?.regions ?? [];
+
+  return [...base, ...extendedSystemMembership[systemId]];
 }

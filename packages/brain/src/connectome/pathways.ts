@@ -1,5 +1,6 @@
 import type { RegionId } from '../anatomy/regions.js';
 import type { Evidence } from '../shared/types.js';
+import { extendedPathways } from './pathways-extended.js';
 import type { PathwayDefinition } from './types.js';
 
 const pathwayEvidence = {
@@ -9,7 +10,7 @@ const pathwayEvidence = {
   note: 'Simplified curated pathway. Intermediate structures may be omitted.',
 } as const satisfies Evidence;
 
-export const pathways = [
+export const corePathways = [
   {
     id: 'visual-geniculostriate',
     name: 'Geniculostriate visual pathway',
@@ -82,6 +83,11 @@ export const pathways = [
     connectionIds: ['entorhinal-to-hippocampus', 'hippocampus-to-subiculum', 'subiculum-to-fornix'],
     evidence: pathwayEvidence,
   },
+] as const satisfies readonly PathwayDefinition[];
+
+export const pathways = [
+  ...corePathways,
+  ...extendedPathways,
 ] as const satisfies readonly PathwayDefinition[];
 
 export type PathwayId = (typeof pathways)[number]['id'];
