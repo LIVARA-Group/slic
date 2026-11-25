@@ -149,12 +149,13 @@ export function toGraph(): Graph {
       const inputs = ids.filter((id) => getParentId(id) === 'sensory-boundaries');
       const outputs = ids.filter((id) => getParentId(id) !== 'sensory-boundaries');
 
-      inputs.forEach((id, i) =>
-        position.set(id, [70, 150 + (i * 1100) / Math.max(1, inputs.length - 1)]),
-      );
-      outputs.forEach((id, i) =>
-        position.set(id, [1930, 250 + (i * 800) / Math.max(1, outputs.length - 1)]),
-      );
+      inputs.forEach((id, i) => {
+        position.set(id, [70, 150 + (i * 1100) / Math.max(1, inputs.length - 1)]);
+      });
+
+      outputs.forEach((id, i) => {
+        position.set(id, [1930, 250 + (i * 800) / Math.max(1, outputs.length - 1)]);
+      });
       continue;
     }
 
@@ -230,7 +231,9 @@ export function toMermaid(graph: Graph = toGraph()): string {
 
   for (const [cluster, nodes] of byCluster) {
     lines.push(`  subgraph ${cluster}["${cluster}"]`);
-    nodes.forEach((n) => lines.push(`    ${safe(n.id)}["${n.ru}"]`));
+    nodes.forEach((n) => {
+      lines.push(`    ${safe(n.id)}["${n.ru}"]`);
+    });
     lines.push('  end');
   }
 

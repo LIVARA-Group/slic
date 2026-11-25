@@ -158,8 +158,12 @@ export class BrainSimulator {
     if (this.queue.length > 0) {
       this.queue.sort((a, b) => a.at - b.at);
 
-      while (this.queue.length > 0 && this.queue[0]!.at <= this.time) {
-        this.arrive(this.queue.shift()!);
+      while (this.queue[0]?.at !== undefined && this.queue[0].at <= this.time) {
+        const event = this.queue.shift();
+
+        if (!event) break;
+
+        this.arrive(event);
       }
     }
 

@@ -3036,13 +3036,21 @@
     {
       "id": "visual-geniculostriate",
       "ru": "Geniculostriate visual pathway",
-      "steps": ["retina", "lateral-geniculate-nucleus", "left-primary-visual-cortex"],
+      "steps": [
+        "retina",
+        "lateral-geniculate-nucleus",
+        "left-primary-visual-cortex"
+      ],
       "description": "A simplified representation of the principal retinal-thalamic-cortical visual pathway."
     },
     {
       "id": "visual-tectal",
       "ru": "Retinotectal pathway",
-      "steps": ["retina", "superior-colliculus", "brainstem"],
+      "steps": [
+        "retina",
+        "superior-colliculus",
+        "brainstem"
+      ],
       "description": "A simplified representation of retinal projections to the superior colliculus and related orienting networks."
     },
     {
@@ -3070,13 +3078,22 @@
     {
       "id": "corticospinal",
       "ru": "Corticospinal pathway",
-      "steps": ["left-premotor-cortex", "left-primary-motor-cortex", "spinal-cord"],
+      "steps": [
+        "left-premotor-cortex",
+        "left-primary-motor-cortex",
+        "spinal-cord"
+      ],
       "description": "A simplified descending motor pathway from cortical motor regions to the spinal cord."
     },
     {
       "id": "hippocampal-fornical",
       "ru": "Hippocampal-fornical pathway",
-      "steps": ["entorhinal-cortex", "left-hippocampus", "subiculum", "fornix"],
+      "steps": [
+        "entorhinal-cortex",
+        "left-hippocampus",
+        "subiculum",
+        "fornix"
+      ],
       "description": "A simplified representation of hippocampal formation output through subicular and fornical structures."
     },
     {
@@ -3145,7 +3162,12 @@
     {
       "id": "pain-affective-pathway",
       "ru": "Affective pain pathway",
-      "steps": ["somatic-receptors", "dorsal-horn", "parabrachial-nucleus", "left-amygdala"],
+      "steps": [
+        "somatic-receptors",
+        "dorsal-horn",
+        "parabrachial-nucleus",
+        "left-amygdala"
+      ],
       "description": "The emotional and unpleasant experience of pain."
     },
     {
@@ -3173,19 +3195,33 @@
     {
       "id": "circadian-pathway",
       "ru": "Retinohypothalamic (circadian) pathway",
-      "steps": ["retina", "suprachiasmatic-nucleus", "pineal-gland"],
+      "steps": [
+        "retina",
+        "suprachiasmatic-nucleus",
+        "pineal-gland"
+      ],
       "description": "Light signals regulate circadian sleep–wake rhythms."
     },
     {
       "id": "vestibulo-ocular-pathway",
       "ru": "Vestibulo-ocular reflex",
-      "steps": ["vestibular-apparatus", "vestibular-nuclei", "cranial-nerve-nuclei", "eye-muscles"],
+      "steps": [
+        "vestibular-apparatus",
+        "vestibular-nuclei",
+        "cranial-nerve-nuclei",
+        "eye-muscles"
+      ],
       "description": "Stabilization of gaze during head movements."
     },
     {
       "id": "reflex-arc-pathway",
       "ru": "Spinal reflex arc",
-      "steps": ["somatic-receptors", "dorsal-horn", "ventral-horn", "skeletal-muscles"],
+      "steps": [
+        "somatic-receptors",
+        "dorsal-horn",
+        "ventral-horn",
+        "skeletal-muscles"
+      ],
       "description": "A reflex response mediated by spinal circuits without requiring cortical involvement (survival-related behavior)."
     },
     {
@@ -3366,7 +3402,11 @@
     {
       "id": "stress-axis-pathway",
       "ru": "Stress response (HPA axis)",
-      "steps": ["left-amygdala", "hypothalamus", "pituitary-gland"],
+      "steps": [
+        "left-amygdala",
+        "hypothalamus",
+        "pituitary-gland"
+      ],
       "description": "Hormonal response to perceived threats."
     },
     {
@@ -3382,31 +3422,48 @@
     {
       "id": "valuation-pathway",
       "ru": "Valuation circuit",
-      "steps": ["left-amygdala", "orbitofrontal-cortex", "nucleus-accumbens"],
+      "steps": [
+        "left-amygdala",
+        "orbitofrontal-cortex",
+        "nucleus-accumbens"
+      ],
       "description": "Evaluation of positive and negative value and its contribution to motivation."
     },
     {
       "id": "mesolimbic-pathway",
       "ru": "Mesolimbic dopamine pathway (reward)",
-      "steps": ["ventral-tegmental-area", "nucleus-accumbens"],
+      "steps": [
+        "ventral-tegmental-area",
+        "nucleus-accumbens"
+      ],
       "description": "Dopamine signaling involved in motivation and reinforcement."
     },
     {
       "id": "mesocortical-pathway",
       "ru": "Mesocortical dopamine pathway",
-      "steps": ["ventral-tegmental-area", "left-prefrontal-cortex"],
+      "steps": [
+        "ventral-tegmental-area",
+        "left-prefrontal-cortex"
+      ],
       "description": "Dopamine signaling involved in attention and planning."
     },
     {
       "id": "nigrostriatal-pathway",
       "ru": "Nigrostriatal dopamine pathway",
-      "steps": ["substantia-nigra-pars-compacta", "putamen"],
+      "steps": [
+        "substantia-nigra-pars-compacta",
+        "putamen"
+      ],
       "description": "Dopamine signaling involved in motor control and movement initiation."
     },
     {
       "id": "arousal-pathway",
       "ru": "Ascending arousal system",
-      "steps": ["reticular-formation", "intralaminar-nuclei", "left-prefrontal-cortex"],
+      "steps": [
+        "reticular-formation",
+        "intralaminar-nuclei",
+        "left-prefrontal-cortex"
+      ],
       "description": "Regulation of wakefulness and attention."
     }
   ],
