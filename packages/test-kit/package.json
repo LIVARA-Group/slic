@@ -1,0 +1,29 @@
+{
+  "name": "@repo/test-kit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic dataset generators and benchmark utilities for SLIC technical validation.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint -c ../../.oxlintrc.json --type-aware src",
+    "test": "vitest run",
+    "clean": "rm -rf dist coverage"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
