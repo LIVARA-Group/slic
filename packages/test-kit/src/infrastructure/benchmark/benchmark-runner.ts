@@ -1,44 +1,27 @@
 import { performance } from 'node:perf_hooks';
 import { memoryUsage } from 'node:process';
-import { type BenchmarkStatistics, calculateStatistics } from './statistics.js';
+import type {
+  BenchmarkCacheState,
+  BenchmarkMemoryDelta,
+  BenchmarkMemorySnapshot,
+  BenchmarkResult,
+} from '../../core/benchmark/benchmark-result.js';
+import { calculateStatistics } from '../../core/benchmark/statistics.js';
 
 export interface BenchmarkOptions {
   name: string;
   warmupIterations?: number;
   iterations?: number;
-}
-
-export interface BenchmarkMemorySnapshot {
-  rss: number;
-  heapTotal: number;
-  heapUsed: number;
-  external: number;
-  arrayBuffers: number;
-}
-
-export interface BenchmarkMemoryDelta {
-  rss: number;
-  heapTotal: number;
-  heapUsed: number;
-  external: number;
-  arrayBuffers: number;
-}
-
-export interface BenchmarkResult {
-  name: string;
-  warmupIterations: number;
-  iterations: number;
-  startedAt: string;
-  completedAt: string;
-  samplesMs: number[];
-  duration: BenchmarkStatistics;
-  operationsPerSecond: number | null;
-  memoryBefore: BenchmarkMemorySnapshot;
-  memoryAfter: BenchmarkMemorySnapshot;
-  memoryDelta: BenchmarkMemoryDelta;
+  concurrency?: number;
+  cacheState?: BenchmarkCacheState;
 }
 
 type BenchmarkOperation = () => void | Promise<void>;
+
+const MEMORY_MEASUREMENT = {
+  method: 'node:process.memoryUsage',
+  scope: 'process-snapshot-before-and-after',
+} as const;
 
 function collectMemorySnapshot(): BenchmarkMemorySnapshot {
   const usage = memoryUsage();
@@ -65,25 +48,45 @@ function calculateMemoryDelta(
   };
 }
 
+async function executeBatch(
+  operation: BenchmarkOperation,
+  concurrency: number,
+): Promise<void> {
+  await Promise.all(
+    Array.from(
+      { length: concurrency },
+      async () => {
+        await operation();
+      },
+    ),
+  );
+}
+
 export async function runBenchmark(
   operation: BenchmarkOperation,
   options: BenchmarkOptions,
 ): Promise<BenchmarkResult> {
   const warmupIterations = options.warmupIterations ?? 5;
   const iterations = options.iterations ?? 30;
+  const concurrency = options.concurrency ?? 1;
+  const cacheState = options.cacheState ?? 'not-applicable';
 
-  if (!Number.isInteger(warmupIterations) || warmupIterations < 0) {
-    throw new RangeError('warmupIterations must be a non-negative integer');
+  if (!Number.isSafeInteger(warmupIterations) || warmupIterations < 0) {
+    throw new RangeError('warmupIterations must be a non-negative safe integer');
   }
 
-  if (!Number.isInteger(iterations) || iterations < 1) {
-    throw new RangeError('iterations must be a positive integer');
+  if (!Number.isSafeInteger(iterations) || iterations < 1) {
+    throw new RangeError('iterations must be a positive safe integer');
+  }
+
+  if (!Number.isSafeInteger(concurrency) || concurrency < 1) {
+    throw new RangeError('concurrency must be a positive safe integer');
   }
 
   const startedAt = new Date().toISOString();
 
   for (let index = 0; index < warmupIterations; index++) {
-    await operation();
+    await executeBatch(operation, concurrency);
   }
 
   const memoryBefore = collectMemorySnapshot();
@@ -92,7 +95,7 @@ export async function runBenchmark(
   for (let index = 0; index < iterations; index++) {
     const start = performance.now();
 
-    await operation();
+    await executeBatch(operation, concurrency);
 
     samples.push(performance.now() - start);
   }
@@ -104,11 +107,15 @@ export async function runBenchmark(
     name: options.name,
     warmupIterations,
     iterations,
+    concurrency,
+    cacheState,
     startedAt,
     completedAt: new Date().toISOString(),
     samplesMs: samples,
     duration,
-    operationsPerSecond: duration.mean > 0 ? 1000 / duration.mean : null,
+    operationsPerSecond:
+      duration.mean > 0 ? (concurrency * 1000) / duration.mean : null,
+    memoryMeasurement: MEMORY_MEASUREMENT,
     memoryBefore,
     memoryAfter,
     memoryDelta: calculateMemoryDelta(memoryBefore, memoryAfter),

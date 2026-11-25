@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { runBenchmark } from './runner.js';
+import { runBenchmark } from './benchmark-runner.js';
 
 describe('runBenchmark', () => {
   it('executes warmup and measurement iterations', async () => {
@@ -16,6 +16,59 @@ describe('runBenchmark', () => {
     expect(result.duration.samples).toBe(5);
     expect(result.samplesMs).toHaveLength(5);
     expect(result.samplesMs.every((sample) => sample >= 0)).toBe(true);
+  });
+
+  it('executes operations concurrently within each batch', async () => {
+    let active = 0;
+    let maximumActive = 0;
+
+    const operation = async () => {
+      active += 1;
+      maximumActive = Math.max(maximumActive, active);
+      await Promise.resolve();
+      active -= 1;
+    };
+
+    const result = await runBenchmark(operation, {
+      name: 'concurrent-operation',
+      warmupIterations: 0,
+      iterations: 2,
+      concurrency: 3,
+    });
+
+    expect(maximumActive).toBe(3);
+    expect(result.concurrency).toBe(3);
+    expect(result.samplesMs).toHaveLength(2);
+  });
+
+  it('calculates throughput using batch concurrency', async () => {
+    const result = await runBenchmark(() => undefined, {
+      name: 'throughput-operation',
+      warmupIterations: 0,
+      iterations: 3,
+      concurrency: 4,
+    });
+
+    expect(result.operationsPerSecond).toBe(
+      result.duration.mean > 0
+        ? (4 * 1000) / result.duration.mean
+        : null,
+    );
+  });
+
+  it('records cache state and memory measurement metadata', async () => {
+    const result = await runBenchmark(() => undefined, {
+      name: 'metadata-operation',
+      warmupIterations: 0,
+      iterations: 1,
+      cacheState: 'cold',
+    });
+
+    expect(result.cacheState).toBe('cold');
+    expect(result.memoryMeasurement).toEqual({
+      method: 'node:process.memoryUsage',
+      scope: 'process-snapshot-before-and-after',
+    });
   });
 
   it('returns valid duration statistics', async () => {
@@ -41,6 +94,15 @@ describe('runBenchmark', () => {
       runBenchmark(() => undefined, {
         name: 'invalid',
         iterations: 0,
+      }),
+    ).rejects.toThrow(RangeError);
+  });
+
+  it('rejects invalid concurrency', async () => {
+    await expect(
+      runBenchmark(() => undefined, {
+        name: 'invalid-concurrency',
+        concurrency: 0,
       }),
     ).rejects.toThrow(RangeError);
   });

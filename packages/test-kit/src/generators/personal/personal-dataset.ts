@@ -1,4 +1,8 @@
-import { SeededRandom } from '../random/seeded-random.js';
+import {
+  createDatasetManifest,
+  type GeneratedDataset,
+} from '../../core/dataset/dataset.js';
+import { SeededRandom } from '../../core/random/seeded-random.js';
 
 export interface PersonalNote {
   id: string;
@@ -21,8 +25,7 @@ export interface PersonalRelation {
   type: string;
 }
 
-export interface PersonalDataset {
-  seed: number;
+export interface PersonalDatasetData {
   notes: PersonalNote[];
   entities: PersonalEntity[];
   relations: PersonalRelation[];
@@ -35,9 +38,23 @@ export interface PersonalDatasetOptions {
   relationCount: number;
 }
 
-const ENTITY_TYPES = ['person', 'place', 'concept', 'event', 'organization'] as const;
+export const PERSONAL_DATASET_GENERATOR_VERSION = '1.0.0';
 
-const RELATION_TYPES = ['related_to', 'references', 'depends_on', 'part_of', 'created_by'] as const;
+const ENTITY_TYPES = [
+  'person',
+  'place',
+  'concept',
+  'event',
+  'organization',
+] as const;
+
+const RELATION_TYPES = [
+  'related_to',
+  'references',
+  'depends_on',
+  'part_of',
+  'created_by',
+] as const;
 
 const BASE_TIMESTAMP = Date.UTC(2026, 0, 1);
 
@@ -53,7 +70,16 @@ function createTimestamp(random: SeededRandom): string {
   return new Date(BASE_TIMESTAMP + offset).toISOString();
 }
 
-export function generatePersonalDataset(options: PersonalDatasetOptions): PersonalDataset {
+function countByType(records: { type: string }[]): Record<string, number> {
+  return records.reduce<Record<string, number>>((counts, record) => {
+    counts[record.type] = (counts[record.type] ?? 0) + 1;
+    return counts;
+  }, {});
+}
+
+export function generatePersonalDataset(
+  options: PersonalDatasetOptions,
+): GeneratedDataset<PersonalDatasetData> {
   const { seed, noteCount, entityCount, relationCount } = options;
 
   validateCount('noteCount', noteCount);
@@ -103,10 +129,37 @@ export function generatePersonalDataset(options: PersonalDatasetOptions): Person
     };
   });
 
-  return {
-    seed,
+  const data: PersonalDatasetData = {
     notes,
     entities,
     relations,
   };
+
+  const manifest = createDatasetManifest({
+    family: 'DS-P',
+    seed,
+    generatorVersion: PERSONAL_DATASET_GENERATOR_VERSION,
+    data,
+    recordCounts: {
+      notes: notes.length,
+      entities: entities.length,
+      relations: relations.length,
+    },
+    distribution: {
+      ...Object.fromEntries(
+        Object.entries(countByType(entities)).map(([type, count]) => [
+          `entity.${type}`,
+          count,
+        ]),
+      ),
+      ...Object.fromEntries(
+        Object.entries(countByType(relations)).map(([type, count]) => [
+          `relation.${type}`,
+          count,
+        ]),
+      ),
+    },
+  });
+
+  return { data, manifest };
 }
