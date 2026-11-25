@@ -10,7 +10,12 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "bin": {
+    "test-kit": "./dist/cli/index.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
