@@ -15,6 +15,7 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc ./
 COPY apps/api/package.json apps/api/
 COPY packages/shared/package.json packages/shared/
 COPY packages/database/package.json packages/database/
+COPY packages/brain/package.json packages/brain/
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm-store \
     pnpm install --frozen-lockfile --store-dir /pnpm-store --filter @repo/api...
 
@@ -23,9 +24,11 @@ FROM deps AS build
 COPY tsconfig.base.json ./
 COPY packages/shared packages/shared
 COPY packages/database packages/database
+COPY packages/brain packages/brain
 COPY apps/api apps/api
 RUN pnpm --filter @repo/shared build \
     && pnpm --filter @repo/database build \
+    && pnpm --filter @repo/brain build \
     && pnpm --filter @repo/api build
 RUN pnpm --filter @repo/api deploy --prod /out
 

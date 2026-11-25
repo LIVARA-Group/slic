@@ -1,0 +1,120 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@repo/brain — Brain Map</title>
+<style>
+:root{--bg:#0e1116;--fg:#e6e8eb;--mut:#8b949e;--panel:#161b22}
+@media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--fg:#1f2328;--mut:#59636e;--panel:#fff}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px system-ui,sans-serif;display:flex;flex-direction:column;height:100vh}
+header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 12px;background:var(--panel);border-bottom:1px solid #8884}
+button,select{background:transparent;color:var(--fg);border:1px solid #8886;border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit}
+button:hover{background:#8883}h1{font-size:15px;margin:0 12px 0 0}
+#wrap{position:relative;flex:1;min-height:0}canvas{width:100%;height:100%;display:block;cursor:grab}
+#tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid #8886;border-radius:8px;padding:8px 10px;max-width:320px;display:none;font-size:13px;line-height:1.4}
+#legend{position:absolute;left:8px;bottom:8px;background:var(--panel);border:1px solid #8886;border-radius:8px;padding:6px 10px;font-size:12px;display:flex;flex-wrap:wrap;gap:4px 12px;max-width:560px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}.m{color:var(--mut)}
+</style>
+</head>
+<body>
+<header>
+<h1>🧠 Brain Map</h1>
+<span class="m">Scenario:</span><span id="sc"></span>
+<span class="m">Pathway:</span><select id="pw"><option value="">— All connections —</option></select>
+<button id="stop" type="button">Reset</button>
+<span class="m" id="info"></span>
+</header>
+<div id="wrap">
+<canvas id="c"></canvas>
+<div id="tip"></div>
+<div id="legend"></div>
+</div>
+<script>
+const G = /*GRAPH_JSON*/null, SCEN = /*SCENARIOS_JSON*/null;
+const cv=document.getElementById('c'),ctx=cv.getContext('2d'),tip=document.getElementById('tip');
+const N=Object.fromEntries(G.nodes.map(n=>[n.id,n]));
+const EC={excitatory:'#30a46c',inhibitory:'#e5484d',modulatory:'#3e63dd'};
+let sc=1,ox=0,oy=0,sel=null,hov=null,hiPath=null,anim=null,glow={},dpr=devicePixelRatio||1;
+
+function fit(){const r=cv.getBoundingClientRect();cv.width=r.width*dpr;cv.height=r.height*dpr;sc=Math.min(r.width/G.width,r.height/G.height);ox=(r.width-G.width*sc)/2;oy=(r.height-G.height*sc)/2}
+const X=x=>x*sc+ox,Y=y=>y*sc+oy;
+
+function arrow(a,b,col,w,alpha){
+ ctx.globalAlpha=alpha;ctx.strokeStyle=col;ctx.lineWidth=w;ctx.beginPath();
+ const mx=(a.x+b.x)/2+(b.y-a.y)*0.08,my=(a.y+b.y)/2-(b.x-a.x)*0.08;ctx.moveTo(X(a.x),Y(a.y));ctx.quadraticCurveTo(X(mx),Y(my),X(b.x),Y(b.y));ctx.stroke();
+ const ang=Math.atan2(Y(b.y)-Y(my),X(b.x)-X(mx)),ex=X(b.x)-Math.cos(ang)*7,ey=Y(b.y)-Math.sin(ang)*7;
+ ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(ex+Math.cos(ang)*6,ey+Math.sin(ang)*6);ctx.lineTo(ex-Math.sin(ang)*3,ey+Math.cos(ang)*3);ctx.lineTo(ex+Math.sin(ang)*3,ey-Math.cos(ang)*3);ctx.fill();ctx.globalAlpha=1;return[mx,my];
+}
+
+function draw(now){
+ const r=cv.getBoundingClientRect();ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,r.width,r.height);
+ const focus=sel||hov;const pathSet=hiPath?new Set(hiPath):null;
+ for(const e of G.edges){const a=N[e.from],b=N[e.to];let al=.18,w=1;
+  if(pathSet){const i=hiPath.indexOf(e.from);if(i>=0&&hiPath[i+1]===e.to){al=1;w=3}else al=.04}
+  else if(focus){if(e.from===focus||e.to===focus){al=.9;w=2}else al=.04}
+  arrow(a,b,EC[e.effect],w,al)}
+ if(anim){const t=(now-anim.t0)/anim.k;for(const ev of anim.ev){const s=(t-ev.t)/Math.max(ev.d,1);
+   if(ev.t<=t)glow[ev.to]=Math.max(glow[ev.to]||0,0);
+   if(s>=0&&s<=1){const a=N[ev.from],b=N[ev.to];ctx.fillStyle='#fff';ctx.globalAlpha=.9;ctx.beginPath();ctx.arc(X(a.x+(b.x-a.x)*s),Y(a.y+(b.y-a.y)*s),3,0,7);ctx.fill();ctx.globalAlpha=1}
+   if(s>=1&&!ev.done){ev.done=1;glow[ev.to]=Math.min(1,(glow[ev.to]||0)+.6)}}
+  if(t>anim.end+300)anim=null}
+ for(const n of G.nodes){const g=glow[n.id]||0;glow[n.id]=g*.96;const on=!pathSet||hiPath.includes(n.id);
+  ctx.globalAlpha=on?1:.25;ctx.beginPath();ctx.arc(X(n.x),Y(n.y),(n.kind==='lobe'?9:6)*Math.sqrt(sc)+g*8,0,7);
+  ctx.fillStyle=n.color;ctx.shadowColor=g>.05?'#fff':'transparent';ctx.shadowBlur=g*25;ctx.fill();ctx.shadowBlur=0;
+  if(n.id===sel){ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke()}
+  if(sc>.55||g>.1||n.id===focus){ctx.fillStyle=getComputedStyle(document.body).color;ctx.font=`${10*Math.max(.9,sc)}px system-ui`;ctx.fillText(n.ru,X(n.x)+9,Y(n.y)+3)}
+  ctx.globalAlpha=1}
+ requestAnimationFrame(draw)}
+
+function pick(mx,my){let best=null,bd=14;for(const n of G.nodes){const d=Math.hypot(X(n.x)-mx,Y(n.y)-my);if(d<bd){bd=d;best=n.id}}return best}
+
+cv.onmousemove=e=>{const r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
+ if(drag){ox+=mx-drag[0];oy+=my-drag[1];drag=[mx,my];return}
+ hov=pick(mx,my);if(hov){const n=N[hov];tip.style.display='block';tip.style.left=`${Math.min(mx+14,r.width-330)}px`;tip.style.top=`${my+14}px`;
+  const out=G.edges.filter(e=>e.from===hov).length,inn=G.edges.filter(e=>e.to===hov).length;
+  tip.innerHTML=`<b>${n.ru}</b><br><span class="m">${n.label}</span><br>Cluster: ${n.cluster} · ${n.part==='frontal'?'frontal region':n.part==='rest'?'rest of the brain':'outside the brain'}<br>${n.desc}<br>Connections: ← ${inn} / → ${out}`}else tip.style.display='none'};
+
+let drag=null;
+cv.onmousedown=e=>{const r=cv.getBoundingClientRect();drag=[e.clientX-r.left,e.clientY-r.top]};
+addEventListener('mouseup',e=>{if(drag){const r=cv.getBoundingClientRect();if(Math.hypot(e.clientX-r.left-drag[0],e.clientY-r.top-drag[1])<3){const p=pick(e.clientX-r.left,e.clientY-r.top);sel=p===sel?null:p}}drag=null});
+cv.onwheel=e=>{e.preventDefault();const r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,f=e.deltaY<0?1.15:1/1.15;ox=mx-(mx-ox)*f;oy=my-(my-oy)*f;sc*=f};
+addEventListener('resize',fit);
+
+const scEl=document.getElementById('sc');
+for(const s of SCEN){
+ const b=document.createElement('button');
+ b.textContent=s.label;
+ b.onclick=()=>{
+  hiPath=null;pwEl.value='';sel=null;
+  anim={t0:performance.now(),k:18,ev:s.events.map(e=>({...e})),end:s.duration};
+  document.getElementById('info').textContent=`Thoughts: ${s.thoughts.join(', ')||'—'} · Actions: ${s.actions.join(', ')||'—'}`;
+ };
+ scEl.appendChild(b);
+}
+
+const pwEl=document.getElementById('pw');
+for(const p of G.pathways){
+ const o=document.createElement('option');
+ o.value=p.id;
+ o.textContent=p.ru;
+ pwEl.appendChild(o);
+}
+
+pwEl.onchange=()=>{const p=G.pathways.find(x=>x.id===pwEl.value);hiPath=p?p.steps:null;document.getElementById('info').textContent=p?p.description:''};
+document.getElementById('stop').onclick=()=>{anim=null;hiPath=null;sel=null;pwEl.value='';glow={};document.getElementById('info').textContent=''};
+
+const colors = {};
+G.nodes.forEach(n => {
+  colors[n.cluster] = n.color;
+});
+
+document.getElementById('legend').innerHTML=Object.entries(colors).map(([k,c])=>`<span><i class="sw" style="background:${c}"></i>${k}</span>`).join('')+
+ '<span><i class="sw" style="background:#30a46c"></i>Excitation</span><span><i class="sw" style="background:#e5484d"></i>Inhibition</span><span><i class="sw" style="background:#3e63dd"></i>Modulation</span>';
+
+fit();
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

@@ -16,7 +16,8 @@
       "!**/playwright-report",
       "!**/pnpm-lock.yaml",
       "!**/routeTree.gen.ts",
-      "!docs"
+      "!docs",
+      "!packages/brain-viz/docs/brain.json"
     ]
   },
   "formatter": {

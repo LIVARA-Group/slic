@@ -1,0 +1,344 @@
+flowchart LR
+  subgraph spinal["spinal"]
+    spinal_cord["Spinal cord"]
+    dorsal_horn["Dorsal horn"]
+    ventral_horn["Ventral horn (motor neurons)"]
+  end
+  subgraph other["other"]
+    brainstem["Brainstem"]
+    left_hemisphere["Left cerebral hemisphere"]
+    right_hemisphere["Right cerebral hemisphere"]
+    dorsal_root_ganglion["Dorsal root ganglion"]
+  end
+  subgraph insular["insular"]
+    left_insula["Insular cortex"]
+  end
+  subgraph frontal["frontal"]
+    left_prefrontal_cortex["Prefrontal cortex"]
+    left_primary_motor_cortex["Primary motor cortex"]
+    left_premotor_cortex["Premotor cortex"]
+    left_broca_area["Broca's area"]
+    dorsolateral_prefrontal_cortex["Dorsolateral prefrontal cortex"]
+    ventromedial_prefrontal_cortex["Ventromedial prefrontal cortex"]
+    orbitofrontal_cortex["Orbitofrontal cortex"]
+    frontopolar_cortex["Frontopolar cortex"]
+    supplementary_motor_area["Supplementary motor area"]
+    frontal_eye_fields["Frontal eye fields"]
+  end
+  subgraph parietal["parietal"]
+    left_primary_somatosensory_cortex["Primary somatosensory cortex"]
+    left_posterior_parietal_cortex["Posterior parietal cortex"]
+    somatosensory_association_cortex["Somatosensory association cortex"]
+    inferior_parietal_lobule["Inferior parietal lobule"]
+  end
+  subgraph temporal["temporal"]
+    left_primary_auditory_cortex["Primary auditory cortex"]
+    wernicke_area["Wernicke's area"]
+    inferior_temporal_cortex["Inferior temporal cortex"]
+    fusiform_gyrus["Fusiform gyrus"]
+    anterior_temporal_lobe["Anterior temporal lobe"]
+  end
+  subgraph limbic["limbic"]
+    left_hippocampus["Hippocampus"]
+    left_amygdala["Amygdala"]
+    entorhinal_cortex["Entorhinal cortex"]
+    subiculum["Subiculum"]
+    fornix["Fornix"]
+    anterior_cingulate_cortex["Anterior cingulate cortex"]
+    posterior_cingulate_cortex["Posterior cingulate cortex"]
+    dentate_gyrus["Dentate gyrus"]
+    parahippocampal_cortex["Parahippocampal cortex"]
+    septal_nuclei["Septal nuclei"]
+    basal_forebrain["Basal forebrain"]
+    mammillary_bodies["Mammillary bodies"]
+    olfactory_bulb["Olfactory bulb"]
+    piriform_cortex["Piriform cortex"]
+  end
+  subgraph occipital["occipital"]
+    left_primary_visual_cortex["Primary visual cortex (V1)"]
+    visual_area_v2["Visual area V2"]
+    visual_area_v4["Visual area V4"]
+    visual_area_v5_mt["Visual area V5/MT"]
+  end
+  subgraph diencephalon["diencephalon"]
+    thalamus["Thalamus"]
+    hypothalamus["Hypothalamus"]
+    lateral_geniculate_nucleus["Lateral geniculate nucleus"]
+    medial_geniculate_nucleus["Medial geniculate nucleus"]
+    ventral_posterior_nucleus["Ventral posterior nucleus"]
+    ventral_lateral_nucleus["Ventral lateral nucleus"]
+    ventral_anterior_nucleus["Ventral anterior nucleus"]
+    mediodorsal_nucleus["Mediodorsal nucleus"]
+    anterior_thalamic_nuclei["Anterior thalamic nuclei"]
+    pulvinar["Pulvinar"]
+    intralaminar_nuclei["Intralaminar nuclei"]
+    thalamic_reticular_nucleus["Thalamic reticular nucleus"]
+    lateral_hypothalamus["Lateral hypothalamus"]
+    paraventricular_nucleus["Paraventricular nucleus"]
+    suprachiasmatic_nucleus["Suprachiasmatic nucleus"]
+    pituitary_gland["Pituitary gland"]
+    pineal_gland["Pineal gland"]
+  end
+  subgraph basalGanglia["basalGanglia"]
+    caudate_nucleus["Caudate nucleus"]
+    putamen["Putamen"]
+    globus_pallidus["Globus pallidus"]
+    nucleus_accumbens["Nucleus accumbens"]
+    globus_pallidus_externa["External globus pallidus (GPe)"]
+    globus_pallidus_interna["Internal globus pallidus (GPi)"]
+    subthalamic_nucleus["Subthalamic nucleus"]
+    substantia_nigra_pars_compacta["Substantia nigra, pars compacta"]
+    substantia_nigra_pars_reticulata["Substantia nigra, pars reticulata"]
+  end
+  subgraph midbrain["midbrain"]
+    substantia_nigra["Substantia nigra"]
+    superior_colliculus["Superior colliculus"]
+    inferior_colliculus["Inferior colliculus"]
+    ventral_tegmental_area["Ventral tegmental area"]
+    periaqueductal_gray["Periaqueductal gray"]
+    red_nucleus["Red nucleus"]
+  end
+  subgraph pons["pons"]
+    reticular_formation["Reticular formation"]
+    pontine_nuclei["Pontine nuclei"]
+    locus_coeruleus["Locus coeruleus"]
+    dorsal_raphe_nucleus["Dorsal raphe nucleus"]
+    parabrachial_nucleus["Parabrachial nucleus"]
+  end
+  subgraph cerebellum["cerebellum"]
+    cerebellar_cortex["Cerebellar cortex"]
+    dentate_nucleus["Dentate nucleus"]
+    cerebellar_vermis["Cerebellar vermis"]
+    cerebellar_hemispheres["Cerebellar hemispheres"]
+    flocculonodular_lobe["Flocculonodular lobe"]
+    fastigial_nucleus["Fastigial nucleus"]
+  end
+  subgraph periphery["periphery"]
+    retina["Retina"]
+    cochlea["Cochlea"]
+    olfactory_epithelium["Olfactory epithelium"]
+    taste_receptors["Taste receptors"]
+    somatic_receptors["Somatic receptors"]
+    vestibular_apparatus["Vestibular apparatus"]
+    skeletal_muscles["Skeletal muscles"]
+    eye_muscles["Extraocular muscles"]
+    speech_muscles["Speech muscles"]
+    visceral_effectors["Visceral organs and glands"]
+  end
+  subgraph medulla["medulla"]
+    respiratory_centers["Respiratory centers"]
+    nucleus_tractus_solitarius["Nucleus of the solitary tract"]
+    vestibular_nuclei["Vestibular nuclei"]
+    cochlear_nuclei["Cochlear nuclei"]
+    dorsal_column_nuclei["Dorsal column nuclei"]
+    inferior_olive["Inferior olive"]
+    cranial_nerve_nuclei["Cranial nerve nuclei"]
+  end
+  retina --> lateral_geniculate_nucleus
+  lateral_geniculate_nucleus --> left_primary_visual_cortex
+  retina --> superior_colliculus
+  superior_colliculus --> brainstem
+  cochlea --> inferior_colliculus
+  inferior_colliculus --> medial_geniculate_nucleus
+  medial_geniculate_nucleus --> left_primary_auditory_cortex
+  dorsal_root_ganglion --> ventral_posterior_nucleus
+  ventral_posterior_nucleus --> left_primary_somatosensory_cortex
+  left_primary_somatosensory_cortex --> left_posterior_parietal_cortex
+  left_premotor_cortex --> left_primary_motor_cortex
+  left_primary_motor_cortex --> spinal_cord
+  left_prefrontal_cortex --> caudate_nucleus
+  caudate_nucleus --> globus_pallidus
+  substantia_nigra ==> putamen
+  globus_pallidus --> thalamus
+  thalamus --> left_primary_motor_cortex
+  entorhinal_cortex --> left_hippocampus
+  left_hippocampus --> subiculum
+  subiculum --> fornix
+  left_amygdala --> hypothalamus
+  cerebellar_cortex --> dentate_nucleus
+  dentate_nucleus --> thalamus
+  left_hemisphere --> right_hemisphere
+  left_prefrontal_cortex --> left_posterior_parietal_cortex
+  left_prefrontal_cortex --> left_amygdala
+  left_primary_visual_cortex ==>|glutamate| lateral_geniculate_nucleus
+  left_primary_visual_cortex -->|glutamate| visual_area_v2
+  visual_area_v2 -->|glutamate| visual_area_v4
+  visual_area_v2 -->|glutamate| visual_area_v5_mt
+  visual_area_v4 -->|glutamate| fusiform_gyrus
+  visual_area_v4 -->|glutamate| inferior_temporal_cortex
+  fusiform_gyrus -->|glutamate| anterior_temporal_lobe
+  visual_area_v5_mt -->|glutamate| left_posterior_parietal_cortex
+  retina -->|glutamate| suprachiasmatic_nucleus
+  superior_colliculus -->|glutamate| pulvinar
+  pulvinar -->|glutamate| left_posterior_parietal_cortex
+  cochlea -->|glutamate| cochlear_nuclei
+  cochlear_nuclei -->|glutamate| inferior_colliculus
+  left_primary_auditory_cortex -->|glutamate| wernicke_area
+  inferior_colliculus -->|glutamate| superior_colliculus
+  somatic_receptors -->|glutamate| dorsal_horn
+  somatic_receptors -->|glutamate| dorsal_column_nuclei
+  dorsal_horn -->|glutamate| ventral_posterior_nucleus
+  dorsal_column_nuclei -->|glutamate| ventral_posterior_nucleus
+  ventral_posterior_nucleus -->|glutamate| left_insula
+  left_primary_somatosensory_cortex -->|glutamate| somatosensory_association_cortex
+  left_primary_somatosensory_cortex -->|glutamate| left_primary_motor_cortex
+  dorsal_horn -->|glutamate| parabrachial_nucleus
+  parabrachial_nucleus -->|glutamate| left_amygdala
+  parabrachial_nucleus -->|glutamate| hypothalamus
+  parabrachial_nucleus -->|glutamate| respiratory_centers
+  dorsal_horn -->|glutamate| periaqueductal_gray
+  mediodorsal_nucleus -->|glutamate| anterior_cingulate_cortex
+  periaqueductal_gray -.->|GABA| dorsal_horn
+  vestibular_apparatus -->|glutamate| vestibular_nuclei
+  vestibular_nuclei -->|glutamate| flocculonodular_lobe
+  flocculonodular_lobe -.->|GABA| vestibular_nuclei
+  vestibular_nuclei -->|glutamate| cranial_nerve_nuclei
+  vestibular_nuclei -->|glutamate| ventral_horn
+  vestibular_nuclei -->|glutamate| ventral_posterior_nucleus
+  olfactory_epithelium -->|glutamate| olfactory_bulb
+  olfactory_bulb -->|glutamate| piriform_cortex
+  olfactory_bulb -->|glutamate| left_amygdala
+  piriform_cortex -->|glutamate| orbitofrontal_cortex
+  piriform_cortex -->|glutamate| entorhinal_cortex
+  piriform_cortex -->|glutamate| mediodorsal_nucleus
+  taste_receptors -->|glutamate| nucleus_tractus_solitarius
+  nucleus_tractus_solitarius -->|glutamate| ventral_posterior_nucleus
+  nucleus_tractus_solitarius -->|glutamate| parabrachial_nucleus
+  nucleus_tractus_solitarius -->|glutamate| hypothalamus
+  nucleus_tractus_solitarius -->|glutamate| respiratory_centers
+  nucleus_tractus_solitarius -->|acetylcholine| visceral_effectors
+  visceral_effectors -->|glutamate| nucleus_tractus_solitarius
+  left_insula -->|glutamate| left_amygdala
+  left_insula -->|glutamate| anterior_cingulate_cortex
+  left_insula -->|glutamate| orbitofrontal_cortex
+  mediodorsal_nucleus -->|glutamate| dorsolateral_prefrontal_cortex
+  mediodorsal_nucleus -->|glutamate| orbitofrontal_cortex
+  dorsolateral_prefrontal_cortex -->|glutamate| mediodorsal_nucleus
+  ventral_lateral_nucleus -->|glutamate| left_primary_motor_cortex
+  ventral_lateral_nucleus -->|glutamate| supplementary_motor_area
+  ventral_anterior_nucleus -->|glutamate| left_premotor_cortex
+  anterior_thalamic_nuclei -->|glutamate| posterior_cingulate_cortex
+  intralaminar_nuclei -->|glutamate| putamen
+  intralaminar_nuclei -->|glutamate| left_prefrontal_cortex
+  thalamic_reticular_nucleus -.->|GABA| ventral_posterior_nucleus
+  thalamic_reticular_nucleus -.->|GABA| lateral_geniculate_nucleus
+  thalamic_reticular_nucleus -.->|GABA| mediodorsal_nucleus
+  dorsolateral_prefrontal_cortex -->|glutamate| thalamic_reticular_nucleus
+  reticular_formation -->|acetylcholine| intralaminar_nuclei
+  reticular_formation -.->|GABA| thalamic_reticular_nucleus
+  dorsolateral_prefrontal_cortex -->|glutamate| left_posterior_parietal_cortex
+  left_posterior_parietal_cortex -->|glutamate| dorsolateral_prefrontal_cortex
+  dorsolateral_prefrontal_cortex -->|glutamate| left_premotor_cortex
+  dorsolateral_prefrontal_cortex -->|glutamate| frontopolar_cortex
+  dorsolateral_prefrontal_cortex -->|glutamate| ventromedial_prefrontal_cortex
+  dorsolateral_prefrontal_cortex -->|glutamate| caudate_nucleus
+  anterior_cingulate_cortex -->|glutamate| dorsolateral_prefrontal_cortex
+  ventromedial_prefrontal_cortex -.->|GABA| left_amygdala
+  ventromedial_prefrontal_cortex -->|glutamate| hypothalamus
+  ventromedial_prefrontal_cortex -.->|GABA| periaqueductal_gray
+  orbitofrontal_cortex -->|glutamate| nucleus_accumbens
+  orbitofrontal_cortex ==>|glutamate| left_amygdala
+  left_amygdala -->|glutamate| orbitofrontal_cortex
+  left_hippocampus -->|glutamate| ventromedial_prefrontal_cortex
+  supplementary_motor_area -->|glutamate| left_primary_motor_cortex
+  left_posterior_parietal_cortex -->|glutamate| left_premotor_cortex
+  left_posterior_parietal_cortex -->|glutamate| frontal_eye_fields
+  frontal_eye_fields -->|glutamate| superior_colliculus
+  wernicke_area -->|glutamate| left_broca_area
+  wernicke_area -->|glutamate| inferior_parietal_lobule
+  inferior_parietal_lobule -->|glutamate| left_broca_area
+  left_broca_area -->|glutamate| left_primary_motor_cortex
+  anterior_temporal_lobe -->|glutamate| wernicke_area
+  left_primary_motor_cortex -->|glutamate| ventral_horn
+  left_primary_motor_cortex -->|glutamate| cranial_nerve_nuclei
+  left_primary_motor_cortex -->|glutamate| pontine_nuclei
+  left_primary_motor_cortex -->|glutamate| putamen
+  left_primary_motor_cortex -->|glutamate| subthalamic_nucleus
+  left_primary_motor_cortex -->|glutamate| red_nucleus
+  left_primary_motor_cortex -->|glutamate| reticular_formation
+  left_premotor_cortex -->|glutamate| putamen
+  left_premotor_cortex -->|glutamate| pontine_nuclei
+  left_primary_somatosensory_cortex -->|glutamate| putamen
+  cranial_nerve_nuclei -->|acetylcholine| speech_muscles
+  cranial_nerve_nuclei -->|acetylcholine| eye_muscles
+  ventral_horn -->|acetylcholine| skeletal_muscles
+  skeletal_muscles -->|glutamate| dorsal_horn
+  red_nucleus -->|glutamate| ventral_horn
+  reticular_formation -->|glutamate| ventral_horn
+  superior_colliculus -->|glutamate| cranial_nerve_nuclei
+  dorsal_horn -->|glutamate| ventral_horn
+  respiratory_centers -->|glutamate| ventral_horn
+  paraventricular_nucleus -->|glutamate| spinal_cord
+  spinal_cord -->|acetylcholine| visceral_effectors
+  putamen -.->|GABA| globus_pallidus_interna
+  caudate_nucleus -.->|GABA| globus_pallidus_interna
+  caudate_nucleus -.->|GABA| substantia_nigra_pars_reticulata
+  globus_pallidus_interna -.->|GABA| ventral_lateral_nucleus
+  globus_pallidus_interna -.->|GABA| ventral_anterior_nucleus
+  putamen -.->|GABA| globus_pallidus_externa
+  globus_pallidus_externa -.->|GABA| subthalamic_nucleus
+  subthalamic_nucleus -->|glutamate| globus_pallidus_interna
+  substantia_nigra_pars_reticulata -.->|GABA| superior_colliculus
+  substantia_nigra_pars_reticulata -.->|GABA| ventral_anterior_nucleus
+  substantia_nigra_pars_compacta ==>|dopamine| putamen
+  substantia_nigra_pars_compacta ==>|dopamine| caudate_nucleus
+  left_amygdala -->|glutamate| nucleus_accumbens
+  left_hippocampus -->|glutamate| nucleus_accumbens
+  ventral_tegmental_area ==>|dopamine| nucleus_accumbens
+  ventral_tegmental_area ==>|dopamine| left_prefrontal_cortex
+  ventral_tegmental_area ==>|dopamine| left_amygdala
+  locus_coeruleus ==>|noradrenaline| left_prefrontal_cortex
+  locus_coeruleus ==>|noradrenaline| left_hippocampus
+  locus_coeruleus ==>|noradrenaline| left_amygdala
+  locus_coeruleus ==>|noradrenaline| thalamus
+  dorsal_raphe_nucleus ==>|serotonin| left_prefrontal_cortex
+  dorsal_raphe_nucleus ==>|serotonin| left_amygdala
+  dorsal_raphe_nucleus ==>|serotonin| left_hippocampus
+  basal_forebrain ==>|acetylcholine| left_hippocampus
+  basal_forebrain ==>|acetylcholine| left_prefrontal_cortex
+  lateral_hypothalamus ==>|orexin| left_prefrontal_cortex
+  lateral_hypothalamus -->|orexin| locus_coeruleus
+  hypothalamus -->|glutamate| reticular_formation
+  reticular_formation -->|glutamate| hypothalamus
+  entorhinal_cortex -->|glutamate| dentate_gyrus
+  dentate_gyrus -->|glutamate| left_hippocampus
+  left_hippocampus -->|glutamate| entorhinal_cortex
+  left_hippocampus -->|glutamate| fornix
+  fornix -->|glutamate| mammillary_bodies
+  fornix -->|glutamate| septal_nuclei
+  mammillary_bodies -->|glutamate| anterior_thalamic_nuclei
+  posterior_cingulate_cortex -->|glutamate| parahippocampal_cortex
+  parahippocampal_cortex -->|glutamate| entorhinal_cortex
+  fusiform_gyrus -->|glutamate| parahippocampal_cortex
+  inferior_temporal_cortex -->|glutamate| parahippocampal_cortex
+  entorhinal_cortex -->|glutamate| inferior_temporal_cortex
+  entorhinal_cortex -->|glutamate| dorsolateral_prefrontal_cortex
+  septal_nuclei -->|acetylcholine| left_hippocampus
+  left_hippocampus -->|glutamate| hypothalamus
+  left_hippocampus -->|glutamate| left_amygdala
+  left_amygdala ==>|glutamate| left_hippocampus
+  medial_geniculate_nucleus -->|glutamate| left_amygdala
+  pulvinar -->|glutamate| left_amygdala
+  left_primary_auditory_cortex -->|glutamate| left_amygdala
+  inferior_temporal_cortex -->|glutamate| left_amygdala
+  left_amygdala -->|glutamate| periaqueductal_gray
+  left_amygdala -->|glutamate| locus_coeruleus
+  left_amygdala -->|glutamate| anterior_cingulate_cortex
+  periaqueductal_gray -->|glutamate| reticular_formation
+  hypothalamus -->|CRH| pituitary_gland
+  hypothalamus -->|glutamate| periaqueductal_gray
+  hypothalamus -->|glutamate| paraventricular_nucleus
+  paraventricular_nucleus -->|oxytocin| pituitary_gland
+  suprachiasmatic_nucleus -->|glutamate| hypothalamus
+  suprachiasmatic_nucleus -->|glutamate| pineal_gland
+  pontine_nuclei -->|glutamate| cerebellar_hemispheres
+  inferior_olive -->|glutamate| cerebellar_cortex
+  inferior_olive -->|glutamate| cerebellar_hemispheres
+  cerebellar_hemispheres -.->|GABA| dentate_nucleus
+  dentate_nucleus -->|glutamate| ventral_lateral_nucleus
+  dentate_nucleus -->|glutamate| red_nucleus
+  dorsal_horn -->|glutamate| cerebellar_vermis
+  cerebellar_vermis -.->|GABA| fastigial_nucleus
+  fastigial_nucleus -->|glutamate| reticular_formation
+  fastigial_nucleus -->|glutamate| vestibular_nuclei
+  cerebellar_vermis ==>|glutamate| cerebellar_cortex
