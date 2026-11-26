@@ -1,4 +1,31 @@
 export type {
+  BenchmarkOperation,
+  BenchmarkWorkflowDependencies,
+  RunBenchmarkWorkflowRequest,
+} from './application/benchmark/run-benchmark-workflow.js';
+export { runBenchmarkWorkflow } from './application/benchmark/run-benchmark-workflow.js';
+export type {
+  PreparedDataset,
+  PreparePersonalDatasetRequest,
+} from './application/dataset/prepare-dataset.js';
+export { prepareDataset } from './application/dataset/prepare-dataset.js';
+export type {
+  AckLedgerWorkflowDependencies,
+  AcknowledgeTransactionRequest,
+} from './application/ledger/ack-ledger-workflow.js';
+export {
+  acknowledgeTransactionWorkflow,
+  restoreAckLedgerWorkflow,
+  verifyRecoveredTransactionsWorkflow,
+} from './application/ledger/ack-ledger-workflow.js';
+export type {
+  PocBenchmarkRun,
+  PocOperation,
+  PocWorkflowDependencies,
+  RunPocWorkflowRequest,
+} from './application/poc/run-poc-workflow.js';
+export { runPocWorkflow } from './application/poc/run-poc-workflow.js';
+export type {
   BenchmarkMemoryDelta,
   BenchmarkMemoryMeasurement,
   BenchmarkMemorySnapshot,
@@ -63,4 +90,6 @@ export {
   appendAckLedgerEntry,
   restoreAckLedger,
 } from './infrastructure/filesystem/ack-ledger-store.js';
+export type { POCRawResults } from './infrastructure/reporting/poc-raw-writer.js';
+export { writePOCRawResults } from './infrastructure/reporting/poc-raw-writer.js';
 export { writeBenchmarkReport } from './infrastructure/reporting/report-writer.js';

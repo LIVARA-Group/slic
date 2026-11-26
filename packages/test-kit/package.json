@@ -17,12 +17,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "node -e \"import('node:fs/promises').then(({ rm }) => rm('dist', { recursive: true, force: true }))\" && tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint -c ../../.oxlintrc.json --type-aware src",
     "test": "vitest run",
-    "clean": "rm -rf dist coverage"
+    "clean": "node -e \"import('node:fs/promises').then(async ({ rm }) => { await Promise.all(['dist', 'coverage'].map((path) => rm(path, { recursive: true, force: true }))); })\""
   },
   "devDependencies": {
     "@types/node": "catalog:",
