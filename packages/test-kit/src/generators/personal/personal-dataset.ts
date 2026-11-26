@@ -1,7 +1,4 @@
-import {
-  createDatasetManifest,
-  type GeneratedDataset,
-} from '../../core/dataset/dataset.js';
+import { createDatasetManifest, type GeneratedDataset } from '../../core/dataset/dataset.js';
 import { SeededRandom } from '../../core/random/seeded-random.js';
 
 export interface PersonalNote {
@@ -40,21 +37,9 @@ export interface PersonalDatasetOptions {
 
 export const PERSONAL_DATASET_GENERATOR_VERSION = '1.0.0';
 
-const ENTITY_TYPES = [
-  'person',
-  'place',
-  'concept',
-  'event',
-  'organization',
-] as const;
+const ENTITY_TYPES = ['person', 'place', 'concept', 'event', 'organization'] as const;
 
-const RELATION_TYPES = [
-  'related_to',
-  'references',
-  'depends_on',
-  'part_of',
-  'created_by',
-] as const;
+const RELATION_TYPES = ['related_to', 'references', 'depends_on', 'part_of', 'created_by'] as const;
 
 const BASE_TIMESTAMP = Date.UTC(2026, 0, 1);
 
@@ -147,16 +132,10 @@ export function generatePersonalDataset(
     },
     distribution: {
       ...Object.fromEntries(
-        Object.entries(countByType(entities)).map(([type, count]) => [
-          `entity.${type}`,
-          count,
-        ]),
+        Object.entries(countByType(entities)).map(([type, count]) => [`entity.${type}`, count]),
       ),
       ...Object.fromEntries(
-        Object.entries(countByType(relations)).map(([type, count]) => [
-          `relation.${type}`,
-          count,
-        ]),
+        Object.entries(countByType(relations)).map(([type, count]) => [`relation.${type}`, count]),
       ),
     },
   });

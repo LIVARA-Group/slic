@@ -50,9 +50,7 @@ describe('runBenchmark', () => {
     });
 
     expect(result.operationsPerSecond).toBe(
-      result.duration.mean > 0
-        ? (4 * 1000) / result.duration.mean
-        : null,
+      result.duration.mean > 0 ? (4 * 1000) / result.duration.mean : null,
     );
   });
 

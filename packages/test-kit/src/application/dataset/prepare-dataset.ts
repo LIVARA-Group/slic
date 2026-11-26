@@ -13,9 +13,7 @@ export interface PreparePersonalDatasetRequest {
 
 export type PreparedDataset = GeneratedDataset<PersonalDatasetData>;
 
-export function prepareDataset(
-  request: PreparePersonalDatasetRequest,
-): PreparedDataset {
+export function prepareDataset(request: PreparePersonalDatasetRequest): PreparedDataset {
   return generatePersonalDataset({
     seed: request.seed,
     ...request.options,

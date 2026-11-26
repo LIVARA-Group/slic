@@ -37,12 +37,8 @@ describe('prepareDataset', () => {
     const first = prepareDataset(request);
     const second = prepareDataset(request);
 
-    expect(first.manifest.metadata.checksum).toBe(
-      second.manifest.metadata.checksum,
-    );
-    expect(first.manifest.metadata.id).toBe(
-      second.manifest.metadata.id,
-    );
+    expect(first.manifest.metadata.checksum).toBe(second.manifest.metadata.checksum);
+    expect(first.manifest.metadata.id).toBe(second.manifest.metadata.id);
   });
 
   it('produces different datasets for different seeds', () => {
@@ -52,9 +48,7 @@ describe('prepareDataset', () => {
       seed: request.seed + 1,
     });
 
-    expect(first.manifest.metadata.checksum).not.toBe(
-      second.manifest.metadata.checksum,
-    );
+    expect(first.manifest.metadata.checksum).not.toBe(second.manifest.metadata.checksum);
   });
 
   it('propagates generator validation errors', () => {

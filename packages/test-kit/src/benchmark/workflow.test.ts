@@ -1,10 +1,4 @@
-import {
-  mkdir,
-  mkdtemp,
-  readFile,
-  rm,
-  writeFile,
-} from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -47,9 +41,7 @@ describe('benchmark workflow', () => {
     const dataset = prepareDataset(datasetRequest);
     const repeatedDataset = prepareDataset(datasetRequest);
 
-    expect(repeatedDataset.manifest.metadata.checksum).toBe(
-      dataset.manifest.metadata.checksum,
-    );
+    expect(repeatedDataset.manifest.metadata.checksum).toBe(dataset.manifest.metadata.checksum);
 
     const benchmark = await runBenchmark(
       () => {
@@ -67,17 +59,11 @@ describe('benchmark workflow', () => {
       },
     );
 
-    const recordIds = dataset.data.notes
-      .slice(0, 2)
-      .map((note) => note.id);
+    const recordIds = dataset.data.notes.slice(0, 2).map((note) => note.id);
 
     expect(recordIds).toHaveLength(2);
 
-    const engineDataPath = join(
-      temporaryDirectory,
-      'engine',
-      'transactions.json',
-    );
+    const engineDataPath = join(temporaryDirectory, 'engine', 'transactions.json');
 
     await mkdir(join(temporaryDirectory, 'engine'), {
       recursive: true,
@@ -108,9 +94,7 @@ describe('benchmark workflow', () => {
     expect(restoredLedger.ledger.transactions).toHaveLength(1);
     expect(restoredLedger.truncatedTail).toBe(false);
 
-    const engineState: unknown = JSON.parse(
-      await readFile(engineDataPath, 'utf8'),
-    );
+    const engineState: unknown = JSON.parse(await readFile(engineDataPath, 'utf8'));
 
     if (
       typeof engineState !== 'object' ||
@@ -121,34 +105,27 @@ describe('benchmark workflow', () => {
       throw new Error('Invalid recovered engine state');
     }
 
-    const recoveredTransactions = engineState.transactions.map(
-      (transaction: unknown) => {
-        if (
-          typeof transaction !== 'object' ||
-          transaction === null ||
-          !('transactionId' in transaction) ||
-          typeof transaction.transactionId !== 'string' ||
-          !('recordIds' in transaction) ||
-          !Array.isArray(transaction.recordIds) ||
-          !transaction.recordIds.every(
-            (recordId: unknown) => typeof recordId === 'string',
-          )
-        ) {
-          throw new Error('Invalid recovered engine transaction');
-        }
+    const recoveredTransactions = engineState.transactions.map((transaction: unknown) => {
+      if (
+        typeof transaction !== 'object' ||
+        transaction === null ||
+        !('transactionId' in transaction) ||
+        typeof transaction.transactionId !== 'string' ||
+        !('recordIds' in transaction) ||
+        !Array.isArray(transaction.recordIds) ||
+        !transaction.recordIds.every((recordId: unknown) => typeof recordId === 'string')
+      ) {
+        throw new Error('Invalid recovered engine transaction');
+      }
 
-        return {
-          transactionId: transaction.transactionId,
-          recordIds: transaction.recordIds,
-          checksum: calculateTransactionChecksum(transaction.recordIds),
-        };
-      },
-    );
+      return {
+        transactionId: transaction.transactionId,
+        recordIds: transaction.recordIds,
+        checksum: calculateTransactionChecksum(transaction.recordIds),
+      };
+    });
 
-    const integrity = await verifyRecoveredTransactionsWorkflow(
-      ledgerPath,
-      recoveredTransactions,
-    );
+    const integrity = await verifyRecoveredTransactionsWorkflow(ledgerPath, recoveredTransactions);
 
     expect(integrity.passed).toBe(true);
     expect(integrity.issues).toHaveLength(0);
@@ -174,14 +151,8 @@ describe('benchmark workflow', () => {
     expect(restoredReport.benchmarks).toHaveLength(1);
     expect(restoredReport.dataset).toEqual(dataset.manifest);
     expect(restoredReport.environment).toEqual(report.environment);
-    expect(restoredReport.benchmarks[0].memoryBefore).toEqual(
-      benchmark.memoryBefore,
-    );
-    expect(restoredReport.benchmarks[0].memoryAfter).toEqual(
-      benchmark.memoryAfter,
-    );
-    expect(restoredReport.benchmarks[0].memoryDelta).toEqual(
-      benchmark.memoryDelta,
-    );
+    expect(restoredReport.benchmarks[0].memoryBefore).toEqual(benchmark.memoryBefore);
+    expect(restoredReport.benchmarks[0].memoryAfter).toEqual(benchmark.memoryAfter);
+    expect(restoredReport.benchmarks[0].memoryDelta).toEqual(benchmark.memoryDelta);
   });
 });

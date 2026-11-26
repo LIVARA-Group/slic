@@ -1,4 +1,3 @@
-
 import { describe, expect, it, vi } from 'vitest';
 import type { BenchmarkResult } from '../../core/benchmark/benchmark-result.js';
 import type { GeneratedDataset } from '../../core/dataset/dataset.js';
@@ -104,7 +103,6 @@ function createReport(
   };
 }
 
-
 function createDependencies(
   overrides: Partial<PocWorkflowDependencies> = {},
 ): PocWorkflowDependencies {
@@ -115,19 +113,13 @@ function createDependencies(
       ...environment,
       id: 'environment-test',
     })),
-    runBenchmark: vi.fn<PocWorkflowDependencies['runBenchmark']>(
-      async (_operation, options) => createBenchmarkResult(options.name),
+    runBenchmark: vi.fn<PocWorkflowDependencies['runBenchmark']>(async (_operation, options) =>
+      createBenchmarkResult(options.name),
     ),
-    createPocResult: vi.fn<PocWorkflowDependencies['createPocResult']>(
-      () => createPocResult(),
-    ),
-    writeRawResults: vi.fn<PocWorkflowDependencies['writeRawResults']>(
-      async () => { },
-    ),
+    createPocResult: vi.fn<PocWorkflowDependencies['createPocResult']>(() => createPocResult()),
+    writeRawResults: vi.fn<PocWorkflowDependencies['writeRawResults']>(async () => {}),
     createReport: vi.fn<PocWorkflowDependencies['createReport']>(createReport),
-    writeReport: vi.fn<PocWorkflowDependencies['writeReport']>(
-      async () => { },
-    ),
+    writeReport: vi.fn<PocWorkflowDependencies['writeReport']>(async () => {}),
     ...overrides,
   };
 }
@@ -143,11 +135,11 @@ function createRequest() {
     runs: [
       {
         benchmark: { name: 'run-1', iterations: 1 },
-        operation: () => { },
+        operation: () => {},
       },
       {
         benchmark: { name: 'run-2', iterations: 1 },
-        operation: () => { },
+        operation: () => {},
       },
     ],
     rawOutputPath: 'results/poc01/raw.json',
@@ -167,17 +159,13 @@ describe('runPocWorkflow', () => {
           id: 'environment-test',
         };
       }),
-      runBenchmark: vi.fn<PocWorkflowDependencies['runBenchmark']>(
-        async (_operation, options) => {
-          events.push(options.name);
-          return createBenchmarkResult(options.name);
-        },
-      ),
-      writeRawResults: vi.fn<PocWorkflowDependencies['writeRawResults']>(
-        async () => {
-          events.push('raw');
-        },
-      ),
+      runBenchmark: vi.fn<PocWorkflowDependencies['runBenchmark']>(async (_operation, options) => {
+        events.push(options.name);
+        return createBenchmarkResult(options.name);
+      }),
+      writeRawResults: vi.fn<PocWorkflowDependencies['writeRawResults']>(async () => {
+        events.push('raw');
+      }),
       createPocResult: vi.fn<PocWorkflowDependencies['createPocResult']>(() => {
         events.push('poc-result');
         return createPocResult();
@@ -233,12 +221,9 @@ describe('runPocWorkflow', () => {
   it('does not execute or persist anything when no runs are provided', async () => {
     const dependencies = createDependencies();
 
-    await expect(
-      runPocWorkflow(
-        { ...createRequest(), runs: [] },
-        dependencies,
-      ),
-    ).rejects.toThrow('at least one benchmark run');
+    await expect(runPocWorkflow({ ...createRequest(), runs: [] }, dependencies)).rejects.toThrow(
+      'at least one benchmark run',
+    );
 
     expect(dependencies.collectEnvironment).not.toHaveBeenCalled();
     expect(dependencies.runBenchmark).not.toHaveBeenCalled();
@@ -254,9 +239,7 @@ describe('runPocWorkflow', () => {
       }),
     });
 
-    await expect(
-      runPocWorkflow(createRequest(), dependencies),
-    ).rejects.toThrow('Benchmark failed');
+    await expect(runPocWorkflow(createRequest(), dependencies)).rejects.toThrow('Benchmark failed');
 
     expect(dependencies.writeRawResults).not.toHaveBeenCalled();
     expect(dependencies.createPocResult).not.toHaveBeenCalled();
@@ -271,9 +254,7 @@ describe('runPocWorkflow', () => {
       }),
     });
 
-    await expect(
-      runPocWorkflow(createRequest(), dependencies),
-    ).rejects.toThrow('Raw write failed');
+    await expect(runPocWorkflow(createRequest(), dependencies)).rejects.toThrow('Raw write failed');
 
     expect(dependencies.createPocResult).not.toHaveBeenCalled();
     expect(dependencies.createReport).not.toHaveBeenCalled();
@@ -287,9 +268,9 @@ describe('runPocWorkflow', () => {
       }),
     });
 
-    await expect(
-      runPocWorkflow(createRequest(), dependencies),
-    ).rejects.toThrow('Report creation failed');
+    await expect(runPocWorkflow(createRequest(), dependencies)).rejects.toThrow(
+      'Report creation failed',
+    );
 
     expect(dependencies.writeRawResults).toHaveBeenCalledOnce();
     expect(dependencies.writeReport).not.toHaveBeenCalled();

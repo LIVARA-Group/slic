@@ -1,10 +1,10 @@
 export type CliArguments =
   | { command: 'help' }
   | {
-    command: 'bench';
-    pocId: string;
-    options: Record<string, string>;
-  };
+      command: 'bench';
+      pocId: string;
+      options: Record<string, string>;
+    };
 
 const DATASET_SIZES = ['S', 'M', 'L'];
 
@@ -60,10 +60,7 @@ export function parseCliArguments(args: readonly string[]): CliArguments {
     }
   }
 
-  if (
-    options.dataset !== undefined &&
-    !DATASET_SIZES.includes(options.dataset)
-  ) {
+  if (options.dataset !== undefined && !DATASET_SIZES.includes(options.dataset)) {
     throw new Error('--dataset must be one of: S, M, L');
   }
 

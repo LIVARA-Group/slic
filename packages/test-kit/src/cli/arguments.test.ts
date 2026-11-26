@@ -76,50 +76,33 @@ describe('parseCliArguments', () => {
   });
 
   it('rejects invalid POC identifiers', () => {
-    expect(() => parseCliArguments(['bench', 'poc1'])).toThrow(
-      'Expected a POC identifier',
-    );
+    expect(() => parseCliArguments(['bench', 'poc1'])).toThrow('Expected a POC identifier');
   });
 
   it('rejects options without values', () => {
-    expect(() => parseCliArguments(['bench', 'poc01', '--seed'])).toThrow(
-      'requires a value',
-    );
+    expect(() => parseCliArguments(['bench', 'poc01', '--seed'])).toThrow('requires a value');
   });
 
   it('rejects duplicate options', () => {
-    expect(
-      () =>
-        parseCliArguments([
-          'bench',
-          'poc01',
-          '--seed',
-          '1',
-          '--seed',
-          '2',
-        ]),
-    ).toThrow('Duplicate option');
+    expect(() => parseCliArguments(['bench', 'poc01', '--seed', '1', '--seed', '2'])).toThrow(
+      'Duplicate option',
+    );
   });
 
   it('rejects invalid seeds', () => {
-    expect(() =>
-      parseCliArguments(['bench', 'poc01', '--seed', '-1']),
-    ).toThrow('--seed must be a non-negative safe integer');
+    expect(() => parseCliArguments(['bench', 'poc01', '--seed', '-1'])).toThrow(
+      '--seed must be a non-negative safe integer',
+    );
   });
 
   it('rejects invalid dataset sizes', () => {
-    expect(() =>
-      parseCliArguments(['bench', 'poc01', '--dataset', 'XL']),
-    ).toThrow('--dataset must be one of: S, M, L');
+    expect(() => parseCliArguments(['bench', 'poc01', '--dataset', 'XL'])).toThrow(
+      '--dataset must be one of: S, M, L',
+    );
   });
 
   it('allows future POC-specific options', () => {
-    const result = parseCliArguments([
-      'bench',
-      'poc03',
-      '--custom-option',
-      'value',
-    ]);
+    const result = parseCliArguments(['bench', 'poc03', '--custom-option', 'value']);
 
     expect(result.command).toBe('bench');
 

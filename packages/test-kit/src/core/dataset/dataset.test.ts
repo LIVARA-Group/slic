@@ -16,9 +16,7 @@ describe('calculateDatasetChecksum', () => {
   });
 
   it('generates deterministic checksums', () => {
-    expect(calculateDatasetChecksum(input)).toBe(
-      calculateDatasetChecksum(input),
-    );
+    expect(calculateDatasetChecksum(input)).toBe(calculateDatasetChecksum(input));
   });
 
   it('changes when dataset content changes', () => {

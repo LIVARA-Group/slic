@@ -129,18 +129,12 @@ describe('runBenchmarkWorkflow', () => {
           warmupIterations: 0,
           iterations: 1,
         },
-        operation: () => { },
+        operation: () => {},
       },
       dependencies,
     );
 
-    expect(events).toEqual([
-      'environment',
-      'dataset',
-      'benchmark',
-      'report',
-      'write',
-    ]);
+    expect(events).toEqual(['environment', 'dataset', 'benchmark', 'report', 'write']);
 
     expect(report.id).toBe('test-report');
     expect(report.environment).toEqual(environment);
@@ -202,7 +196,7 @@ describe('runBenchmarkWorkflow', () => {
             name: 'failing-operation',
             iterations: 1,
           },
-          operation: () => { },
+          operation: () => {},
         },
         dependencies,
       ),

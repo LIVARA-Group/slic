@@ -59,7 +59,7 @@ describe('writeBenchmarkReport', () => {
     const filePath = join(temporaryDirectory, 'nested', 'poc-report.json');
     const environment = collectEnvironmentManifest();
 
-    const run = await runBenchmark(() => { }, {
+    const run = await runBenchmark(() => {}, {
       name: 'insert-records',
       warmupIterations: 1,
       iterations: 3,

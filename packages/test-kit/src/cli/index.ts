@@ -41,9 +41,7 @@ function main(): void {
 
     process.exitCode = 2;
   } catch (error) {
-    process.stderr.write(
-      `${error instanceof Error ? error.message : String(error)}\n`,
-    );
+    process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
     process.stderr.write('Use --help to see available options.\n');
     process.exitCode = 1;
   }

@@ -1,4 +1,3 @@
-
 import { createHash } from 'node:crypto';
 
 export interface AcknowledgedTransaction {
@@ -37,9 +36,7 @@ export interface AckLedgerCheckResult {
 export function calculateTransactionChecksum(recordIds: string[]): string {
   const normalizedRecordIds = [...recordIds].sort();
 
-  return createHash('sha256')
-    .update(JSON.stringify(normalizedRecordIds))
-    .digest('hex');
+  return createHash('sha256').update(JSON.stringify(normalizedRecordIds)).digest('hex');
 }
 
 export function createAckLedger(): AckLedger {

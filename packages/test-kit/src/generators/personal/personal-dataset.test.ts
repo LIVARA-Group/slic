@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  generatePersonalDataset,
-  PERSONAL_DATASET_GENERATOR_VERSION,
-} from './personal-dataset.js';
+import { generatePersonalDataset, PERSONAL_DATASET_GENERATOR_VERSION } from './personal-dataset.js';
 
 describe('generatePersonalDataset', () => {
   const options = {
@@ -13,9 +10,7 @@ describe('generatePersonalDataset', () => {
   };
 
   it('produces identical datasets and manifests for the same seed', () => {
-    expect(generatePersonalDataset(options)).toEqual(
-      generatePersonalDataset(options),
-    );
+    expect(generatePersonalDataset(options)).toEqual(generatePersonalDataset(options));
   });
 
   it('produces different datasets for different seeds', () => {
@@ -63,9 +58,7 @@ describe('generatePersonalDataset', () => {
   it('includes the generator version in the manifest', () => {
     const { manifest } = generatePersonalDataset(options);
 
-    expect(manifest.metadata.generatorVersion).toBe(
-      PERSONAL_DATASET_GENERATOR_VERSION,
-    );
+    expect(manifest.metadata.generatorVersion).toBe(PERSONAL_DATASET_GENERATOR_VERSION);
   });
 
   it('generates a valid SHA-256 checksum', () => {
@@ -85,12 +78,8 @@ describe('generatePersonalDataset', () => {
     const { manifest } = generatePersonalDataset(options);
     const distribution = manifest.distribution;
 
-    expect(
-      Object.keys(distribution).some((key) => key.startsWith('entity.')),
-    ).toBe(true);
-    expect(
-      Object.keys(distribution).some((key) => key.startsWith('relation.')),
-    ).toBe(true);
+    expect(Object.keys(distribution).some((key) => key.startsWith('entity.'))).toBe(true);
+    expect(Object.keys(distribution).some((key) => key.startsWith('relation.'))).toBe(true);
 
     expect(
       Object.entries(distribution)

@@ -1,12 +1,6 @@
 import { createHash } from 'node:crypto';
 
-export type DatasetFamily =
-  | 'DS-P'
-  | 'DS-G'
-  | 'DS-T'
-  | 'DS-A'
-  | 'DS-C'
-  | 'DS-I';
+export type DatasetFamily = 'DS-P' | 'DS-G' | 'DS-T' | 'DS-A' | 'DS-C' | 'DS-I';
 
 export interface DatasetMetadata {
   id: string;
@@ -49,9 +43,7 @@ export interface CreateDatasetManifestOptions extends DatasetChecksumInput {
   distribution?: Record<string, number>;
 }
 
-export function calculateDatasetChecksum(
-  input: DatasetChecksumInput,
-): string {
+export function calculateDatasetChecksum(input: DatasetChecksumInput): string {
   const payload = JSON.stringify({
     family: input.family,
     seed: input.seed,
@@ -62,9 +54,7 @@ export function calculateDatasetChecksum(
   return createHash('sha256').update(payload).digest('hex');
 }
 
-export function createDatasetManifest(
-  input: CreateDatasetManifestOptions,
-): DatasetManifest {
+export function createDatasetManifest(input: CreateDatasetManifestOptions): DatasetManifest {
   const checksum = calculateDatasetChecksum(input);
 
   return {

@@ -54,15 +54,12 @@ export function collectEnvironmentManifest(): EnvironmentManifest {
     },
 
     source: {
-      commitSha:
-        process.env.SLIC_COMMIT_SHA ??
-        process.env.GITHUB_SHA ??
-        null,
+      commitSha: process.env.SLIC_COMMIT_SHA ?? process.env.GITHUB_SHA ?? null,
       packageManager: pnpmVersion
         ? {
-          name: 'pnpm',
-          version: pnpmVersion,
-        }
+            name: 'pnpm',
+            version: pnpmVersion,
+          }
         : null,
     },
   };

@@ -13,9 +13,7 @@ export interface AckLedgerRestoreResult {
   truncatedTail: boolean;
 }
 
-function isAcknowledgedTransaction(
-  value: unknown,
-): value is AcknowledgedTransaction {
+function isAcknowledgedTransaction(value: unknown): value is AcknowledgedTransaction {
   if (typeof value !== 'object' || value === null) {
     return false;
   }
@@ -32,10 +30,7 @@ function isAcknowledgedTransaction(
     !Number.isNaN(Date.parse(acknowledgedAt)) &&
     Array.isArray(recordIds) &&
     recordIds.length > 0 &&
-    recordIds.every(
-      (recordId: unknown) =>
-        typeof recordId === 'string' && recordId.length > 0,
-    ) &&
+    recordIds.every((recordId: unknown) => typeof recordId === 'string' && recordId.length > 0) &&
     new Set(recordIds).size === recordIds.length &&
     typeof checksum === 'string' &&
     /^[a-f0-9]{64}$/.test(checksum)

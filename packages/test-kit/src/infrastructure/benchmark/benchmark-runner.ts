@@ -48,17 +48,11 @@ function calculateMemoryDelta(
   };
 }
 
-async function executeBatch(
-  operation: BenchmarkOperation,
-  concurrency: number,
-): Promise<void> {
+async function executeBatch(operation: BenchmarkOperation, concurrency: number): Promise<void> {
   await Promise.all(
-    Array.from(
-      { length: concurrency },
-      async () => {
-        await operation();
-      },
-    ),
+    Array.from({ length: concurrency }, async () => {
+      await operation();
+    }),
   );
 }
 
@@ -113,8 +107,7 @@ export async function runBenchmark(
     completedAt: new Date().toISOString(),
     samplesMs: samples,
     duration,
-    operationsPerSecond:
-      duration.mean > 0 ? (concurrency * 1000) / duration.mean : null,
+    operationsPerSecond: duration.mean > 0 ? (concurrency * 1000) / duration.mean : null,
     memoryMeasurement: MEMORY_MEASUREMENT,
     memoryBefore,
     memoryAfter,

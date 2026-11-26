@@ -17,10 +17,7 @@ export interface POCRawResults {
   runs: BenchmarkResult[];
 }
 
-export async function writePOCRawResults(
-  results: POCRawResults,
-  filePath: string,
-): Promise<void> {
+export async function writePOCRawResults(results: POCRawResults, filePath: string): Promise<void> {
   await mkdir(dirname(filePath), { recursive: true });
 
   await writeFile(filePath, `${JSON.stringify(results, null, 2)}\n`, {
